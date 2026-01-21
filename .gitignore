@@ -1,4 +1,5 @@
 # Dependency directories
+node_modules/
 jspm_packages/
 
 # IDEs (WebStorm/IntelliJ)
