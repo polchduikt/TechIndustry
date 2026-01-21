@@ -7,15 +7,28 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["education", "quiz", "it"],
+  "keywords": [
+    "education",
+    "quiz",
+    "it"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.2.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.17.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
-  }
+    "nodemon": "^3.1.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polchduikt/TechIndustry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/polchduikt/TechIndustry/issues"
+  },
+  "homepage": "https://github.com/polchduikt/TechIndustry#readme"
 }
