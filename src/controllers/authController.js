@@ -28,26 +28,22 @@ exports.register = async (req, res) => {
             phone
         } = req.body;
 
-        const existingUser = await User.findOne({
-            include: [{
-                model: Customer,
-                where: {
-                    [require('sequelize').Op.or]: [
-                        { email },
-                        { phone }
-                    ]
-                },
-                required: false
-            }]
-        });
-
-        if (existingUser) {
-            return res.status(400).json({ message: 'Користувач з такою поштою або телефоном вже існує' });
-        }
-
         const existingUsername = await User.findOne({ where: { username } });
         if (existingUsername) {
             return res.status(400).json({ message: 'Username вже зайнятий' });
+        }
+
+        const existingCustomer = await Customer.findOne({
+            where: {
+                [require('sequelize').Op.or]: [
+                    { email },
+                    { phone }
+                ]
+            }
+        });
+
+        if (existingCustomer) {
+            return res.status(400).json({ message: 'Користувач з такою поштою або телефоном вже існує' });
         }
 
         const customer = await Customer.create({
