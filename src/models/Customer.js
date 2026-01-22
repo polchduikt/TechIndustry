@@ -35,6 +35,16 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(20),
             allowNull: false,
             unique: true
+        },
+        avatar_url: {
+            type: DataTypes.STRING(500),
+            allowNull: true,
+            defaultValue: null
+        },
+        avatar_data: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+            defaultValue: null
         }
     }, {
         tableName: 'customers',
