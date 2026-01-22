@@ -76,29 +76,14 @@ async function updateGlobalHeader() {
 
     if (!authSlot) return;
 
+    resetHeader();
+
     try {
         const response = await fetch('/api/auth/profile');
+
         if (response.ok) {
             const data = await response.json();
-            const username = data.username;
-
-            const avatarSrc = data.Customer?.avatar_data ||
-                `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=6366f1&color=fff`;
-
-            if (myLearningBtn) myLearningBtn.style.display = 'block';
-
-            authSlot.innerHTML = `
-                <div class="user-menu">
-                    <div class="user-avatar" onclick="toggleDropdown()">
-                        <img src="${avatarSrc}" alt="Avatar" id="headerAvatarImg" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                    </div>
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="/profile" class="dropdown-item">👤 Профіль</a>
-                        <a href="/settings" class="dropdown-item">⚙️ Налаштування</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" onclick="logout(event)" class="dropdown-item logout">🚪 Вийти</a>
-                    </div>
-                </div>`;
+            renderUserMenu(data, authSlot, myLearningBtn);
         } else {
             resetHeader();
         }
@@ -107,9 +92,29 @@ async function updateGlobalHeader() {
     }
 }
 
+function renderUserMenu(data, authSlot, myLearningBtn) {
+    if (myLearningBtn) myLearningBtn.style.display = 'block';
+    const avatarSrc = data.Customer?.avatar_data ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(data.username)}&background=6366f1&color=fff`;
+
+    authSlot.innerHTML = `
+        <div class="user-menu">
+            <div class="user-avatar" onclick="toggleDropdown()">
+                <img src="${avatarSrc}" id="headerAvatarImg" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="/profile" class="dropdown-item">👤 Профіль</a>
+                <a href="/settings" class="dropdown-item">⚙️ Налаштування</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" onclick="logout(event)" class="dropdown-item logout">🚪 Вийти</a>
+            </div>
+        </div>`;
+}
+
 function resetHeader() {
     const authSlot = document.getElementById('authSlot');
     const myLearningBtn = document.getElementById('myLearningBtn');
+
     if (myLearningBtn) myLearningBtn.style.display = 'none';
     if (authSlot) {
         authSlot.innerHTML = `<button class="btn btn-primary" onclick="location.href='/login'">Увійти</button>`;
@@ -119,11 +124,12 @@ function resetHeader() {
 async function logout(event) {
     if (event) event.preventDefault();
     try {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        resetHeader();
-        window.location.href = '/'; // Перенаправлення на головну після виходу
+        const res = await fetch('/api/auth/logout', { method: 'POST' });
+        if (res.ok) {
+            resetHeader();
+            window.location.href = '/';
+        }
     } catch (error) {
-        console.error('Помилка виходу:', error);
         window.location.href = '/';
     }
 }
@@ -143,5 +149,11 @@ document.addEventListener('click', (e) => {
         dropdown.classList.remove('show');
     }
 });
+
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        updateGlobalHeader();
+    }
+})
 
 document.addEventListener('DOMContentLoaded', updateGlobalHeader);

@@ -153,6 +153,7 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
     res.clearCookie('token');
+    res.setHeader('Cache-Control', 'no-store');
     res.json({ message: 'Вихід успішний' });
 };
 
