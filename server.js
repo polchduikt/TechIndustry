@@ -16,8 +16,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRoutes);
 
-app.get('/', auth, (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
+
+app.get('/settings', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'settings.html'));
 });
 
 app.get('/login', (req, res) => {
@@ -25,10 +33,7 @@ app.get('/login', (req, res) => {
 });
 
 db.sequelize.sync({ alter: true }).then(() => {
-    console.log('База даних синхронізована');
     app.listen(PORT, () => {
         console.log(`Сервер запущено на http://localhost:${PORT}`);
     });
-}).catch(err => {
-    console.error('Помилка синхронізації БД:', err);
 });

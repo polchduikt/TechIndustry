@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechIndustry | Налаштування</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/settings.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <div class="nav-links">
+                <button onclick="location.href='/'">Головна</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <div id="authSlot"></div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="settings-section">
+    <div class="container">
+        <div class="settings-container">
+            <div class="settings-sidebar glass">
+                <div class="avatar-edit-container">
+                    <div class="avatar-preview">
+                        <img id="currentAvatar" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="Avatar">
+                        <label for="avatarInput" class="avatar-upload-label">
+                            <span>📷</span>
+                        </label>
+                    </div>
+                    <input type="file" id="avatarInput" accept="image/*" hidden>
+                    <h3 id="displayUsername">Користувач</h3>
+                    <p id="displayEmail">email@example.com</p>
+                </div>
+                <div class="settings-nav">
+                    <button class="nav-btn active">Основне</button>
+                    <button class="nav-btn">Безпека</button>
+                    <button class="nav-btn">Сповіщення</button>
+                </div>
+            </div>
+
+            <div class="settings-content glass">
+                <h2 class="section-title" style="text-align: left; margin-bottom: 32px;">Редагувати профіль</h2>
+
+                <form id="settingsForm" class="settings-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <input type="text" id="username" class="glass-input" placeholder="Ваш нікнейм" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" class="glass-input" placeholder="example@mail.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Ім'я *</label>
+                            <input type="text" id="first_name" class="glass-input" placeholder="Іван" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Прізвище *</label>
+                            <input type="text" id="last_name" class="glass-input" placeholder="Іваненко" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patronymic">По батькові</label>
+                            <input type="text" id="patronymic" class="glass-input" placeholder="Іванович">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон *</label>
+                            <input type="tel" id="phone" class="glass-input" placeholder="+380XXXXXXXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="birth_date">Дата народження</label>
+                            <input type="date" id="birth_date" class="glass-input">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="location.href='/profile'">Скасувати</button>
+                        <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+                    </div>
+                </form>
+
+                <div class="divider"></div>
+
+                <h2 class="section-title" style="text-align: left; margin-bottom: 32px;">Змінити пароль</h2>
+                <form id="passwordForm" class="settings-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="oldPassword">Поточний пароль *</label>
+                            <input type="password" id="oldPassword" class="glass-input" placeholder="Введіть поточний пароль" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Новий пароль *</label>
+                            <input type="password" id="newPassword" class="glass-input" placeholder="Мінімум 6 символів" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Підтвердіть пароль *</label>
+                            <input type="password" id="confirmPassword" class="glass-input" placeholder="Повторіть новий пароль" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Оновити пароль</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="container footer-content">
+        <div class="footer-brand">
+            <div class="logo">TechIndustry</div>
+            <p>Ваш шлях у світ високих технологій починається тут.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Платформа</h4>
+                <a href="/learning">Навчання</a>
+                <a href="/quiz">Тестування</a>
+                <a href="/courses">Всі курси</a>
+            </div>
+            <div class="footer-col">
+                <h4>Підтримка</h4>
+                <a href="#">Допомога</a>
+                <a href="#">Контакти</a>
+                <a href="#">Спільнота</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
+    </div>
+</footer>
+<script src="js/index.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>
