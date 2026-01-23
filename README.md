@@ -49,5 +49,5 @@ A modular course system that allows students to master complex technical topics 
 ### Installation & Running
 1. **Clone the repository (Release branch):**
    ```bash
-   git clone -b release https://github.com/polchduikt/TechIndustry
-   cd tech-industry
+   git clone -b dev https://github.com/polchduikt/TechIndustry
+   cd TechIndustry
