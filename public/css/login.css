@@ -1,20 +1,26 @@
-.logo {
+* {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 28px;
+}
+
+body {
+    overflow-y: scroll;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 32px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -1px;
-    text-decoration: none; /* Додайте цей рядок */
+    text-decoration: none;
 }
 
 .container-fluid {
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 20px;
     z-index: 1;
     position: relative;
 }
@@ -22,14 +28,20 @@
 .auth-container {
     width: 100%;
     max-width: 500px;
-    border-radius: 24px;
+    border-radius: 15px;
     overflow: hidden;
-    animation: fadeIn 0.6s ease;
+    animation: fadeIn 0.5s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .tabs {
@@ -43,16 +55,16 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: bold;
     color: var(--text-muted);
-    transition: all 0.3s;
-    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.5s ease;
 }
 
 .tab.active {
-    color: white;
+    color: #FFFFFF;
     background: rgba(99, 102, 241, 0.1);
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 3px solid var(--primary);
 }
 
 .form-container {
@@ -68,28 +80,27 @@
 }
 
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
     color: var(--text-muted);
-    font-size: 14px;
-    font-weight: 500;
-    padding-left: 4px;
+    font-size: 18px;
+    font-weight: normal;
 }
 
 .glass-input {
     width: 100%;
+    font-size: 18px;
+    font-weight: normal;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 12px 16px;
+    border-radius: 15px;
+    padding: 20px;
     color: var(--text);
-    font-family: 'Inter', sans-serif;
     outline: none;
-    transition: all 0.3s;
+    transition: all 0.5s ease;
 }
 
 .glass-input:focus {
@@ -106,16 +117,17 @@ label {
 
 .auth-btn {
     width: 100%;
-    margin-top: 10px;
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: 0.5px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: normal;
 }
 
 .message {
     margin-top: 20px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-size: 14px;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: normal;
     text-align: center;
     display: none;
 }
@@ -140,12 +152,35 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 
-@media (max-width: 480px) {
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-    .form-container {
-        padding: 30px 20px;
-    }
+.password-group {
+    position: relative;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: color 0.5s ease;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: var(--primary);
+}
+
+.password-toggle svg {
+    width: 25px;
+    height: 25px;
 }

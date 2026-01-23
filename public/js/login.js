@@ -68,3 +68,20 @@ async function handleRegister(event) {
         messageDiv.textContent = 'Помилка з\'єднання з сервером';
     }
 }
+
+function togglePassword(button) {
+    const wrapper = button.closest('.password-wrapper');
+    const input = wrapper.querySelector('input');
+    const eyeIcon = button.querySelector('.eye-icon');
+    const eyeSlashIcon = button.querySelector('.eye-slash-icon');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.style.display = 'none';
+        eyeSlashIcon.style.display = 'block';
+    } else {
+        input.type = 'password';
+        eyeIcon.style.display = 'block';
+        eyeSlashIcon.style.display = 'none';
+    }
+}
