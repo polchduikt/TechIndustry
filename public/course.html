@@ -3,90 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Course</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 40px;
-      background: #0b1220;
-      color: #e5e7eb;
-      font-family: Inter, system-ui, sans-serif;
-    }
-    #courseTitle {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 36px;
-      margin-bottom: 32px;
-      }
-    
-    .module {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      padding: 24px;
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-  
-    .module h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px;
-      margin-bottom: 16px;
-    }
-
-    .lesson-card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 24px;
-      padding: 32px;
-    }
-
-    .lesson-content {
-      line-height: 1.8;
-    }
-
-    .lesson-link {
-      display: block;
-      padding: 14px 18px;
-      border-radius: 14px;
-      color: #e5e7eb;
-      text-decoration: none;
-      margin-bottom: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      transition: all 0.25s ease;
-      cursor: pointer;
-    }
-  
-    .lesson-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateX(6px);
-    }
-    .course-layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 32px;
-    }
-
-    .lesson-link.active {
-      background: rgba(99, 102, 241, 0.25);
-      border: 1px solid rgba(99, 102, 241, 0.5);
-    }
-
-    .lesson-link::before {
-      content: '→';
-      opacity: 0;
-      margin-right: 8px;
-      transition: 0.2s;
-    }
-
-    .lesson-link:hover::before,
-    .lesson-link.active::before {
-      opacity: 1;
-    }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="css/course.css">
+  <link rel="stylesheet" href="css/index.css">
+
 </head>
 <body>
-
-  <h1 id="courseTitle"></h1>
+  <header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <div class="nav-links" id="navLinks">
+                <button onclick="location.href='/'">Головна</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button onclick="location.href='/courses'">Навчання</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<h1 id="courseTitle"></h1>
 
 <div class="course-layout">
   <div id="modules"></div>
@@ -96,67 +35,8 @@
     </p>
   </div>
 </div>
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('course');
-
-  async function loadCourse() {
-    const res = await fetch(`/api/courses/${slug}`);
-    const course = await res.json();
-
-    document.getElementById('courseTitle').innerText = course.title;
-
-    const modulesDiv = document.getElementById('modules');
-    modulesDiv.innerHTML = '';
-
-    course.modules.sort((a, b) => a.order - b.order);
-    course.modules.forEach(module => {
-        module.lessons.sort((a, b) => a.order - b.order);
-        const moduleBlock = document.createElement('div');
-        moduleBlock.className = 'module';
-        moduleBlock.innerHTML = `<h3>${module.title}</h3>`;
-
-      module.lessons.forEach(lesson => {
-        const link = document.createElement('div');
-        link.className = 'lesson-link';
-        link.textContent = lesson.title;
-
-        link.onclick = () => loadLesson(lesson.id, link);
-
-        moduleBlock.appendChild(link);
-      });
-      modulesDiv.appendChild(moduleBlock);
-    });
-  }
-  async function loadLesson(lessonId, clickedEl) {
-    const preview = document.getElementById('lessonPreview');
-
-    preview.innerHTML = `
-      <p style="opacity:.6">Завантаження уроку...</p>
-    `;
-
-    const res = await fetch(`/api/lessons/${lessonId}`);
-    const data = await res.json();
-
-    preview.innerHTML = `
-      <div class="lesson-card">
-        <h2>${data.title}</h2>
-        <div class="lesson-content">
-          ${marked.parse(data.content)}
-        </div>
-      </div>
-    `;
-
-    document.querySelectorAll('.lesson-link')
-      .forEach(el => el.classList.remove('active'));
-
-    clickedEl.classList.add('active');
-  }
-
-
-  loadCourse();
-</script>
+<script src="js/index.js"></script>
+<script src="js/course.js"></script>
 
 </body>
 </html>

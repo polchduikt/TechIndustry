@@ -5,73 +5,28 @@
   <title>Lesson</title>
   <!-- MARKDOWN -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 40px;
-      background: #0b1220;
-      color: #e5e7eb;
-      font-family: Inter, system-ui, sans-serif;
-    }
-    
-    .nav {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-    
-    .nav button {
-      padding: 10px 18px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #e5e7eb;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: all 0.25s ease;
-    }
-    
-    .nav button:hover {
-      background: rgba(255, 255, 255, 0.12);
-    }
-    
-    #lessonTitle {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 36px;
-      margin-bottom: 24px;
-    }
-    
-    #lessonContent {
-      max-width: 900px;
-      line-height: 1.8;
-      font-size: 16px;
-    }
-    
-    #lessonContent h2,
-    #lessonContent h3 {
-      margin-top: 32px;
-    }
-    
-    #lessonContent pre {
-      background: #020617;
-      padding: 18px;
-      border-radius: 14px;
-      overflow-x: auto;
-    }
-    .lesson-card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      border-radius: 24px;
-      padding: 32px;
-      max-width: 900px;
-    }
+  <link rel="stylesheet" href="css/lesson.css">
+  <link rel="stylesheet" href="css/index.css">
 
-  </style>
 </head>
 
 <body>
-
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <div class="nav-links" id="navLinks">
+                <button onclick="location.href='/'">Головна</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button onclick="location.href='/courses'">Навчання</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
   <!-- НАВІГАЦІЯ -->
   <div class="nav">
     <button id="prevBtn" type="button">⬅ Попередній</button>
@@ -82,44 +37,8 @@
     <h1 id="lessonTitle"></h1>
     <div id="lessonContent"></div>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const params = new URLSearchParams(window.location.search);
-      const lessonId = params.get('lesson');
-
-      if (!lessonId) {
-        alert('Lesson ID missing');
-        return;
-      }
-
-      const res = await fetch(`/api/lessons/${lessonId}`);
-      const data = await res.json();
-
-      console.log('API response:', data);
-      
-      document.getElementById('lessonTitle').innerText = data.title;
-      document.getElementById('lessonContent').innerHTML =
-        marked.parse(data.content);
-
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      if (data.prev) {
-        prevBtn.onclick = () =>
-          location.href = `/lesson?lesson=${data.prev}`;
-      } else {
-        prevBtn.style.display = 'none';
-      }
-
-      if (data.next) {
-        nextBtn.onclick = () =>
-          location.href = `/lesson?lesson=${data.next}`;
-      } else {
-        nextBtn.style.display = 'none';
-      }
-    });
-  </script>
+  <script src="js/index.js"></script>
+  <script src="js/lesson.js"></script>
 
 </body>
 </html>

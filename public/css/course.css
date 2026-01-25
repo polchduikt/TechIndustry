@@ -1,0 +1,77 @@
+body {
+      margin: 0;
+      padding: 40px;
+      background: #0b1220;
+      color: #e5e7eb;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    #courseTitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      margin-bottom: 32px;
+      }
+    
+    .module {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      padding: 24px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+  
+    .module h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .lesson-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 32px;
+    }
+
+    .lesson-content {
+      line-height: 1.8;
+    }
+
+    .lesson-link {
+      display: block;
+      padding: 14px 18px;
+      border-radius: 14px;
+      color: #e5e7eb;
+      text-decoration: none;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+  
+    .lesson-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(6px);
+    }
+    .course-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+    }
+
+    .lesson-link.active {
+      background: rgba(99, 102, 241, 0.25);
+      border: 1px solid rgba(99, 102, 241, 0.5);
+    }
+
+    .lesson-link::before {
+      content: '→';
+      opacity: 0;
+      margin-right: 8px;
+      transition: 0.2s;
+    }
+
+    .lesson-link:hover::before,
+    .lesson-link.active::before {
+      opacity: 1;
+    }
