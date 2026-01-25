@@ -58,6 +58,15 @@
       border-radius: 14px;
       overflow-x: auto;
     }
+    .lesson-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 900px;
+    }
+
   </style>
 </head>
 
@@ -69,9 +78,10 @@
     <button id="nextBtn" type="button">Наступний ➡</button>
   </div>
 
-  <!-- КОНТЕНТ -->
-  <h1 id="lessonTitle"></h1>
-  <div id="lessonContent"></div>
+  <div class="lesson-card">
+    <h1 id="lessonTitle"></h1>
+    <div id="lessonContent"></div>
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', async () => {

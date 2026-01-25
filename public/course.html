@@ -31,7 +31,18 @@
       font-size: 22px;
       margin-bottom: 16px;
     }
-  
+
+    .lesson-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 32px;
+    }
+
+    .lesson-content {
+      line-height: 1.8;
+    }
+
     .lesson-link {
       display: block;
       padding: 14px 18px;
@@ -41,17 +52,50 @@
       margin-bottom: 10px;
       background: rgba(255, 255, 255, 0.04);
       transition: all 0.25s ease;
+      cursor: pointer;
     }
   
     .lesson-link:hover {
       background: rgba(255, 255, 255, 0.1);
       transform: translateX(6px);
     }
+    .course-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+    }
+
+    .lesson-link.active {
+      background: rgba(99, 102, 241, 0.25);
+      border: 1px solid rgba(99, 102, 241, 0.5);
+    }
+
+    .lesson-link::before {
+      content: '→';
+      opacity: 0;
+      margin-right: 8px;
+      transition: 0.2s;
+    }
+
+    .lesson-link:hover::before,
+    .lesson-link.active::before {
+      opacity: 1;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <h1 id="courseTitle"></h1>
-    <div id="modules"></div>
+
+  <h1 id="courseTitle"></h1>
+
+<div class="course-layout">
+  <div id="modules"></div>
+  <div class="module" id="lessonPreview">
+    <p style="opacity:.7">
+      Оберіть урок зліва, щоб почати навчання 👈
+    </p>
+  </div>
+</div>
 
 <script>
   const params = new URLSearchParams(window.location.search);
@@ -74,16 +118,42 @@
         moduleBlock.innerHTML = `<h3>${module.title}</h3>`;
 
       module.lessons.forEach(lesson => {
-        const link = document.createElement('a');
-        link.href = `/lesson?lesson=${lesson.id}`;
+        const link = document.createElement('div');
         link.className = 'lesson-link';
-        link.innerText = lesson.title;
+        link.textContent = lesson.title;
+
+        link.onclick = () => loadLesson(lesson.id, link);
+
         moduleBlock.appendChild(link);
       });
-
       modulesDiv.appendChild(moduleBlock);
     });
   }
+  async function loadLesson(lessonId, clickedEl) {
+    const preview = document.getElementById('lessonPreview');
+
+    preview.innerHTML = `
+      <p style="opacity:.6">Завантаження уроку...</p>
+    `;
+
+    const res = await fetch(`/api/lessons/${lessonId}`);
+    const data = await res.json();
+
+    preview.innerHTML = `
+      <div class="lesson-card">
+        <h2>${data.title}</h2>
+        <div class="lesson-content">
+          ${marked.parse(data.content)}
+        </div>
+      </div>
+    `;
+
+    document.querySelectorAll('.lesson-link')
+      .forEach(el => el.classList.remove('active'));
+
+    clickedEl.classList.add('active');
+  }
+
 
   loadCourse();
 </script>

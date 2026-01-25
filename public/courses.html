@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            pointer-events: none;
+            animation: float 20s infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.2), transparent);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+            pointer-events: none;
+            animation: float 15s infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -50px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass Effect */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+          nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-links button:hover {
+            color: var(--text);
+            background: var(--glass-bg);
+        }
+         .btn {
+            padding: 12px 32px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text);
+            border: 1px solid var(--glass-border);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .category-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 48px;
+            overflow-x: auto;
+            padding: 8px 0;
+            justify-content: center;
+        }
+
+        .category-tab {
+            padding: 12px 28px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .category-tab.active-tab, .category-tab:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: transparent;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+        }
+
+        .language-card {
+            padding: 32px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .language-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* --- STUDY MODE STYLES --- */
+        .study-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .study-sidebar {
+            padding: 25px;
+            border-radius: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .study-sidebar h3 {
+            margin-bottom: 20px;
+            font-family: 'Space Grotesk';
+            color: var(--primary);
+        }
+
+        .lesson-list {
+            list-style: none;
+        }
+
+        .lesson-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .lesson-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .lesson-item.active-lesson {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .study-content {
+            padding: 40px;
+            border-radius: 20px;
+        }
+
+        .study-content h2 {
+            font-family: 'Space Grotesk';
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <div class="nav-links" id="navLinks">
+                <button onclick="location.href='/'">Головна</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button onclick="location.href='/courses'">Навчання</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<section id="learning" class="page-section">
+    <div class="container">
+        <div class="learning-header">
+            <h1 class="section-title">Каталог курсів</h1>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Оберіть напрямок та почніть своє навчання</p>
+        </div>
+
+        <div class="category-tabs">
+            <button class="category-tab active-tab" onclick="filterCategory('all', event)">Всі</button>
+            <button class="category-tab" onclick="filterCategory('frontend', event)">Frontend</button>
+            <button class="category-tab" onclick="filterCategory('backend', event)">Backend</button>
+            <button class="category-tab" onclick="filterCategory('mobile', event)">Mobile</button>
+        </div>
+
+        <div class="courses-grid" id="coursesGrid">
+            <a class="language-card glass"
+                data-category="frontend"
+                href="/course?course=javascript-basics"
+                style="text-decoration:none; color:inherit;"
+                >
+                <div class="lang-header">
+                    <div class="lang-icon">⚡</div>
+                    <div class="lang-info">
+                    <h3>JavaScript</h3>
+                    <div class="lang-level">Від початкового до професійного</div>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-muted); margin-bottom: 16px;">
+                    Базова мова веб-розробки: змінні, функції, async, DOM.
+                </p>
+
+                <div class="lang-stats">
+                    <span>📚 12 уроків</span>
+                    <span>🔥 Популярний</span>
+                </div>
+            </a>
+            <a class="language-card glass"
+            data-category="frontend"
+            href="/course?course=react-next"
+            style="text-decoration:none; color:inherit;"
+            >
+                <div class="lang-header">
+                    <div class="lang-icon">🟢</div>
+                    <div class="lang-info">
+                        <h3>React & Next.js</h3>
+                        <div class="lang-level">Середній рівень</div>
+                    </div>
+                </div>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">Бібліотека для створення користувацьких інтерфейсів. Компонентний підхід, хуки, контекст.</p>
+                <div class="lang-stats"><span>📚 10 уроків</span><span>👥 4.8K</span></div>
+            </a>
+        </div>
+    </div>
+</section>
+<script>
+    let carouselPosition = 0;
+
+    // --- CAROUSEL LOGIC ---
+    function moveCarousel(direction) {
+        const track = document.getElementById('carouselTrack');
+        const cardWidth = 374; // Width (350) + Gap (24)
+        const containerWidth = document.querySelector('.carousel-container').offsetWidth;
+        const totalWidth = track.scrollWidth;
+        const maxScroll = -(totalWidth - containerWidth);
+
+        carouselPosition += direction * -cardWidth;
+        
+        // Boundaries
+        if (carouselPosition > 0) carouselPosition = 0;
+        if (carouselPosition < maxScroll) carouselPosition = maxScroll;
+        
+        track.style.transform = `translateX(${carouselPosition}px)`;
+    }
+
+    // --- CATALOG FILTERS ---
+    function filterCategory(category, event) {
+        const tabs = document.querySelectorAll('.category-tab');
+        const cards = document.querySelectorAll('.language-card');
+        
+        tabs.forEach(tab => tab.classList.remove('active-tab'));
+        event.target.classList.add('active-tab');
+        
+        cards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -31,6 +31,9 @@ app.get('/settings', protectPage, (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
+app.get('/courses', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/courses.html'));
+});
 app.get('/course', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/course.html'));
 });
