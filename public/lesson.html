@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Lesson</title>
+
+  <!-- MARKDOWN -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #0b1220;
+      color: #e5e7eb;
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    #lessonContent {
+      max-width: 900px;
+      line-height: 1.7;
+    }
+
+    pre {
+      background: #020617;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    .nav {
+      margin-bottom: 24px;
+    }
+
+    button {
+      padding: 8px 14px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- НАВІГАЦІЯ -->
+  <div class="nav">
+    <button id="prevBtn" type="button">⬅ Попередній</button>
+    <button id="nextBtn" type="button">Наступний ➡</button>
+  </div>
+
+  <!-- КОНТЕНТ -->
+  <h1 id="lessonTitle"></h1>
+  <div id="lessonContent"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const lessonId = params.get('lesson');
+
+      if (!lessonId) {
+        alert('Lesson ID missing');
+        return;
+      }
+
+      const res = await fetch(`/api/lessons/${lessonId}`);
+      const data = await res.json();
+
+      console.log('API response:', data);
+      
+      document.getElementById('lessonTitle').innerText = data.title;
+      document.getElementById('lessonContent').innerHTML =
+        marked.parse(data.content);
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      if (data.prev) {
+        prevBtn.onclick = () =>
+          location.href = `/lesson?lesson=${data.prev}`;
+      } else {
+        prevBtn.style.display = 'none';
+      }
+
+      if (data.next) {
+        nextBtn.onclick = () =>
+          location.href = `/lesson?lesson=${data.next}`;
+      } else {
+        nextBtn.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>

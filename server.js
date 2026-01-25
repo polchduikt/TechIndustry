@@ -5,11 +5,15 @@ const db = require('./src/models');
 const authRoutes = require('./src/routes/authRoutes');
 const auth = require('./src/middleware/auth');
 const { protectPage, redirectIfAuth } = require('./src/middleware/pageAuth');
+const courseRoutes = require('./src/routes/courseRoutes');
 require('dotenv').config();
+
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use('/api', courseRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -26,6 +30,12 @@ app.get('/settings', protectPage, (req, res) => {
 });
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+app.get('/course', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/course.html'));
+});
+app.get('/lesson', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/lesson.html'));
 });
 app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');

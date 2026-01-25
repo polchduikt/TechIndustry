@@ -1,0 +1,8 @@
+{
+  "title": "React & Next.js",
+  "description": "Практичний курс з React та Next.js: компоненти, хуки, маршрутизація та SSR.",
+  "category": "Frontend",
+  "level": "Intermediate",
+  "price": 0,
+  "thumbnail": "react-next.png"
+}

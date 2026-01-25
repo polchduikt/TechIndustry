@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Course</title>
+  <style>
+    .course-title {
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.module {
+  background: #111827;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.lesson-link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.lesson-link:hover {
+  background: #1f2937;
+}
+
+  </style>
+</head>
+<body>
+    <h1 id="courseTitle"></h1>
+    <div id="modules"></div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('course');
+
+  async function loadCourse() {
+    const res = await fetch(`/api/courses/${slug}`);
+    const course = await res.json();
+
+    document.getElementById('courseTitle').innerText = course.title;
+
+    const modulesDiv = document.getElementById('modules');
+    modulesDiv.innerHTML = '';
+
+    course.modules.sort((a, b) => a.order - b.order);
+    course.modules.forEach(module => {
+        module.lessons.sort((a, b) => a.order - b.order);
+        const moduleBlock = document.createElement('div');
+        moduleBlock.className = 'module';
+        moduleBlock.innerHTML = `<h3>${module.title}</h3>`;
+
+      module.lessons.forEach(lesson => {
+        const link = document.createElement('a');
+        link.href = `/lesson?lesson=${lesson.id}`;
+        link.className = 'lesson-link';
+        link.innerText = lesson.title;
+        moduleBlock.appendChild(link);
+      });
+
+      modulesDiv.appendChild(moduleBlock);
+    });
+  }
+
+  loadCourse();
+</script>
+
+</body>
+</html>
