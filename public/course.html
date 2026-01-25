@@ -4,30 +4,49 @@
   <meta charset="UTF-8">
   <title>Course</title>
   <style>
-    .course-title {
-  font-size: 32px;
-  margin-bottom: 24px;
-}
-
-.module {
-  background: #111827;
-  padding: 16px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.lesson-link {
-  display: block;
-  padding: 10px 14px;
-  border-radius: 8px;
-  color: #e5e7eb;
-  text-decoration: none;
-}
-
-.lesson-link:hover {
-  background: #1f2937;
-}
-
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #0b1220;
+      color: #e5e7eb;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    #courseTitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      margin-bottom: 32px;
+      }
+    
+    .module {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      padding: 24px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+  
+    .module h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+  
+    .lesson-link {
+      display: block;
+      padding: 14px 18px;
+      border-radius: 14px;
+      color: #e5e7eb;
+      text-decoration: none;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.25s ease;
+    }
+  
+    .lesson-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(6px);
+    }
   </style>
 </head>
 <body>
