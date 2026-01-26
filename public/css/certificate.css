@@ -212,14 +212,14 @@
     }
 
     .certificate-viewer {
-        background: #ffffff; /* Білий фон для сертифіката */
+        background: #ffffff;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: auto; /* Дозволяємо висоті підлаштовуватися під пропорції А4 */
+        min-height: auto;
     }
 
     .certificate-viewer iframe {

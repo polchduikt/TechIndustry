@@ -90,14 +90,32 @@ nav {
     align-items: center;
 }
 
-.logo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 28px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -1px;
+/*.logo {*/
+/*    font-family: 'Space Grotesk', sans-serif;*/
+/*    font-weight: 700;*/
+/*    font-size: 28px;*/
+/*    background: linear-gradient(135deg, var(--primary), var(--secondary));*/
+/*    -webkit-background-clip: text;*/
+/*    -webkit-text-fill-color: transparent;*/
+/*    letter-spacing: -1px;*/
+/*}*/
+
+.logo-link {
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.logo-img {
+    height: 200px;
+    width: auto;
+    display: block;
+    margin-top: -75px;
+    margin-bottom: -75px;
+    transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+    opacity: 0.85;
 }
 
 .nav-links {

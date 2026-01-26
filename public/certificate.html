@@ -7,14 +7,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/index.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/certificate.css">
 </head>
 <body>
 <header>
   <div class="container">
     <nav>
-      <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+      <a href="/" class="logo-link">
+        <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+      </a>
       <div class="nav-links">
         <button onclick="location.href='/'">Головна</button>
         <button onclick="location.href='/courses'">Курси</button>
@@ -71,7 +73,6 @@
         <div class="sidebar-section">
           <div class="certificate-actions">
             <button class="btn btn-primary btn-download" id="downloadBtn">
-              <span>⬇</span>
               <span>Завантажити PDF</span>
             </button>
             <button class="btn btn-share" id="shareBtn">
