@@ -4,5 +4,6 @@
   "category": "Frontend",
   "level": "Intermediate",
   "price": 0,
-  "thumbnail": "react-next.png"
+  "thumbnail": "react-next.png",
+  "slug": "react-next"
 }
