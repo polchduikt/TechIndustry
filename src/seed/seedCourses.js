@@ -3,7 +3,6 @@ const db = require('../models');
 async function seed() {
   try {
     await db.sequelize.sync();
-
     await db.Course.findOrCreate({
       where: { slug: 'javascript-basics' },
       defaults: {
@@ -22,5 +21,4 @@ async function seed() {
     process.exit(1);
   }
 }
-
 seed();

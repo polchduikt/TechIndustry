@@ -1,30 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 const db = require('../models');
-
+const dotenv = require('dotenv');
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 const CONTENT_DIR = path.join(__dirname, '../../content/courses');
 
-/**
- * Нормалізація level під ENUM у БД
- * Допустимі значення:
- * 'beginner' | 'intermediate' | 'advanced'
- */
 function normalizeLevel(level) {
   if (!level) return 'beginner';
-
   const normalized = level.toString().toLowerCase();
-
   if (['beginner', 'intermediate', 'advanced'].includes(normalized)) {
     return normalized;
   }
-
-  console.warn(`⚠️ Unknown level "${level}", fallback to "beginner"`);
   return 'beginner';
 }
 
-/**
- * Нормалізація category (ENUM нема, але тримаємо стандарт)
- */
 function normalizeCategory(category) {
   if (!category) return null;
   return category.toString().toLowerCase();
@@ -39,28 +28,25 @@ async function syncCourses() {
     }
 
     const courseDirs = fs
-      .readdirSync(CONTENT_DIR, { withFileTypes: true })
-      .filter(dir => dir.isDirectory())
-      .map(dir => dir.name);
+        .readdirSync(CONTENT_DIR, { withFileTypes: true })
+        .filter(dir => dir.isDirectory())
+        .map(dir => dir.name);
 
     for (const slug of courseDirs) {
       const metadataPath = path.join(CONTENT_DIR, slug, 'metadata.json');
 
       if (!fs.existsSync(metadataPath)) {
-        console.warn(`⚠️ metadata.json not found for "${slug}", skipped`);
         continue;
       }
 
       let metadata;
       try {
         metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
-      } catch (err) {
-        console.error(`❌ Invalid JSON in ${metadataPath}`);
+      } catch {
         continue;
       }
 
       if (!metadata.title) {
-        console.warn(`⚠️ Course "${slug}" has no title, skipped`);
         continue;
       }
 
@@ -88,18 +74,12 @@ async function syncCourses() {
           price: Number(metadata.price) || 0,
           thumbnail: metadata.thumbnail || null
         });
-
-        console.log(`🔄 Updated course: ${slug}`);
-      } else {
-        console.log(`✅ Created course: ${slug}`);
       }
     }
 
-    console.log('🎉 Courses sync completed successfully');
     process.exit(0);
 
   } catch (err) {
-    console.error('❌ Sync error:', err.message);
     process.exit(1);
   }
 }

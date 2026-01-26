@@ -23,6 +23,7 @@
     "express": "^5.2.1",
     "express-validator": "^7.3.1",
     "jsonwebtoken": "^9.0.3",
+    "marked": "^17.0.1",
     "multer": "^2.0.2",
     "pg": "^8.17.2",
     "sequelize": "^6.37.7",

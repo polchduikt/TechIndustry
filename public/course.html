@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Course</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link rel="stylesheet" href="css/course.css">
-  <link rel="stylesheet" href="css/index.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курс | TechIndustry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="css/course.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-  <header>
+<header>
     <div class="container">
         <nav>
             <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
@@ -25,18 +26,49 @@
         </nav>
     </div>
 </header>
-<h1 id="courseTitle"></h1>
+<section class="course-section">
+    <div class="container">
+        <h1 id="courseTitle" class="course-page-title">Завантаження курсу...</h1>
 
-<div class="course-layout">
-  <div id="modules"></div>
-  <div class="module" id="lessonPreview">
-    <p style="opacity:.7">
-      Оберіть урок зліва, щоб почати навчання 👈
-    </p>
-  </div>
-</div>
+        <div class="study-layout">
+            <aside class="study-sidebar glass" id="modules">
+                <p style="opacity: 0.6; padding: 20px;">Завантаження модулів...</p>
+            </aside>
+            <main class="study-content glass" id="lessonPreview">
+                <p style="opacity: 0.7; text-align: center; padding: 60px 20px;">
+                    Оберіть урок зліва, щоб почати навчання 👈
+                </p>
+            </main>
+        </div>
+    </div>
+</section>
+<footer class="glass">
+    <div class="container footer-content">
+        <div class="footer-brand">
+            <div class="logo">TechIndustry</div>
+            <p>Ваш шлях у світ високих технологій починається тут.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Платформа</h4>
+                <a href="/courses">Навчання</a>
+                <a href="/quiz">Тестування</a>
+                <a href="/courses">Всі курси</a>
+            </div>
+            <div class="footer-col">
+                <h4>Підтримка</h4>
+                <a href="#">Допомога</a>
+                <a href="#">Контакти</a>
+                <a href="#">Спільнота</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
+    </div>
+</footer>
+
 <script src="js/index.js"></script>
 <script src="js/course.js"></script>
-
 </body>
 </html>

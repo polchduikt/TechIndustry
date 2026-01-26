@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
-    <link rel="stylesheet" href="css/courses.css">
+    <title>Всі курси | TechIndustry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-
+    <link rel="stylesheet" href="css/courses.css">
 </head>
 <body>
+
 <header>
     <div class="container">
         <nav>
@@ -16,7 +17,7 @@
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
                 <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
-                <button onclick="location.href='/courses'">Навчання</button>
+                <button onclick="location.href='/courses'" class="active-nav">Навчання</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
                 <div id="authSlot">
                     <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
@@ -25,122 +26,53 @@
         </nav>
     </div>
 </header>
-<section id="learning" class="page-section">
+
+<section class="page-section active">
     <div class="container">
         <div class="learning-header">
             <h1 class="section-title">Каталог курсів</h1>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Оберіть напрямок та почніть своє навчання</p>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; text-align: center;">Оберіть напрямок та почніть свій шлях у IT вже сьогодні</p>
         </div>
 
-        <div class="category-tabs">
-            <button class="category-tab active-tab" onclick="filterCategory('all', event)">Всі</button>
-            <button class="category-tab" onclick="filterCategory('frontend', event)">Frontend</button>
-            <button class="category-tab" onclick="filterCategory('backend', event)">Backend</button>
-            <button class="category-tab" onclick="filterCategory('mobile', event)">Mobile</button>
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active-tab" onclick="filterCourses('all', this)">Всі</button>
+            <button class="category-tab" onclick="filterCourses('frontend', this)">Frontend</button>
+            <button class="category-tab" onclick="filterCourses('backend', this)">Backend</button>
+            <button class="category-tab" onclick="filterCourses('mobile', this)">Mobile</button>
+            <button class="category-tab" onclick="filterCourses('data', this)">Data Science</button>
         </div>
 
         <div class="courses-grid" id="coursesGrid">
-            <a class="language-card glass"
-                data-category="frontend"
-                href="/course?course=javascript-basics"
-                style="text-decoration:none; color:inherit;"
-                >
-                <div class="lang-header">
-                    <div class="lang-icon">⚡</div>
-                    <div class="lang-info">
-                    <h3>JavaScript</h3>
-                    <div class="lang-level">Від початкового до професійного</div>
-                    </div>
-                </div>
-
-                <p style="color: var(--text-muted); margin-bottom: 16px;">
-                    Базова мова веб-розробки: змінні, функції, async, DOM.
-                </p>
-
-                <div class="lang-stats">
-                    <span>📚 12 уроків</span>
-                    <span>🔥 Популярний</span>
-                </div>
-            </a>
-            <a class="language-card glass"
-            data-category="frontend"
-            href="/course?course=react-next"
-            style="text-decoration:none; color:inherit;"
-            >
-                <div class="lang-header">
-                    <div class="lang-icon">🟢</div>
-                    <div class="lang-info">
-                        <h3>React & Next.js</h3>
-                        <div class="lang-level">Середній рівень</div>
-                    </div>
-                </div>
-                <p style="color: var(--text-muted); margin-bottom: 16px;">Бібліотека для створення користувацьких інтерфейсів. Компонентний підхід, хуки, контекст.</p>
-                <div class="lang-stats"><span>📚 10 уроків</span><span>👥 4.8K</span></div>
-            </a>
-           <a class="language-card glass"
-            data-category="data"
-            href="/course?course=python-for-data"
-            style="text-decoration:none; color:inherit;">
-                <div class="lang-header">
-                    <div class="lang-icon">📊</div>
-                    <div class="lang-info">
-                        <h3>Python for Data</h3>
-                        <div class="lang-level">Від початкового до data-спеціаліста</div>
-                    </div>
-                </div>
-                <p style="color: var(--text-muted); margin-bottom: 16px;">
-                    Аналіз даних з Python: NumPy, Pandas, очищення даних, візуалізація та робочі пайплайни.
-                </p>
-                <div class="lang-stats">
-                    <span>📚 15 уроків</span>
-                    <span>📈 Data & Analytics</span>
-                </div>
-            </a>
-            <a class="language-card glass"
-            data-category="backend"
-            href="/course?course=postgresql-and-mongodb"
-            style="text-decoration:none; color:inherit;">
-                
-                <div class="lang-header">
-                    <div class="lang-icon">🗄️</div>
-                    <div class="lang-info">
-                        <h3>PostgreSQL & MongoDB</h3>
-                        <div class="lang-level">Реляційні та NoSQL бази даних</div>
-                    </div>
-                </div>
-
-                <p style="color: var(--text-muted); margin-bottom: 16px;">
-                    Робота з базами даних: SQL, складні запити, індекси, продуктивність та NoSQL підходи.
-                </p>
-
-                <div class="lang-stats">
-                    <span>📚 8 уроків</span>
-                    <span>🛠 Backend Core</span>
-                </div>
-            </a>
-            <a class="language-card glass"
-            data-category="backend"
-            href="/course?course=csharp-dotnet"
-            style="text-decoration:none; color:inherit;">
-                <div class="lang-header">
-                    <div class="lang-icon">⚙️</div>
-                    <div class="lang-info">
-                        <h3>C# & .NET</h3>
-                        <div class="lang-level">Від основ C# до ASP.NET Core</div>
-                    </div>
-                </div>
-                <p style="color: var(--text-muted); margin-bottom: 16px;">
-                    Backend-розробка на .NET: ООП, LINQ, async/await, Web API, Entity Framework Core.
-                </p>
-                <div class="lang-stats">
-                    <span>📚 20 уроків</span>
-                    <span>🚀 Backend Pro</span>
-                </div>
-            </a>
-
         </div>
     </div>
 </section>
+
+<footer class="glass">
+    <div class="container footer-content">
+        <div class="footer-brand">
+            <div class="logo">TechIndustry</div>
+            <p>Ваш шлях у світ високих технологій починається тут.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Платформа</h4>
+                <a href="/courses">Навчання</a>
+                <a href="/quiz">Тестування</a>
+                <a href="/courses">Всі курси</a>
+            </div>
+            <div class="footer-col">
+                <h4>Підтримка</h4>
+                <a href="#">Допомога</a>
+                <a href="#">Контакти</a>
+                <a href="#">Спільнота</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
+    </div>
+</footer>
+
 <script src="js/index.js"></script>
 <script src="js/courses.js"></script>
 </body>

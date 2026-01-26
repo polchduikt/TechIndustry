@@ -1,35 +1,32 @@
 document.addEventListener('DOMContentLoaded', async () => {
-      const params = new URLSearchParams(window.location.search);
-      const lessonId = params.get('lesson');
+    const params = new URLSearchParams(window.location.search);
+    const lessonId = params.get('lesson');
 
-      if (!lessonId) {
-        alert('Lesson ID missing');
+    if (!lessonId) {
+        alert('Lesson ID is missing');
         return;
-      }
+    }
 
-      const res = await fetch(`/api/lessons/${lessonId}`);
-      const data = await res.json();
+    const res = await fetch(`/api/lessons/${lessonId}`);
+    const data = await res.json();
 
-      console.log('API response:', data);
-      
-      document.getElementById('lessonTitle').innerText = data.title;
-      document.getElementById('lessonContent').innerHTML =
-        marked.parse(data.content);
+    document.getElementById('lessonTitle').innerText = data.title;
+    document.getElementById('lessonContent').innerHTML = data.content;
 
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
-      if (data.prev) {
-        prevBtn.onclick = () =>
-          location.href = `/lesson?lesson=${data.prev}`;
-      } else {
+    if (data.prev) {
+        prevBtn.onclick = () => location.href = `/lesson?lesson=${data.prev}`;
+        prevBtn.style.display = 'block';
+    } else {
         prevBtn.style.display = 'none';
-      }
+    }
 
-      if (data.next) {
-        nextBtn.onclick = () =>
-          location.href = `/lesson?lesson=${data.next}`;
-      } else {
+    if (data.next) {
+        nextBtn.onclick = () => location.href = `/lesson?lesson=${data.next}`;
+        nextBtn.style.display = 'block';
+    } else {
         nextBtn.style.display = 'none';
-      }
-    });
+    }
+});
