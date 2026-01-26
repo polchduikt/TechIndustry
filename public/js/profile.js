@@ -135,21 +135,21 @@ function createCourseProgressCard(course, progress, totalLessons, completedLesso
     card.className = 'course-progress-card glass';
     card.dataset.status = progress.status;
     card.dataset.category = course.category || 'other';
-    const icons = {
-        frontend: '⚛️',
-        backend: '🟢',
-        data: '📊',
-        mobile: '📱'
-    };
+
+    const icons = { frontend: '⚛️', backend: '🟢', data: '📊', mobile: '📱' };
     const icon = icons[course.category] || '⚡';
-    const statusLabels = {
-        'not_started': 'Не розпочато',
-        'in_progress': 'В процесі',
-        'completed': 'Завершено'
-    };
+    const statusLabels = { 'not_started': 'Не розпочато', 'in_progress': 'В процесі', 'completed': 'Завершено' };
     const statusClass = progress.status === 'completed' ? 'completed' : 'in-progress';
     const statusLabel = statusLabels[progress.status] || 'В процесі';
-    const progressBarClass = progress.status === 'completed' ? 'completed' : '';
+    const isCompleted = progress.status === 'completed';
+
+    const certificateBtn = `
+        <button class="btn ${isCompleted ? 'btn-primary' : 'btn-secondary'}" 
+                style="width: 100%; margin-top: 12px; ${!isCompleted ? 'opacity: 0.5; cursor: not-allowed;' : ''}" 
+                ${isCompleted ? '' : 'disabled'} 
+                onclick="downloadCertificate('${course.id}')">
+            Отримати сертифікат
+        </button>`;
 
     card.innerHTML = `
         <div class="course-header">
@@ -159,19 +159,25 @@ function createCourseProgressCard(course, progress, totalLessons, completedLesso
         <h3 class="course-name">${course.title}</h3>
         <p class="course-progress-text">${completedLessons} з ${totalLessons} уроків завершено</p>
         <div class="progress-bar-container">
-            <div class="progress-bar-fill ${progressBarClass}" style="width: ${progressPercent}%"></div>
+            <div class="progress-bar-fill ${isCompleted ? 'completed' : ''}" style="width: ${progressPercent}%"></div>
         </div>
         <div class="course-meta-small">
             <span>⏱️ ${completedHours}/${totalHours} год</span>
             <span class="progress-percent">${progressPercent}%</span>
         </div>
-        <button class="btn ${progress.status === 'completed' ? 'btn-secondary' : 'btn-primary'} btn-continue" 
-                onclick="location.href='/course?course=${course.slug}'">
-            ${progress.status === 'completed' ? 'Переглянути курс' : 'Продовжити навчання'}
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px;">
+            <button class="btn ${isCompleted ? 'btn-secondary' : 'btn-primary'} btn-continue" 
+                    onclick="location.href='/course?course=${course.slug}'">
+                ${isCompleted ? 'Переглянути курс' : 'Продовжити навчання'}
+            </button>
+            ${certificateBtn}
+        </div>
     `;
-
     return card;
+}
+
+function downloadCertificate(courseId) {
+    window.location.href = `/certificate?course=${courseId}`;
 }
 
 function updateUserStats(progressList) {
@@ -184,11 +190,9 @@ function updateUserStats(progressList) {
 
 function calculateStreakDays(progressList) {
     if (progressList.length === 0) return 0;
-
     const lastAccessed = progressList
         .map(p => new Date(p.last_accessed))
         .sort((a, b) => b - a)[0];
-
     const today = new Date();
     const diffTime = Math.abs(today - lastAccessed);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -197,14 +201,12 @@ function calculateStreakDays(progressList) {
 
 function filterCourses(filter) {
     currentFilter = filter;
-
     const tabs = document.querySelectorAll('.filter-tab');
     const cards = document.querySelectorAll('.course-progress-card');
     const emptyState = document.getElementById('emptyState');
     tabs.forEach(tab => {
         tab.classList.toggle('active', tab.dataset.filter === filter);
     });
-
     let visibleCount = 0;
     cards.forEach(card => {
         let show = false;

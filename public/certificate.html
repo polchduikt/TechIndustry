@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сертифікат | TechIndustry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/certificate.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+      <div class="nav-links">
+        <button onclick="location.href='/'">Головна</button>
+        <button onclick="location.href='/courses'">Курси</button>
+        <button onclick="location.href='/quiz'">Тестування</button>
+        <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
+        <div id="authSlot"></div>
+      </div>
+    </nav>
+  </div>
+</header>
+<section class="certificate-page">
+  <div class="container">
+    <div class="certificate-layout">
+      <div class="certificate-viewer" id="certificateViewer">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Завантаження сертифіката...</p>
+        </div>
+      </div>
+      <aside class="certificate-sidebar">
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">Отримувач сертифіката</h4>
+          <div class="recipient-info">
+            <div class="recipient-avatar" id="userAvatar">
+              <span id="userInitials">?</span>
+            </div>
+            <div>
+              <div class="recipient-name" id="userName">Завантаження...</div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">Інформація про курс</h4>
+          <div class="course-info-card">
+            <h3 class="course-title-sidebar" id="courseTitle">Завантаження...</h3>
+            <div class="course-meta-item">
+              <span>📅</span>
+              <span id="completionDate">Завантаження...</span>
+            </div>
+            <div class="course-meta-item">
+              <span>⏱️</span>
+              <span id="courseDuration">Завантаження...</span>
+            </div>
+            <div class="course-meta-item">
+              <span>🎓</span>
+              <span>TechIndustry Platform</span>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">Номер сертифіката</h4>
+          <div class="cert-number" id="certNumber">UC-XXXX-XXX-XXXXX</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="certificate-actions">
+            <button class="btn btn-primary btn-download" id="downloadBtn">
+              <span>⬇</span>
+              <span>Завантажити PDF</span>
+            </button>
+            <button class="btn btn-share" id="shareBtn">
+              <span>🔗</span>
+              <span>Поділитися</span>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="certificate-note">
+            Цей сертифікат підтверджує успішне завершення курсу на платформі TechIndustry та може бути використаний для демонстрації професійних досягнень.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+<footer class="glass">
+  <div class="container footer-content">
+    <div class="footer-brand">
+      <div class="logo">TechIndustry</div>
+      <p>Ваш шлях у світ високих технологій починається тут.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Платформа</h4>
+        <a href="/courses">Навчання</a>
+        <a href="/quiz">Тестування</a>
+        <a href="/courses">Всі курси</a>
+      </div>
+      <div class="footer-col">
+        <h4>Підтримка</h4>
+        <a href="#">Допомога</a>
+        <a href="#">Контакти</a>
+        <a href="#">Спільнота</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
+  </div>
+</footer>
+<script src="js/certificate.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
