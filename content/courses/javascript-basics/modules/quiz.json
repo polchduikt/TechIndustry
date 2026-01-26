@@ -1,0 +1,664 @@
+[
+  {
+    "moduleId": "01-what-is-js",
+    "title": "Introduction to JavaScript",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Що таке JavaScript?",
+        "options": [
+          "Мова програмування для створення інтерактивних вебсторінок",
+          "Мова розмітки",
+          "Система керування базами даних",
+          "Графічний редактор"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "type": "single",
+        "question": "Яка основна роль JavaScript у вебі?",
+        "options": [
+          "Структура сторінки",
+          "Стилізація сторінки",
+          "Логіка та взаємодія",
+          "Зберігання даних"
+        ],
+        "correctAnswer": 2
+      },
+      {
+        "id": 3,
+        "type": "multiple",
+        "question": "Де використовується JavaScript?",
+        "options": [
+          "Frontend",
+          "Backend",
+          "Мобільні додатки",
+          "Тільки HTML"
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "JavaScript і Java — це одна мова?",
+        "options": ["Так", "Ні"],
+        "correctAnswer": 1
+      }
+    ]
+  },
+  {
+    "moduleId": "02-where-js-runs",
+    "title": "JavaScript Environment",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "multiple",
+        "question": "Де може виконуватися JavaScript?",
+        "options": [
+          "У браузері",
+          "На сервері (Node.js)",
+          "У CSS",
+          "У базі даних"
+        ],
+        "correctAnswer": [0, 1]
+      },
+      {
+        "id": 2,
+        "type": "single",
+        "question": "Що таке Node.js?",
+        "options": [
+          "Браузер",
+          "JavaScript runtime середовище",
+          "Фреймворк для CSS",
+          "Мова програмування"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Яке середовище відповідає за DOM?",
+        "options": [
+          "Node.js",
+          "Browser",
+          "PostgreSQL",
+          "Git"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Що потрібно для запуску JS у браузері?",
+        "options": [
+          "HTML файл",
+          "Node.js",
+          "Компилятор",
+          "Docker"
+        ],
+        "correctAnswer": 0
+      }
+    ]
+  },
+
+  {
+    "moduleId": "03-how-js-works",
+    "title": "How JavaScript Works",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "JavaScript є синхронною чи асинхронною мовою?",
+        "options": [
+          "Тільки синхронною",
+          "Тільки асинхронною",
+          "Синхронною з асинхронними можливостями",
+          "Паралельною"
+        ],
+        "correctAnswer": 2
+      },
+      {
+        "id": 2,
+        "type": "single",
+        "question": "Що таке Call Stack?",
+        "options": [
+          "Черга задач",
+          "Механізм виконання функцій",
+          "База даних",
+          "DOM дерево"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 3,
+        "type": "multiple",
+        "question": "Що впливає на порядок виконання коду?",
+        "options": [
+          "Call Stack",
+          "Event Loop",
+          "HTML",
+          "Task Queue"
+        ],
+        "correctAnswer": [0, 1, 3]
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Що станеться, якщо функція викликає саму себе без виходу?",
+        "options": [
+          "Нічого",
+          "Stack overflow",
+          "Код стане швидшим",
+          "JS зупиниться"
+        ],
+        "correctAnswer": 1
+      }
+    ]
+  },
+  {
+    "moduleId": "04-devtools",
+    "title": "Browser DevTools",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Для чого використовується Console?",
+        "options": [
+          "Для стилізації",
+          "Для логування та дебагу",
+          "Для збереження даних",
+          "Для тестування CSS"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 2,
+        "type": "single",
+        "question": "Яка команда виводить повідомлення в консоль?",
+        "options": [
+          "print()",
+          "log()",
+          "console.log()",
+          "alert()"
+        ],
+        "correctAnswer": 2
+      },
+      {
+        "id": 3,
+        "type": "multiple",
+        "question": "Що можна робити в DevTools?",
+        "options": [
+          "Переглядати помилки",
+          "Змінювати HTML",
+          "Дебажити код",
+          "Компілювати C++"
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Яка вкладка відповідає за мережеві запити?",
+        "options": [
+          "Elements",
+          "Console",
+          "Network",
+          "Sources"
+        ],
+        "correctAnswer": 2
+      }
+    ]
+  },
+
+  {
+    "moduleId": "05-running-js",
+    "title": "Running JavaScript",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Як підключити JS до HTML?",
+        "options": [
+          "<js>",
+          "<script>",
+          "<javascript>",
+          "<link>"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Де можна розмістити тег <script>?",
+        "options": [
+          "В <head>",
+          "В <body>",
+          "У CSS",
+          "У JSON"
+        ],
+        "correctAnswer": [0, 1]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Що робить атрибут defer?",
+        "options": [
+          "Зупиняє JS",
+          "Відкладає виконання до завантаження HTML",
+          "Прискорює CSS",
+          "Ламає DOM"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Як запустити JS файл через Node.js?",
+        "options": [
+          "node app.js",
+          "run app.js",
+          "js app.js",
+          "start app.js"
+        ],
+        "correctAnswer": 0
+      }
+    ]
+  },
+
+  {
+    "moduleId": "06-variables",
+    "title": "Variables",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Яке ключове слово створює змінну з блочною областю видимості?",
+        "options": ["var", "let", "const", "define"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Які ключові слова існують для оголошення змінних?",
+        "options": ["var", "let", "const", "static"],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Чи можна змінити значення const?",
+        "options": ["Так", "Ні"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Що таке hoisting?",
+        "options": [
+          "Підняття змінних",
+          "Оптимізація",
+          "Компіляція",
+          "Модульність"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 5,
+        "type": "code",
+        "question": "Оголоси змінну name зі значенням 'John', використовуючи const",
+        "language": "javascript",
+        "starterCode": "// твій код тут",
+        "expectedPattern": "const\\s+name\\s*=\\s*['\"]John['\"]"
+      },
+      {
+        "id": 6,
+        "type": "code",
+        "question": "Оголоси змінну count зі значенням 0, використовуючи let",
+        "language": "javascript",
+        "starterCode": "// твій код тут",
+        "expectedPattern": "let\\s+count\\s*=\\s*0"
+      }
+    ]
+  },
+  {
+    "moduleId": "07-data-types",
+    "title": "Data Types",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "multiple",
+        "question": "Які типи даних є примітивними?",
+        "options": ["number", "string", "object", "boolean"],
+        "correctAnswer": [0, 1, 3]
+      },
+      {
+        "id": 2,
+        "type": "single",
+        "question": "Який тип має значення null?",
+        "options": ["null", "object", "undefined", "number"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "typeof undefined повертає:",
+        "options": ["null", "undefined", "object", "string"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Масив у JS — це?",
+        "options": [
+          "Окремий тип",
+          "Об'єкт",
+          "Примітив",
+          "Функція"
+        ],
+        "correctAnswer": 1
+      }
+    ]
+  },
+
+  {
+    "moduleId": "08-operators",
+    "title": "Operators",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Який оператор використовується для строгого порівняння?",
+        "options": ["==", "=", "===", "!="],
+        "correctAnswer": 2
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Які оператори є арифметичними?",
+        "options": ["+", "-", "*", "&&"],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Результат '5' + 2?",
+        "options": ["7", "52", "Error", "undefined"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Оператор && — це?",
+        "options": [
+          "Арифметичний",
+          "Логічний",
+          "Побітовий",
+          "Порівняння"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "type": "code",
+        "question": "Створи змінну result, яка дорівнює сумі чисел 5 і 10",
+        "language": "javascript",
+        "starterCode": "// твій код тут",
+        "expectedPattern": "result\\s*=\\s*5\\s*\\+\\s*10"
+      },
+      {
+        "id": 6,
+        "type": "code",
+        "question": "Створи змінну isAdult, яка буде true, якщо age >= 18",
+        "language": "javascript",
+        "starterCode": "const age = 20;\n// твій код тут",
+        "expectedPattern": "age\\s*>=\\s*18"
+      }
+    ]
+  },
+  {
+    "moduleId": "09-conditions",
+    "title": "Conditions",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Який оператор використовується для умов?",
+        "options": ["if", "for", "switch", "function"],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Які конструкції є умовними?",
+        "options": ["if", "else", "switch", "loop"],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Що робить else?",
+        "options": [
+          "Перевіряє умову",
+          "Виконується якщо if false",
+          "Повторює код",
+          "Завершує програму"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "switch зручно використовувати коли:",
+        "options": [
+          "Одна умова",
+          "Багато варіантів",
+          "Цикл",
+          "Функція"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "type": "code",
+        "question": "Напиши if, який перевіряє чи змінна score більша або дорівнює 60",
+        "language": "javascript",
+        "starterCode": "const score = 75;\n// твій код тут",
+        "expectedPattern": "if\\s*\\(\\s*score\\s*>=\\s*60\\s*\\)"
+      },
+      {
+        "id": 6,
+        "type": "code",
+        "question": "Напиши switch, який перевіряє значення змінної role",
+        "language": "javascript",
+        "starterCode": "const role = 'admin';\n// твій код тут",
+        "expectedPattern": "switch\\s*\\(\\s*role\\s*\\)"
+      }
+    ]
+  },
+  {
+    "moduleId": "10-loops",
+    "title": "Loops",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Який цикл використовується коли кількість ітерацій відома?",
+        "options": ["for", "while", "do...while", "if"],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Які цикли існують у JS?",
+        "options": ["for", "while", "do...while", "repeat"],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Що робить break?",
+        "options": [
+          "Продовжує цикл",
+          "Завершує цикл",
+          "Пропускає ітерацію",
+          "Створює помилку"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "continue — це?",
+        "options": [
+          "Вихід з циклу",
+          "Пропуск ітерації",
+          "Помилка",
+          "Функція"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "type": "code",
+        "question": "Напиши цикл for, який виводить числа від 1 до 5",
+        "language": "javascript",
+        "starterCode": "// твій код тут",
+        "expectedPattern": "for\\s*\\(.*;.*<=\\s*5;.*\\)"
+      },
+      {
+        "id": 6,
+        "type": "code",
+        "question": "Напиши цикл while, який працює поки count < 3",
+        "language": "javascript",
+        "starterCode": "let count = 0;\n// твій код тут",
+        "expectedPattern": "while\\s*\\(\\s*count\\s*<\\s*3\\s*\\)"
+      }
+
+    ]
+  },
+  {
+    "moduleId": "11-functions",
+    "title": "Functions",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Функція — це?",
+        "options": [
+          "Блок коду",
+          "Змінна",
+          "Тип даних",
+          "Цикл"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Які способи оголошення функцій існують?",
+        "options": [
+          "Function Declaration",
+          "Function Expression",
+          "Arrow Function",
+          "Class Function"
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Arrow function використовує синтаксис:",
+        "options": ["=>", "->", "::", "==="],
+        "correctAnswer": 0
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "return повертає:",
+        "options": [
+          "Функцію",
+          "Значення",
+          "Помилку",
+          "undefined завжди"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "type": "code",
+        "question": "Напиши функцію greet, яка повертає рядок 'Hello!'",
+        "language": "javascript",
+        "starterCode": "// твій код тут",
+        "expectedPattern": "function\\s+greet\\s*\\(\\s*\\)"
+      },
+      {
+        "id": 6,
+        "type": "code",
+        "question": "Створи arrow function sum, яка повертає суму a і b",
+        "language": "javascript",
+        "starterCode": "// твій код тут",
+        "expectedPattern": "const\\s+sum\\s*=\\s*\\(.*\\)\\s*=>"
+      }
+
+
+    ]
+  },
+  {
+    "moduleId": "12-summary",
+    "title": "Course Summary",
+    "passingScore": 60,
+    "questions": [
+      {
+        "id": 1,
+        "type": "single",
+        "question": "Для чого використовується JavaScript?",
+        "options": [
+          "Для інтерактивності",
+          "Для стилів",
+          "Для розмітки",
+          "Для баз даних"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "type": "multiple",
+        "question": "Що ти вивчив у цьому курсі?",
+        "options": [
+          "Основи JS",
+          "Логіку програмування",
+          "DOM",
+          "CSS Grid"
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "id": 3,
+        "type": "single",
+        "question": "Який мінімальний бал для проходження курсу?",
+        "options": ["50", "60", "70", "100"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "type": "single",
+        "question": "Чи достатньо цього курсу для старту?",
+        "options": ["Так", "Ні"],
+        "correctAnswer": 0
+      }
+    ]
+  }
+]

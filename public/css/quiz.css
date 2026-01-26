@@ -1,0 +1,283 @@
+/* ================= ROOT & BASE ================= */
+
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --dark: #0f172a;
+    --dark-light: #1e293b;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: var(--text);
+}
+
+/* ================= HEADER ================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    padding: 20px 0;
+
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 100;
+}
+
+
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-links button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.nav-links button:hover {
+    color: var(--text);
+    background: var(--glass-bg);
+}
+
+.btn-primary {
+    padding: 12px 32px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 8px 24px rgba(99,102,241,0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(99,102,241,0.5);
+}
+
+.page-content {
+    padding: 80px 0;
+}
+
+/* ================= PAGE TITLE ================= */
+
+h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ================= QUIZ LIST ================= */
+
+#quizList {
+    max-width: 1000px;
+    margin: 0 auto 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.quiz-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    transition: 0.3s;
+}
+
+.quiz-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 60px rgba(0,0,0,0.5);
+}
+
+.quiz-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.quiz-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.quiz-card button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    transition: 0.3s;
+}
+
+.quiz-card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(99,102,241,0.5);
+}
+
+/* ================= QUIZ CONTAINER ================= */
+
+#quizContainer {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ================= QUESTION ================= */
+
+.question {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 36px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+
+    margin-bottom: 32px; /* ← ОЦЕ ГОЛОВНЕ */
+}
+
+
+.question p {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+
+}
+
+/* ================= ANSWERS ================= */
+
+.question label {
+    display: block;
+    margin-bottom: 14px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border);
+    background: rgba(255,255,255,0.03);
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.question label:hover {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.15);
+}
+
+.question input {
+    margin-right: 10px;
+}
+
+/* ================= BUTTONS ================= */
+
+button {
+    display: block;
+    margin: 32px auto 0;
+    padding: 14px 36px;
+    font-size: 16px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(99,102,241,0.5);
+}
+
+/* ================= CODE BLOCK ================= */
+
+pre {
+    background: rgba(0,0,0,0.35);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    border: 1px solid var(--glass-border);
+    color: #8be9fd;
+    font-size: 14px;
+}
+#quizContainer h2 {
+    margin-bottom: 32px;
+}
+
+
+.question input[type="radio"],
+.question input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.question input:checked + label {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.25);
+    box-shadow: 0 0 0 2px rgba(99,102,241,0.35);
+}
+.question label:has(input:checked) {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.25);
+}

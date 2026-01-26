@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechIndustry | Профіль</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <div class="nav-links">
+                <button onclick="location.href='/'">Головна</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <div id="authSlot"></div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="profile-section">
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-info">
+                <div class="profile-avatar-large">
+                    <span id="profileInitials">?</span>
+                </div>
+                <div class="profile-details">
+                    <h1 id="profileUsername">Завантаження...</h1>
+                    <p class="profile-email" id="profileEmail">email@example.com</p>
+                    <div class="profile-stats-inline">
+                        <span>📚 <strong id="coursesCount">0</strong> курсів</span>
+                        <span>✅ <strong id="completedCount">0</strong> завершено</span>
+                        <span>🔥 <strong id="streakDays">0</strong> днів підряд</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="location.href='/settings'">
+                Редагувати профіль
+            </button>
+        </div>
+
+        <div class="courses-filter">
+            <h2 class="section-title">Мої курси</h2>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="filterCourses('all')">
+                    Всі курси
+                </button>
+                <button class="filter-tab" data-filter="in-progress" onclick="filterCourses('in-progress')">
+                    В процесі
+                </button>
+                <button class="filter-tab" data-filter="completed" onclick="filterCourses('completed')">
+                    Завершені
+                </button>
+                <button class="filter-tab" data-filter="frontend" onclick="filterCourses('frontend')">
+                    Frontend
+                </button>
+                <button class="filter-tab" data-filter="backend" onclick="filterCourses('backend')">
+                    Backend
+                </button>
+                <button class="filter-tab" data-filter="mobile" onclick="filterCourses('mobile')">
+                    Mobile
+                </button>
+            </div>
+        </div>
+
+        <div class="courses-grid" id="coursesGrid">
+            <div class="course-progress-card glass" data-status="in-progress" data-category="frontend">
+                <div class="course-header">
+                    <div class="course-icon-small" style="background: rgba(99, 102, 241, 0.2);">⚡</div>
+                    <div class="course-badge in-progress">В процесі</div>
+                </div>
+                <h3 class="course-name">JavaScript Fundamentals</h3>
+                <p class="course-progress-text">7 з 12 модулів завершено</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 58%"></div>
+                </div>
+                <div class="course-meta-small">
+                    <span>⏱️ 14/24 год</span>
+                    <span class="progress-percent">58%</span>
+                </div>
+                <button class="btn btn-primary btn-continue" onclick="location.href='/course/javascript'">
+                    Продовжити навчання
+                </button>
+            </div>
+
+            <div class="course-progress-card glass" data-status="completed" data-category="frontend">
+                <div class="course-header">
+                    <div class="course-icon-small" style="background: rgba(236, 72, 153, 0.2);">⚛️</div>
+                    <div class="course-badge completed">Завершено</div>
+                </div>
+                <h3 class="course-name">React & Next.js</h3>
+                <p class="course-progress-text">10 з 10 модулів завершено</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill completed" style="width: 100%"></div>
+                </div>
+                <div class="course-meta-small">
+                    <span>⏱️ 20/20 год</span>
+                    <span class="progress-percent">100%</span>
+                </div>
+                <button class="btn btn-secondary btn-continue" onclick="location.href='/course/react'">
+                    Переглянути курс
+                </button>
+            </div>
+
+            <div class="course-progress-card glass" data-status="in-progress" data-category="backend">
+                <div class="course-header">
+                    <div class="course-icon-small" style="background: rgba(139, 92, 246, 0.2);">🐍</div>
+                    <div class="course-badge in-progress">В процесі</div>
+                </div>
+                <h3 class="course-name">Python для аналізу даних</h3>
+                <p class="course-progress-text">3 з 15 модулів завершено</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 20%"></div>
+                </div>
+                <div class="course-meta-small">
+                    <span>⏱️ 6/30 год</span>
+                    <span class="progress-percent">20%</span>
+                </div>
+                <button class="btn btn-primary btn-continue" onclick="location.href='/course/python'">
+                    Продовжити навчання
+                </button>
+            </div>
+
+            <div class="course-progress-card glass" data-status="in-progress" data-category="backend">
+                <div class="course-header">
+                    <div class="course-icon-small" style="background: rgba(245, 158, 11, 0.2);">🗄️</div>
+                    <div class="course-badge in-progress">В процесі</div>
+                </div>
+                <h3 class="course-name">PostgreSQL & MongoDB</h3>
+                <p class="course-progress-text">5 з 8 модулів завершено</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 62%"></div>
+                </div>
+                <div class="course-meta-small">
+                    <span>⏱️ 10/16 год</span>
+                    <span class="progress-percent">62%</span>
+                </div>
+                <button class="btn btn-primary btn-continue" onclick="location.href='/course/databases'">
+                    Продовжити навчання
+                </button>
+            </div>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📚</div>
+            <h3>Курсів не знайдено</h3>
+            <p>За вибраним фільтром немає курсів</p>
+            <button class="btn btn-primary" onclick="filterCourses('all')">
+                Показати всі курси
+            </button>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="container footer-content">
+        <div class="footer-brand">
+            <div class="logo">TechIndustry</div>
+            <p>Ваш шлях у світ високих технологій починається тут.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Платформа</h4>
+                <a href="/learning">Навчання</a>
+                <a href="/quiz">Тестування</a>
+                <a href="/courses">Всі курси</a>
+            </div>
+            <div class="footer-col">
+                <h4>Підтримка</h4>
+                <a href="#">Допомога</a>
+                <a href="#">Контакти</a>
+                <a href="#">Спільнота</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
+    </div>
+</footer>
+<script src="js/profile.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
