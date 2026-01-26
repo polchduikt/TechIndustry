@@ -27,7 +27,8 @@ class ProgressService {
 
         if (progress) {
             await progress.update({
-                last_accessed: new Date()
+                last_accessed: new Date(),
+                status: 'in_progress'
             });
             return progress;
         }
@@ -37,7 +38,9 @@ class ProgressService {
             course_id: course.id,
             status: 'in_progress',
             score: 0,
-            last_accessed: new Date()
+            completed_lessons: [],
+            last_accessed: new Date(),
+            started_at: new Date()
         });
 
         return progress;
@@ -66,7 +69,15 @@ class ProgressService {
 
     async getCourseProgress(userId, courseSlug) {
         const course = await db.Course.findOne({
-            where: { slug: courseSlug }
+            where: { slug: courseSlug },
+            include: [{
+                model: db.Module,
+                as: 'modules',
+                include: [{
+                    model: db.Lesson,
+                    as: 'lessons'
+                }]
+            }]
         });
 
         if (!course) {
@@ -109,11 +120,47 @@ class ProgressService {
         const lesson = await db.Lesson.findByPk(lessonId, {
             include: [{
                 model: db.Module,
-                as: 'module',
-                include: [{
-                    model: db.Course,
-                    as: 'course'
-                }]
+                as: 'module'
+            }]
+        });
+
+        if (!lesson) throw new Error('Lesson not found');
+        const courseId = lesson.module.course_id;
+
+        let progress = await db.UserProgress.findOne({
+            where: { user_id: userId, course_id: courseId }
+        });
+
+        if (!progress) throw new Error('Start the course first');
+        let completedLessons = [...(progress.completed_lessons || [])];
+
+        if (completed && !completedLessons.includes(lessonId)) {
+            completedLessons.push(lessonId);
+        } else if (!completed && completedLessons.includes(lessonId)) {
+            completedLessons = completedLessons.filter(id => id !== lessonId);
+        }
+        const modules = await db.Module.findAll({ where: { course_id: courseId } });
+        const moduleIds = modules.map(m => m.id);
+        const totalLessonsCount = await db.Lesson.count({
+            where: { module_id: moduleIds }
+        });
+
+        const isCompleted = completedLessons.length >= totalLessonsCount && totalLessonsCount > 0;
+        await progress.update({
+            completed_lessons: completedLessons, // Sequelize тепер побачить зміни
+            status: isCompleted ? 'completed' : 'in_progress',
+            completed_at: isCompleted ? new Date() : null,
+            last_accessed: new Date()
+        });
+
+        return progress;
+    }
+
+    async markLessonAsViewed(userId, lessonId) {
+        const lesson = await db.Lesson.findByPk(lessonId, {
+            include: [{
+                model: db.Module,
+                as: 'module'
             }]
         });
 
@@ -130,21 +177,11 @@ class ProgressService {
             }
         });
 
-        if (!progress) {
-            throw new Error('Start the course first');
+        if (progress) {
+            await progress.update({
+                last_accessed: new Date()
+            });
         }
-
-        await progress.update({
-            last_accessed: new Date()
-        });
-
-        const allLessons = await db.Lesson.findAll({
-            include: [{
-                model: db.Module,
-                as: 'module',
-                where: { course_id: courseId }
-            }]
-        });
 
         return progress;
     }
