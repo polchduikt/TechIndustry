@@ -1,9 +1,15 @@
 const authService = require('../services/authService');
+const userService = require('../services/userService');
 const { AUTH } = require('../config/constants');
 
 exports.register = async (req, res) => {
     try {
         const user = await authService.register(req.body);
+
+        if (req.file) {
+            await userService.saveAvatar(user.id, req.file);
+        }
+
         const token = authService.generateToken(user.id, user.username);
         res.cookie('token', token, AUTH.COOKIE_OPTIONS);
         res.status(201).json({ message: 'Реєстрація успішна', username: user.username });

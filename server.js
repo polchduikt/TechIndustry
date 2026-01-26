@@ -4,14 +4,14 @@ const cookieParser = require('cookie-parser');
 const db = require('./src/models');
 const authRoutes = require('./src/routes/authRoutes');
 const auth = require('./src/middleware/auth');
-const { protectPage, redirectIfAuth } = require('./src/middleware/pageAuth');
+const {protectPage, redirectIfAuth} = require('./src/middleware/pageAuth');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', authRoutes);
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
     res.setHeader('Expires', '0');
     next();
 });
-db.sequelize.sync({ alter: true }).then(() => {
+db.sequelize.sync({alter: true}).then(() => {
     app.listen(PORT, () => {
         console.log(`Сервер запущено на http://localhost:${PORT}`);
     });

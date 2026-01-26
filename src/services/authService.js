@@ -14,7 +14,16 @@ class AuthService {
         });
         if (existingCustomer) throw new Error('Користувач з такою поштою або телефоном вже існує');
 
-        const customer = await Customer.create({ first_name, last_name, email, phone, birth_date, patronymic });
+        const birthDate = birth_date && birth_date.trim() !== '' ? birth_date : null;
+
+        const customer = await Customer.create({
+            first_name,
+            last_name,
+            email,
+            phone,
+            birth_date: birthDate,
+            patronymic
+        });
         const user = await User.create({ username, password, customer_id: customer.id });
 
         return user;

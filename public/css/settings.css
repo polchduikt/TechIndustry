@@ -1,3 +1,26 @@
+.logo {
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.delete-avatar-btn {
+    margin-top: 12px;
+    width: 100%;
+}
+
+.profile-title {
+    text-align: left;
+    margin-bottom: 32px;
+}
+
+.password-title {
+    text-align: left;
+    margin-bottom: 32px;
+}
+
 .settings-section {
     padding: 60px 0;
     min-height: 80vh;
@@ -41,8 +64,8 @@
     position: absolute;
     bottom: 5px;
     right: 5px;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     background: var(--primary);
     border-radius: 50%;
     display: flex;
@@ -51,11 +74,16 @@
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     transition: 0.3s;
+    font-size: 20px;
 }
 
 .avatar-upload-label:hover {
     transform: scale(1.1);
     background: var(--secondary);
+}
+
+#avatarIcon {
+    line-height: 1;
 }
 
 #displayUsername {
@@ -196,25 +224,4 @@
 
 .notification-info {
     border-left: 4px solid var(--primary);
-}
-
-@media (max-width: 992px) {
-    .settings-container {
-        grid-template-columns: 1fr;
-    }
-
-    .settings-sidebar {
-        position: relative;
-        top: 0;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .notification {
-        right: 12px;
-        left: 12px;
-        max-width: none;
-    }
 }
