@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e4099158-ef43-4ec7-9534-82d0cf55eed8" name="Changes" comment="" />
+    <list default="true" id="e4099158-ef43-4ec7-9534-82d0cf55eed8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +22,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "barbos51"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/polchduikt/TechIndustry",
+    "accountId": "12149672-45cc-41a1-a21d-e14758f9c13d"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -34,7 +49,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "feature/quiz",
     "javascript.preferred.runtime.type.id": "node",
     "last_opened_file_path": "C:/Users/Legion 5/Desktop/TechIndustry-dev",
     "nodejs_package_manager_path": "npm",
@@ -72,7 +87,7 @@
       <workItem from="1769291131005" duration="13000" />
       <workItem from="1769291145137" duration="6660000" />
       <workItem from="1769374634273" duration="9058000" />
-      <workItem from="1769416832410" duration="7096000" />
+      <workItem from="1769416832410" duration="7863000" />
     </task>
     <servers />
   </component>
