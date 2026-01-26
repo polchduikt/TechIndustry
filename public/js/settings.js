@@ -40,17 +40,17 @@ async function loadSettingsData() {
             document.getElementById('birth_date').value = originalData.birth_date;
 
             const avatarImg = document.getElementById('currentAvatar');
-            const avatarIcon = document.getElementById('avatarIcon');
+            const avatarPreview = document.querySelector('.avatar-preview');
             const deleteBtn = document.getElementById('deleteAvatarBtn');
 
             if (data.Customer.avatar_data) {
                 avatarImg.src = data.Customer.avatar_data;
-                avatarIcon.textContent = '🔄';
+                avatarPreview.classList.add('has-avatar');
                 deleteBtn.classList.remove('hidden');
                 hasAvatar = true;
             } else {
                 avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.username)}&background=6366f1&color=fff&size=200`;
-                avatarIcon.textContent = '+';
+                avatarPreview.classList.remove('has-avatar');
                 deleteBtn.classList.add('hidden');
                 hasAvatar = false;
             }
@@ -65,16 +65,28 @@ async function loadSettingsData() {
 function setupAvatarUpload() {
     const input = document.getElementById('avatarInput');
     const preview = document.getElementById('currentAvatar');
+    const avatarPreview = document.querySelector('.avatar-preview');
     const headerAvatar = document.getElementById('headerAvatarImg');
-    const avatarIcon = document.getElementById('avatarIcon');
     const deleteBtn = document.getElementById('deleteAvatarBtn');
+
+    avatarPreview.addEventListener('click', () => {
+        input.click();
+    });
 
     input.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+        if (!allowedTypes.includes(file.type)) {
+            showNotification('Можна завантажувати тільки зображення (JPG, PNG, GIF, WebP, SVG)', 'error');
+            input.value = ''; // Очищаємо input
+            return;
+        }
+
         if (file.size > 5 * 1024 * 1024) {
             showNotification('Файл занадто великий (макс. 5МБ)', 'error');
+            input.value = '';
             return;
         }
 
@@ -91,13 +103,17 @@ function setupAvatarUpload() {
             if (response.ok) {
                 preview.src = result.avatarUrl;
                 if (headerAvatar) headerAvatar.src = result.avatarUrl;
-                avatarIcon.textContent = '🔄';
+                avatarPreview.classList.add('has-avatar');
                 deleteBtn.classList.remove('hidden');
                 hasAvatar = true;
                 showNotification('Аватар оновлено!', 'success');
+            } else {
+                showNotification(result.message || 'Помилка завантаження', 'error');
             }
         } catch (error) {
             showNotification('Помилка завантаження', 'error');
+        } finally {
+            input.value = ''; // Очищаємо input після завантаження
         }
     });
 
@@ -116,7 +132,7 @@ function setupAvatarUpload() {
                 if (headerAvatar) {
                     headerAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=6366f1&color=fff&size=200`;
                 }
-                avatarIcon.textContent = '+';
+                avatarPreview.classList.remove('has-avatar');
                 deleteBtn.classList.add('hidden');
                 hasAvatar = false;
                 showNotification('Аватар видалено', 'success');
@@ -282,7 +298,7 @@ function setupForms() {
                 showNotification(result.message, 'error');
             }
         } catch (error) {
-            showNotification('Помилка зміни пароля', 'error');
+            showNotification('Помилка зміни паролю', 'error');
         }
     });
 }

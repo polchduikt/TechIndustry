@@ -50,6 +50,7 @@
     width: 140px;
     height: 140px;
     margin: 0 auto 20px;
+    cursor: pointer;
 }
 
 .avatar-preview img {
@@ -58,28 +59,49 @@
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--primary);
+    transition: all 0.3s ease;
 }
 
-.avatar-upload-label {
+.avatar-preview::before {
+    content: '';
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 40px;
-    height: 40px;
-    background: var(--primary);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transition: 0.3s;
-    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
-.avatar-upload-label:hover {
-    transform: scale(1.1);
-    background: var(--secondary);
+.avatar-preview:hover::before {
+    opacity: 1;
+}
+
+.avatar-preview::after {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.avatar-preview:hover::after {
+    opacity: 1;
+}
+
+.avatar-preview.has-avatar::after {
+    content: '↻';
+    font-size: 36px;
 }
 
 #avatarIcon {
