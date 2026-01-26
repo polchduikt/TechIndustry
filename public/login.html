@@ -35,16 +35,21 @@
                 </div>
                 <div class="form-group">
                     <label>Введіть пароль</label>
-                    <input type="password" name="password" class="glass-input" required>
+                    <div class="password-input-wrapper">
+                        <input type="password" name="password" class="glass-input" required id="loginPassword">
+                        <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)">
+                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary auth-btn">Увійти</button>
                 <div id="loginMessage" class="message"></div>
             </form>
             <form id="registerForm" class="form" onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label>Аватар</label>
-                    <input type="file" name="avatar" class="glass-input" accept="image/*" id="registerAvatar">
-                </div>
                 <div class="form-group">
                     <label>Ім'я *</label>
                     <input type="text" name="first_name" class="glass-input" required>
@@ -75,7 +80,16 @@
                 </div>
                 <div class="form-group">
                     <label>Пароль *</label>
-                    <input type="password" name="password" class="glass-input" minlength="8" required>
+                    <div class="password-input-wrapper">
+                        <input type="password" name="password" class="glass-input" minlength="8" required id="registerPassword">
+                        <button type="button" class="toggle-password" onclick="togglePassword('registerPassword', this)">
+                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary auth-btn">Зареєструватися</button>
                 <div id="registerMessage" class="message"></div>

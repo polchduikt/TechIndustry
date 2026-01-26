@@ -244,3 +244,44 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .notification-info {
     border-left: 5px solid var(--primary);
 }
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .glass-input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+}
+
+.toggle-password .eye-icon {
+    stroke-width: 2;
+}
+
+.toggle-password .eye-slash {
+    display: none;
+}
+
+.toggle-password.active .eye-slash {
+    display: block;
+}

@@ -313,3 +313,10 @@ function showNotification(message, type = 'info') {
         setTimeout(() => note.remove(), 300);
     }, 3000);
 }
+
+function togglePasswordSettings(inputId, button) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    button.classList.toggle('active');
+}

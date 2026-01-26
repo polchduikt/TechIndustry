@@ -88,18 +88,42 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="oldPassword">Поточний пароль *</label>
-                            <input type="password" id="oldPassword" class="glass-input"
-                                   required>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="oldPassword" class="glass-input" required>
+                                <button type="button" class="toggle-password" onclick="togglePasswordSettings('oldPassword', this)">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="newPassword">Новий пароль *</label>
-                            <input type="password" id="newPassword" class="glass-input"
-                                   required minlength="8">
+                            <div class="password-input-wrapper">
+                                <input type="password" id="newPassword" class="glass-input" required minlength="8">
+                                <button type="button" class="toggle-password" onclick="togglePasswordSettings('newPassword', this)">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="confirmPassword">Підтвердіть пароль *</label>
-                            <input type="password" id="confirmPassword" class="glass-input"
-                                   required>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="confirmPassword" class="glass-input" required>
+                                <button type="button" class="toggle-password" onclick="togglePasswordSettings('confirmPassword', this)">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="form-actions">

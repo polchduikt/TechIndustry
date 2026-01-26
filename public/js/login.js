@@ -9,6 +9,13 @@ function showTab(tab) {
     document.getElementById(tab + 'Form').classList.add('active');
 }
 
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    button.classList.toggle('active');
+}
+
 async function handleLogin(event) {
     event.preventDefault();
     const form = event.target;
