@@ -1,0 +1,19 @@
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+    const Course = sequelize.define('Course', {
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        title: { type: DataTypes.STRING, allowNull: false },
+        slug: { type: DataTypes.STRING, allowNull: false, unique: true },
+        description: { type: DataTypes.TEXT },
+        category: { type: DataTypes.STRING }, // напр. 'frontend', 'backend'
+        price: { type: DataTypes.DECIMAL(10, 2), defaultValue: 0 },
+        thumbnail: { type: DataTypes.STRING },
+        level: { 
+            type: DataTypes.ENUM('beginner', 'intermediate', 'advanced'), 
+            defaultValue: 'beginner' 
+        }
+    });
+
+    return Course;
+};

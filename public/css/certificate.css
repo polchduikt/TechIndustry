@@ -1,0 +1,228 @@
+.certificate-page {
+    padding: 28px 0 10px;
+    min-height: auto;
+}
+
+.certificate-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    margin-top: 10px;
+}
+
+.certificate-viewer {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: auto;
+}
+
+#certCanvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.certificate-viewer iframe {
+    width: 100%;
+    height: 700px;
+    border: none;
+    display: block;
+}
+
+.certificate-sidebar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 24px;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+.sidebar-section {
+    margin-bottom: 32px;
+}
+
+.sidebar-section:last-child {
+    margin-bottom: 0;
+}
+
+.sidebar-title {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.recipient-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.recipient-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.recipient-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.recipient-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.course-info-card {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.course-title-sidebar {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.course-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.course-meta-item:last-child {
+    margin-bottom: 0;
+}
+
+.certificate-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-download {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+.btn-share {
+    background: var(--glass-bg);
+    color: var(--text);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-share:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.certificate-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 700px;
+    color: var(--text-muted);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--glass-border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.cert-number {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    text-align: center;
+    word-break: break-all;
+}
+
+@media (max-width: 1024px) {
+    .certificate-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .certificate-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .certificate-page {
+        padding: 80px 0 40px;
+    }
+
+    .certificate-viewer {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: auto;
+    }
+
+    .certificate-viewer iframe {
+        height: 500px;
+    }
+}
