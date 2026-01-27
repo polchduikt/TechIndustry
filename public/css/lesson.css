@@ -1,0 +1,60 @@
+body {
+      margin: 0;
+      padding: 40px;
+      background: #0b1220;
+      color: #e5e7eb;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    
+    .nav button {
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e5e7eb;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s ease;
+    }
+    
+    .nav button:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    
+    #lessonTitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      margin-bottom: 24px;
+    }
+    
+    #lessonContent {
+      max-width: 900px;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    
+    #lessonContent h2,
+    #lessonContent h3 {
+      margin-top: 32px;
+    }
+    
+    #lessonContent pre {
+      background: #020617;
+      padding: 18px;
+      border-radius: 14px;
+      overflow-x: auto;
+    }
+    .lesson-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 900px;
+    }

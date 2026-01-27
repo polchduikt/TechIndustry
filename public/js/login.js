@@ -12,8 +12,7 @@ function showTab(tab) {
 async function handleLogin(event) {
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(new FormData(form));
     const messageDiv = document.getElementById('loginMessage');
 
     try {
@@ -22,10 +21,9 @@ async function handleLogin(event) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-
         const result = await response.json();
-
         if (response.ok) {
+            localStorage.setItem('token', result.token);
             messageDiv.className = 'message success';
             messageDiv.textContent = result.message;
             setTimeout(() => window.location.href = '/', 1000);
@@ -35,7 +33,7 @@ async function handleLogin(event) {
         }
     } catch (error) {
         messageDiv.className = 'message error';
-        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+        messageDiv.textContent = 'Connection error';
     }
 }
 
@@ -65,6 +63,6 @@ async function handleRegister(event) {
         }
     } catch (error) {
         messageDiv.className = 'message error';
-        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+        messageDiv.textContent = 'Connection error';
     }
 }

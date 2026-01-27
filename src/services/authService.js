@@ -7,12 +7,12 @@ class AuthService {
         const { username, password, first_name, last_name, email, phone, birth_date, patronymic } = userData;
 
         const existingUser = await User.findOne({ where: { username } });
-        if (existingUser) throw new Error('Username вже зайнятий');
+        if (existingUser) throw new Error('Username already taken');
 
         const existingCustomer = await Customer.findOne({
             where: { [Op.or]: [{ email }, { phone }] }
         });
-        if (existingCustomer) throw new Error('Користувач з такою поштою або телефоном вже існує');
+        if (existingCustomer) throw new Error('User with this email or phone already exists');
 
         const customer = await Customer.create({ first_name, last_name, email, phone, birth_date, patronymic });
         const user = await User.create({ username, password, customer_id: customer.id });
@@ -37,7 +37,7 @@ class AuthService {
         }
 
         if (!foundUser || !(await foundUser.comparePassword(password))) {
-            throw new Error('Невірний логін або пароль');
+            throw new Error('Invalid login or password');
         }
 
         return foundUser;

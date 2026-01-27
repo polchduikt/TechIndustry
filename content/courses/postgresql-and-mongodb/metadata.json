@@ -1,0 +1,9 @@
+{
+  "title": "PostgreSQL & MongoDB",
+  "description": "Курс з реляційних та NoSQL баз даних. PostgreSQL, MongoDB, моделювання даних, запити та індекси.",
+  "category": "Backend",
+  "level": "intermediate",
+  "price": 0,
+  "thumbnail": "databases.png",
+  "slug": "databases"
+}

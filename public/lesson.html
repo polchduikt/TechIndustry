@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Lesson</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="css/lesson.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <div class="nav-links" id="navLinks">
+                <button onclick="location.href='/'">Головна</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button onclick="location.href='/courses'">Навчання</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+  <div class="nav">
+    <button id="prevBtn" type="button">⬅ Попередній</button>
+    <button id="nextBtn" type="button">Наступний ➡</button>
+  </div>
+
+  <div class="lesson-card">
+    <h1 id="lessonTitle"></h1>
+    <div id="lessonContent"></div>
+  </div>
+  <script src="js/index.js"></script>
+  <script src="js/lesson.js"></script>
+</body>
+</html>
