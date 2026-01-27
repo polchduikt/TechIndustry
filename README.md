@@ -24,6 +24,13 @@ The platform is built using a robust and maintainable technology stack:
 
 ---
 
+## Screenshots
+
+### Home Page
+![Home Page](assets/screenshots/home.jpg)
+
+---
+
 ## Core Features
 
 ### Learning Management System (LMS)
