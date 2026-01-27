@@ -1,34 +1,63 @@
 let allCourses = [];
 let userProgress = [];
 let userToken = null;
+let isAuthenticated = false;
 
 async function checkAuth() {
     userToken = localStorage.getItem('token');
-    return !!userToken;
+    isAuthenticated = !!userToken;
+
+    if (userToken) {
+        try {
+            const response = await fetch('/api/auth/profile', {
+                headers: { 'Authorization': `Bearer ${userToken}` }
+            });
+
+            if (!response.ok) {
+                localStorage.removeItem('token');
+                isAuthenticated = false;
+                userToken = null;
+            }
+        } catch (error) {
+            isAuthenticated = false;
+            userToken = null;
+        }
+    }
+    return isAuthenticated;
 }
 
 async function fetchCourses() {
     const grid = document.getElementById('coursesGrid');
-    grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">Завантаження курсів...</p>';
+    grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">Loading courses...</p>';
 
     try {
-        const isAuth = await checkAuth();
+        await checkAuth();
+
         const coursesRes = await fetch('/api/courses');
-        if (!coursesRes.ok) throw new Error('Не вдалося завантажити курси');
+        if (!coursesRes.ok) throw new Error('Failed to load courses');
         allCourses = await coursesRes.json();
 
-        if (isAuth) {
-            const progressRes = await fetch('/api/progress', {
-                headers: { 'Authorization': `Bearer ${userToken}` }
-            });
-            if (progressRes.ok) {
-                userProgress = await progressRes.json();
+        if (isAuthenticated && userToken) {
+            try {
+                const progressRes = await fetch('/api/progress', {
+                    headers: { 'Authorization': `Bearer ${userToken}` }
+                });
+                if (progressRes.ok) {
+                    userProgress = await progressRes.json();
+                } else {
+                    userProgress = [];
+                }
+            } catch (error) {
+                userProgress = [];
             }
+        } else {
+            userProgress = [];
         }
 
         renderCourses(allCourses);
+
     } catch (error) {
-        grid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color: #fca5a5;">Помилка: ${error.message}</p>`;
+        grid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color: #fca5a5;">Error: ${error.message}</p>`;
     }
 }
 
@@ -37,12 +66,15 @@ function renderCourses(courses) {
     grid.innerHTML = '';
 
     if (courses.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">Курсів не знайдено.</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">No courses found.</p>';
         return;
     }
 
-    courses.forEach(course => {
-        const progressEntry = userProgress.find(p => p.course_id === course.id);
+    courses.forEach((course) => {
+        let progressEntry = null;
+        if (isAuthenticated) {
+            progressEntry = userProgress.find(p => p.course_id === course.id);
+        }
         grid.appendChild(createCourseCard(course, progressEntry));
     });
 }
@@ -57,20 +89,33 @@ function createCourseCard(course, progress) {
     let totalLessons = 0;
     course.modules?.forEach(m => totalLessons += m.lessons?.length || 0);
 
-    const completedCount = progress?.completed_lessons?.length || 0;
-    const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
     let statusBadge = '';
     let btnText = 'Почати курс';
+    let progressHTML = '';
 
-    if (progress) {
+    if (isAuthenticated && progress) {
+        const completedCount = progress.completed_lessons?.length || 0;
+        const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
         if (progress.status === 'completed') {
             statusBadge = '<div class="course-badge completed" style="background: rgba(74, 222, 128, 0.2); color: #4ade80; padding: 4px 12px; border-radius: 20px; font-size: 12px; width: fit-content; margin-bottom: 12px;">Завершено</div>';
             btnText = 'Переглянути';
-        } else {
+        } else if (progress.status === 'in_progress') {
             statusBadge = '<div class="course-badge in-progress" style="background: rgba(99, 102, 241, 0.2); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 12px; width: fit-content; margin-bottom: 12px;">У процесі</div>';
             btnText = 'Продовжити';
         }
+
+        progressHTML = `
+            <div class="progress-info" style="margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+                    <span>Прогрес</span>
+                    <span>${progressPercent}%</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                    <div style="width: ${progressPercent}%; height: 100%; background: var(--primary); transition: width 0.3s ease;"></div>
+                </div>
+            </div>
+        `;
     }
 
     card.innerHTML = `
@@ -84,17 +129,7 @@ function createCourseCard(course, progress) {
         </div>
         <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 14px;">${course.description}</p>
         
-        ${progress ? `
-            <div class="progress-info" style="margin-bottom: 16px;">
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
-                    <span>Прогрес</span>
-                    <span>${progressPercent}%</span>
-                </div>
-                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                    <div style="width: ${progressPercent}%; height: 100%; background: var(--primary); transition: width 0.3s ease;"></div>
-                </div>
-            </div>
-        ` : ''}
+        ${progressHTML}
 
         <div class="lang-stats">
             <span>📚 ${totalLessons} уроків</span>
@@ -109,16 +144,18 @@ function createCourseCard(course, progress) {
 }
 
 async function startCourse(slug) {
-    if (!await checkAuth()) {
-        alert('Будь ласка, увійдіть, щоб почати курс');
-        window.location.href = '/login.html';
+    if (!isAuthenticated) {
+        window.location.href = '/login';
         return;
     }
 
     try {
         const response = await fetch('/api/progress/start', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
             body: JSON.stringify({ courseSlug: slug })
         });
 
@@ -126,10 +163,10 @@ async function startCourse(slug) {
             window.location.href = `/course?course=${slug}`;
         } else {
             const error = await response.json();
-            alert(error.message || 'Не вдалося почати курс');
+            alert(error.message || 'Failed to start course');
         }
     } catch (error) {
-        alert('Помилка з\'єднання. Спробуйте ще раз.');
+        alert('Connection error. Please try again.');
     }
 }
 

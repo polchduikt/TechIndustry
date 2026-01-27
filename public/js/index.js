@@ -124,10 +124,15 @@ async function logout(event) {
     if (event) event.preventDefault();
     try {
         await fetch('/api/auth/logout', { method: 'POST' });
+        localStorage.removeItem('token');
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
         resetHeader();
-        location.href = '/';
-    } catch {
-        location.href = '/';
+        window.location.replace('/');
+    } catch (error) {
+        console.error('Relogin error:', error);
+        localStorage.removeItem('token');
+        window.location.replace('/');
     }
 }
 
