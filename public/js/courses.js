@@ -66,7 +66,7 @@ function renderCourses(courses) {
     grid.innerHTML = '';
 
     if (courses.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">No courses found.</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">Наразі немає курсів</p>';
         return;
     }
 
@@ -141,6 +141,19 @@ function createCourseCard(course, progress) {
         </div>
     `;
     return card;
+}
+
+function filterCourses(category, element) {
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.remove('active-tab');
+    });
+    element.classList.add('active-tab');
+    if (category === 'all') {
+        renderCourses(allCourses);
+    } else {
+        const filtered = allCourses.filter(course => course.category === category);
+        renderCourses(filtered);
+    }
 }
 
 async function startCourse(slug) {
