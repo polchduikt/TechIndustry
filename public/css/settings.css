@@ -204,6 +204,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-weight: normal;
 }
 
+.form-actions button:hover {
+    transform: none;
+}
+
 .divider {
     height: 1px;
     background: var(--glass-border);

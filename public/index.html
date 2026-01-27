@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechIndustry | Головна</title>
+    <title>TechIndustry</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-
 <header>
     <div class="container">
         <nav>
-            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <a href="/" class="logo">TechIndustry</a>
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button id="myLearningBtn" onclick="location.href='/profile.html'">Моє навчання</button>
                 <button onclick="location.href='/learning'">Навчання</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
                 <div id="authSlot">
@@ -25,7 +24,6 @@
         </nav>
     </div>
 </header>
-
 <section>
     <div class="container">
         <div class="hero">
@@ -36,7 +34,6 @@
                 <button class="btn btn-secondary">Тестування</button>
             </div>
         </div>
-
         <div class="stats">
             <div class="stat-card glass">
                 <div class="stat-number">50+</div>
@@ -55,13 +52,12 @@
                 <div class="stat-label">Підтримка</div>
             </div>
         </div>
-
         <div class="carousel-section">
             <h2 class="section-title">Популярні курси</h2>
             <div class="carousel-container" id="carouselContainer">
                 <div class="carousel-track" id="carouselTrack">
-                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);">
-                        <div class="course-icon" style="background: rgba(99, 102, 241, 0.2);">⚡</div>
+                    <div class="course-card glass primary">
+                        <div class="course-icon primary">⚡</div>
                         <div class="course-title">JavaScript Fundamentals</div>
                         <div class="course-desc">Вивчіть основи сучасного JavaScript, ES6+ синтаксис та асинхронне програмування</div>
                         <div class="course-meta">
@@ -69,8 +65,8 @@
                             <span>⏱️ 24 години</span>
                         </div>
                     </div>
-                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent);">
-                        <div class="course-icon" style="background: rgba(139, 92, 246, 0.2);">🐍</div>
+                    <div class="course-card glass secondary">
+                        <div class="course-icon secondary">🐍</div>
                         <div class="course-title">Python для аналізу даних</div>
                         <div class="course-desc">Pandas, NumPy, Matplotlib та машинне навчання з scikit-learn</div>
                         <div class="course-meta">
@@ -78,8 +74,8 @@
                             <span>⏱️ 30 годин</span>
                         </div>
                     </div>
-                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), transparent);">
-                        <div class="course-icon" style="background: rgba(236, 72, 153, 0.2);">⚛️</div>
+                    <div class="course-card glass accent">
+                        <div class="course-icon accent">⚛️</div>
                         <div class="course-title">React & Next.js</div>
                         <div class="course-desc">Створення сучасних веб-додатків з React, Hooks та Server Components</div>
                         <div class="course-meta">
@@ -87,8 +83,8 @@
                             <span>⏱️ 20 годин</span>
                         </div>
                     </div>
-                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent);">
-                        <div class="course-icon" style="background: rgba(245, 158, 11, 0.2);">🗄️</div>
+                    <div class="course-card glass warning">
+                        <div class="course-icon warning">🗄️</div>
                         <div class="course-title">PostgreSQL & MongoDB</div>
                         <div class="course-desc">SQL та NoSQL бази даних, оптимізація запитів та проєктування схем</div>
                         <div class="course-meta">
@@ -99,7 +95,6 @@
                 </div>
             </div>
         </div>
-
         <div class="features">
             <div class="feature-card glass">
                 <div class="feature-icon">🎯</div>
@@ -119,7 +114,6 @@
         </div>
     </div>
 </section>
-
 <footer class="glass">
     <div class="container footer-content">
         <div class="footer-brand">

@@ -99,13 +99,13 @@ function renderUserMenu(data, authSlot, myLearningBtn) {
     authSlot.innerHTML = `
         <div class="user-menu">
             <div class="user-avatar" onclick="toggleDropdown()">
-                <img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                <img src="${avatar}">
             </div>
             <div class="dropdown-menu" id="dropdownMenu">
-                <a href="/profile" class="dropdown-item">👤 Профіль</a>
-                <a href="/settings" class="dropdown-item">⚙️ Налаштування</a>
+                <a href="/profile" class="dropdown-item">Профіль</a>
+                <a href="/settings" class="dropdown-item">Налаштування</a>
                 <div class="dropdown-divider"></div>
-                <a href="#" onclick="logout(event)" class="dropdown-item logout">🚪 Вийти</a>
+                <a href="#" onclick="logout(event)" class="dropdown-item logout">Вийти</a>
             </div>
         </div>
     `;
