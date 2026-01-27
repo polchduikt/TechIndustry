@@ -33,37 +33,23 @@ class CourseService {
 
     async getLessonContent(lessonId) {
         const lesson = await db.Lesson.findByPk(lessonId);
-
-        if (!lesson) {
-            throw new Error('Lesson not found');
-        }
-
+        if (!lesson) throw new Error('Lesson not found');
+        const fullPath = path.join(__dirname, '../../', lesson.content_path);
+        if (!fs.existsSync(fullPath)) throw new Error('File not found');
+        const rawMarkdown = fs.readFileSync(fullPath, 'utf-8');
         const lessons = await db.Lesson.findAll({
             where: { module_id: lesson.module_id },
             order: [['order', 'ASC']]
         });
 
         const index = lessons.findIndex(l => l.id === lesson.id);
-        const fullPath = path.join(__dirname, '../../', lesson.content_path);
 
-        if (!fs.existsSync(fullPath)) {
-            throw new Error(`Content file not found: ${lesson.content_path}`);
-        }
-
-        try {
-            const rawMarkdown = fs.readFileSync(fullPath, 'utf-8');
-            const htmlContent = marked.parse(rawMarkdown);
-
-            return {
-                id: lesson.id,
-                title: lesson.title,
-                content: htmlContent,
-                prev: index > 0 ? lessons[index - 1].id : null,
-                next: index < lessons.length - 1 ? lessons[index + 1].id : null
-            };
-        } catch {
-            throw new Error('Error processing lesson content');
-        }
+        return {
+            id: lesson.id,
+            title: lesson.title,
+            content: marked.parse(rawMarkdown),
+            next: index < lessons.length - 1 ? lessons[index + 1].id : null
+        };
     }
 }
 

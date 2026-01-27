@@ -12,12 +12,14 @@
 <header>
     <div class="container">
         <nav>
-            <a href="/" class="logo" style="text-decoration: none;">TechIndustry</a>
+            <a href="/" class="logo-link">
+                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+            </a>
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
-                <button onclick="location.href='/courses'">Навчання</button>
+                <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
                 <div id="authSlot">
                     <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
                 </div>
@@ -33,7 +35,7 @@
             <p class="hero-description">Практичний підхід до навчання, автоматизована перевірка знань та актуальні курси від професіоналів для професіоналів</p>
             <div class="hero-buttons">
                 <button class="btn btn-primary" onclick="location.href='/courses'">Почати навчання</button>
-                <button class="btn btn-secondary" onclick="location.href='quiz'">Тестування</button>
+                <button class="btn btn-secondary" onclick="location.href='/quiz.html'">Тестування</button>
             </div>
         </div>
 
@@ -118,6 +120,81 @@
             </div>
         </div>
     </div>
+
+    <section class="quiz-info-section">
+        <div class="container quiz-grid">
+            <div class="quiz-content">
+                <h2 class="section-title" style="text-align: left;">Перевірка знань <br><span class="gradient-text">в реальному часі</span></h2>
+                <p class="hero-description" style="text-align: left; margin: 0 0 32px 0;">Наші інтелектуальні тести адаптуються під ваш рівень. Отримуйте миттєвий фідбек та детальний розбір помилок після кожного модуля.</p>
+                <ul class="quiz-features-list">
+                    <li><span>✓</span> Автоматизована перевірка коду</li>
+                    <li><span>✓</span> Рейтингова система серед студентів</li>
+                    <li><span>✓</span> Доступ до складних кейсів після теорії</li>
+                </ul>
+                <button class="btn btn-primary" onclick="location.href='/quiz'">Спробувати тест</button>
+            </div>
+            <div class="quiz-visual">
+                <div class="quiz-card-mockup glass">
+                    <div class="scan-line"></div>
+                    <div class="mockup-header">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                    <div class="mockup-body">
+                        <div class="code-line" style="width: 80%;"></div>
+                        <div class="code-line" style="width: 60%;"></div>
+                        <div class="code-line highlight" style="width: 90%;"></div>
+                        <div class="code-line" style="width: 40%;"></div>
+                    </div>
+                    <div class="status-badge">Processing...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="partners-section">
+        <div class="container">
+            <h3 class="stat-label" style="text-align: center; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">Наші випускники працюють в</h3>
+            <div class="partners-slider">
+                <div class="partners-track">
+                    <div class="partner-logo">Google</div>
+                    <div class="partner-logo">Microsoft</div>
+                    <div class="partner-logo">Meta</div>
+                    <div class="partner-logo">Amazon</div>
+                    <div class="partner-logo">Netflix</div>
+                    <div class="partner-logo">Apple</div>
+
+                    <div class="partner-logo">Google</div>
+                    <div class="partner-logo">Microsoft</div>
+                    <div class="partner-logo">Meta</div>
+                    <div class="partner-logo">Amazon</div>
+                    <div class="partner-logo">Netflix</div>
+                    <div class="partner-logo">Apple</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="certificate-section">
+        <div class="container cert-flex">
+            <div class="cert-image">
+                <div class="cert-wrapper">
+                    <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="cert-logo-watermark">
+                    <div class="cert-content-preview">
+                        <div class="cert-title">CERTIFICATE</div>
+                        <div class="cert-sub">of course completion</div>
+                        <div class="cert-name">John Doe</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cert-text">
+                <h2 class="section-title" style="text-align: left;">Офіційне <br><span class="gradient-text">підтвердження</span></h2>
+                <p class="hero-description" style="text-align: left; margin-bottom: 24px;">Після успішного завершення кожного курсу ви отримуєте іменний сертифікат, який можна додати в LinkedIn або резюме. Наші сертифікати мають QR-код для миттєвої верифікації роботодавцем.</p>
+                <div class="stat-card glass" style="display: inline-block; padding: 16px 32px;">
+                    <div class="stat-number" style="font-size: 24px;">Verified by TechIndustry</div>
+                </div>
+            </div>
+        </div>
+    </section>
 </section>
 
 <footer class="glass">

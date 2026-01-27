@@ -6,6 +6,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const courseRoutes = require('./src/routes/courseRoutes');
 const progressRoutes = require('./src/routes/progressRoutes');
 const { protectPage } = require('./src/middleware/pageAuth');
+const certificateRoutes = require('./src/routes/certificateRoutes');
 const quizRoutes = require('./src/routes/quizRoutes');
 require('dotenv').config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -28,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/courses', quizRoutes);
 app.use('/api/progress', progressRoutes);
+app.use('/api/certificates', certificateRoutes);
 
 
 app.get('/', (req, res) => {
@@ -56,6 +59,10 @@ app.get('/course', (req, res) => {
 
 app.get('/lesson', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'lessons.html'));
+});
+
+app.get('/certificate', protectPage, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'certificate.html'));
 });
 
 app.get('/quiz', protectPage, (req, res) => {
