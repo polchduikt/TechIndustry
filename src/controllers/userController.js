@@ -1,4 +1,5 @@
 const userService = require('../services/userService');
+const { validationResult } = require('express-validator');
 
 exports.getProfile = async (req, res) => {
     try {
@@ -10,6 +11,11 @@ exports.getProfile = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: errors.array()[0].msg });
+    }
+
     try {
         const result = await userService.updateProfile(req.userId, req.body);
 

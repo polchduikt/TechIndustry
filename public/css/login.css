@@ -1,3 +1,7 @@
+body {
+    overflow-y: scroll;
+}
+
 .logo {
     font-size: 32px;
     font-weight: normal;
@@ -9,7 +13,7 @@
 }
 
 .container-fluid {
-    min-height: 100vh;
+    min-height: 50vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,9 +25,9 @@
 .auth-container {
     width: 100%;
     max-width: 500px;
-    border-radius: 24px;
+    border-radius: 20px;
     overflow: hidden;
-    animation: fadeIn 0.6s ease;
+    animation: fadeIn 0.5s ease;
 }
 
 @keyframes fadeIn {
@@ -42,17 +46,16 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: bold;
     color: var(--text-muted);
-    transition: all 0.3s;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
+    transition: all 0.5s ease;
+    font-size: 24px;
 }
 
 .tab.active {
-    color: white;
+    color: #FFFFFF;
     background: rgba(99, 102, 241, 0.1);
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 5px solid var(--primary);
 }
 
 .form-container {
@@ -68,7 +71,7 @@
 }
 
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 label {
@@ -101,7 +104,7 @@ label {
     align-items: center;
     justify-content: center;
     color: var(--text-muted);
-    transition: color 0.3s ease;
+    transition: color 0.5s ease;
 }
 
 .toggle-password:hover {
@@ -127,7 +130,6 @@ label {
     border-radius: 10px;
     padding: 20px;
     color: var(--text);
-    font-family: 'Inter', sans-serif;
     font-size: 18px;
     outline: none;
     transition: all 0.5s ease;
@@ -148,8 +150,6 @@ label {
 .auth-btn {
     width: 100%;
     margin-top: 10px;
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: 0.5px;
     border-radius: 10px;
     font-size: 18px;
     padding: 20px;
@@ -183,9 +183,5 @@ label {
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.5;
-    cursor: pointer;
-}
-
-input[type="file"] {
     cursor: pointer;
 }

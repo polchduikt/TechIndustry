@@ -7,11 +7,11 @@
 }
 
 .progress-58 {
-    width: 58%;
+    width: 60%;
 }
 
 .progress-62 {
-    width: 62%;
+    width: 75%;
 }
 
 .progress-100 {
@@ -20,7 +20,7 @@
 
 .profile-section {
     padding: 60px 0;
-    min-height: 70vh;
+    min-height: 100vh;
 }
 
 .profile-header {
@@ -32,12 +32,12 @@
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
+    border-radius: 20px;
 }
 
 .profile-info {
     display: flex;
-    gap: 32px;
+    gap: 30px;
     align-items: center;
 }
 
@@ -49,9 +49,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
-    font-weight: 700;
-    color: white;
+    font-size: 60px;
+    font-weight: bold;
+    color: #FFFFFF;
     flex-shrink: 0;
 }
 
@@ -63,21 +63,20 @@
 }
 
 .profile-details h1 {
-    font-family: 'Space Grotesk', sans-serif;
     font-size: 36px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .profile-email {
     color: var(--text-muted);
-    font-size: 16px;
-    margin-bottom: 16px;
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
 .profile-stats-inline {
     display: flex;
-    gap: 24px;
-    font-size: 15px;
+    gap: 20px;
+    font-size: 18px;
 }
 
 .profile-stats-inline span {
@@ -124,7 +123,7 @@
     right: 0;
     background: var(--dark-light);
     border: 1px solid var(--glass-border);
-    border-radius: 10px;
+    border-radius: 20px;
     min-width: 200px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -156,11 +155,11 @@
 }
 
 .dropdown-item:first-child {
-    border-radius: 10px 10px 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .dropdown-item:last-child {
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 20px 20px;
 }
 
 .dropdown-icon {
@@ -168,7 +167,7 @@
 }
 
 .dropdown-divider {
-    height: 5px;
+    height: 1px;
     background: var(--glass-border);
     margin: auto;
 }
@@ -183,22 +182,21 @@
 
 .filter-tabs {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
-    margin-top: 24px;
+    margin-top: 20px;
 }
 
 .filter-tab {
-    padding: 12px 24px;
+    padding: 10px 20px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
+    border-radius: 10px;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.3s;
-    font-weight: 500;
-    font-size: 15px;
-    font-family: 'Inter', sans-serif;
+    transition: all 0.5s ease;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 .filter-tab:hover {
@@ -207,21 +205,21 @@
 
 .filter-tab.active {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
+    color: #FFFFFF;
     border-color: transparent;
 }
 
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
+    gap: 20px;
     margin-bottom: 60px;
 }
 
 .course-progress-card {
-    padding: 28px;
+    padding: 30px;
     border-radius: 20px;
-    transition: all 0.3s;
+    transition: all 0.5s ease;
 }
 
 .course-progress-card:hover {
@@ -233,13 +231,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .course-icon-small {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -263,10 +261,10 @@
 }
 
 .course-badge {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .course-badge.in-progress {
@@ -280,31 +278,30 @@
 }
 
 .course-name {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .course-progress-text {
     color: var(--text-muted);
     font-size: 14px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .progress-bar-container {
     width: 100%;
-    height: 8px;
+    height: 10px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .progress-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
-    border-radius: 4px;
+    border-radius: 5px;
     transition: width 0.5s ease;
 }
 
@@ -315,19 +312,19 @@
 .course-meta-small {
     display: flex;
     justify-content: space-between;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-muted);
     margin-bottom: 20px;
 }
 
 .progress-percent {
-    font-weight: 600;
+    font-weight: bold;
     color: var(--primary);
 }
 
 .btn-continue {
     width: 100%;
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 .empty-state {
@@ -336,18 +333,17 @@
 }
 
 .empty-icon {
-    font-size: 64px;
-    margin-bottom: 24px;
+    font-size: 60px;
+    margin-bottom: 20px;
 }
 
 .empty-state h3 {
-    font-family: 'Space Grotesk', sans-serif;
     font-size: 28px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .empty-state p {
     color: var(--text-muted);
-    font-size: 16px;
-    margin-bottom: 32px;
+    font-size: 18px;
+    margin-bottom: 30px;
 }
