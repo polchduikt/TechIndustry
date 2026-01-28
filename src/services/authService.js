@@ -52,6 +52,72 @@ class AuthService {
         return foundUser;
     }
 
+    async requestPasswordReset(emailOrPhone) {
+        const customer = await Customer.findOne({
+            where: { [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }] }
+        });
+
+        if (!customer) {
+            throw new Error('Користувача з такою поштою або телефоном не знайдено');
+        }
+
+        const user = await User.findOne({ where: { customer_id: customer.id } });
+        if (!user) {
+            throw new Error('Користувача не знайдено');
+        }
+
+        // Генеруємо 6-значний код
+        const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 хвилин
+
+        await user.update({
+            reset_code: resetCode,
+            reset_code_expires: expiresAt
+        });
+
+        return { resetCode, email: customer.email, phone: customer.phone };
+    }
+
+    async verifyResetCode(emailOrPhone, code) {
+        const customer = await Customer.findOne({
+            where: { [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }] }
+        });
+
+        if (!customer) {
+            throw new Error('Користувача не знайдено');
+        }
+
+        const user = await User.findOne({ where: { customer_id: customer.id } });
+        if (!user) {
+            throw new Error('Користувача не знайдено');
+        }
+
+        if (!user.reset_code || !user.reset_code_expires) {
+            throw new Error('Код не був запитаний');
+        }
+
+        if (new Date() > user.reset_code_expires) {
+            throw new Error('Код прострочений');
+        }
+
+        if (user.reset_code !== code) {
+            throw new Error('Невірний код');
+        }
+
+        return user;
+    }
+
+    async resetPassword(emailOrPhone, code, newPassword) {
+        const user = await this.verifyResetCode(emailOrPhone, code);
+
+        user.password = newPassword;
+        user.reset_code = null;
+        user.reset_code_expires = null;
+        await user.save();
+
+        return true;
+    }
+
     generateToken(userId, username) {
         return jwt.sign({ userId, username }, process.env.JWT_SECRET, { expiresIn: '30d' });
     }

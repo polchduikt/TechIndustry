@@ -47,14 +47,11 @@ function initPhoneInput(phoneInput) {
         const selectionEnd = e.target.selectionEnd;
         const hasSelection = cursorPosition !== selectionEnd;
 
-        // Якщо виділено текст і натиснуто Backspace або Delete
         if ((e.key === 'Backspace' || e.key === 'Delete') && hasSelection) {
-            // Перевіряємо, чи виділення включає частину +380
             if (cursorPosition < 4) {
                 e.preventDefault();
-                // Видаляємо тільки те, що після +380
                 const value = e.target.value;
-                const beforeSelection = value.substring(0, 4); // +380
+                const beforeSelection = value.substring(0, 4);
                 const afterSelection = value.substring(selectionEnd);
                 e.target.value = beforeSelection + afterSelection;
                 formatPhoneNumber(e.target);
@@ -63,7 +60,6 @@ function initPhoneInput(phoneInput) {
             return;
         }
 
-        // Якщо намагаємося видалити частину +380 без виділення
         if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPosition <= 4 && !hasSelection) {
             e.preventDefault();
         }
@@ -90,20 +86,237 @@ function initPhoneInput(phoneInput) {
         }
     });
 
-    // Обробка виділення тексту
     phoneInput.addEventListener('select', (e) => {
         const start = e.target.selectionStart;
         const end = e.target.selectionEnd;
 
-        // Якщо виділення починається до позиції 4 (+380)
         if (start < 4 && end > 4) {
-            // Перемістити початок виділення на позицію 4
             e.target.setSelectionRange(4, end);
         } else if (start < 4 && end <= 4) {
-            // Якщо виділено тільки +380, скасувати виділення
             e.target.setSelectionRange(4, 4);
         }
     });
+}
+
+// Модальне вікно для відновлення пароля
+let resetData = {
+    emailOrPhone: '',
+    code: '',
+    step: 1
+};
+
+function showForgotPasswordModal() {
+    resetData = { emailOrPhone: '', code: '', step: 1 };
+    document.getElementById('forgotPasswordModal').classList.add('active');
+    updateModalContent();
+}
+
+function closeForgotPasswordModal() {
+    document.getElementById('forgotPasswordModal').classList.remove('active');
+    resetData = { emailOrPhone: '', code: '', step: 1 };
+}
+
+function updateModalContent() {
+    const modal = document.getElementById('modalBody');
+
+    if (resetData.step === 1) {
+        modal.innerHTML = `
+            <h3 class="modal-title">Відновлення пароля</h3>
+            <p class="modal-description">Введіть email або телефон, прив'язаний до вашого акаунта</p>
+            <div class="form-group">
+                <label>Email або телефон</label>
+                <input type="text" id="resetEmailOrPhone" class="glass-input" placeholder="email@example.com або +380XXXXXXXXX">
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <button onclick="requestResetCode()" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Надіслати код</button>
+        `;
+    } else if (resetData.step === 2) {
+        modal.innerHTML = `
+            <h3 class="modal-title">Введіть код</h3>
+            <p class="modal-description">Код відновлення надіслано. Перевірте консоль сервера (для розробки)</p>
+            <div class="form-group">
+                <label>6-значний код</label>
+                <input type="text" id="resetCode" class="glass-input code-input" maxlength="6" placeholder="000000">
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <button onclick="verifyResetCode()" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Підтвердити код</button>
+        `;
+    } else if (resetData.step === 3) {
+        modal.innerHTML = `
+            <h3 class="modal-title">Новий пароль</h3>
+            <p class="modal-description">Введіть новий пароль для вашого акаунта</p>
+            <div class="form-group">
+                <label>Новий пароль</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="newResetPassword" class="glass-input" minlength="8">
+                    <button type="button" class="toggle-password" onclick="toggleModalPassword('newResetPassword', this)">
+                        <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Підтвердіть пароль</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="confirmResetPassword" class="glass-input" minlength="8">
+                    <button type="button" class="toggle-password" onclick="toggleModalPassword('confirmResetPassword', this)">
+                        <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <button onclick="resetPasswordFromModal()" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Змінити пароль</button>
+        `;
+    }
+}
+
+function toggleModalPassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    button.classList.toggle('active');
+}
+
+async function requestResetCode() {
+    const emailOrPhone = document.getElementById('resetEmailOrPhone').value.trim();
+    const messageDiv = document.getElementById('resetMessage');
+
+    if (!emailOrPhone) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Введіть email або телефон';
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/auth/request-reset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ emailOrPhone })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            resetData.emailOrPhone = emailOrPhone;
+            resetData.step = 2;
+
+            // Показуємо notification з кодом
+            showCodeNotification(result.code);
+
+            updateModalContent();
+        } else {
+            messageDiv.className = 'message error';
+            messageDiv.textContent = result.message;
+        }
+    } catch (error) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+    }
+}
+
+// Нова функція для показу коду (додати в settings.js)
+function showCodeNotification(code) {
+    const notification = document.createElement('div');
+    notification.className = 'code-notification';
+    notification.innerHTML = `
+        <div class="code-notification-content">
+            <h4>🔐 Ваш код відновлення:</h4>
+            <div class="code-display">${code}</div>
+            <p>Код дійсний протягом 10 хвилин</p>
+            <button onclick="this.parentElement.parentElement.remove()" class="btn btn-secondary" style="margin-top: 10px; width: 100%;">Зрозуміло</button>
+        </div>
+    `;
+    document.body.appendChild(notification);
+}
+
+async function verifyResetCode() {
+    const code = document.getElementById('resetCode').value.trim();
+    const messageDiv = document.getElementById('resetMessage');
+
+    if (!code || code.length !== 6) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Введіть 6-значний код';
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/auth/verify-reset-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                emailOrPhone: resetData.emailOrPhone,
+                code
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            resetData.code = code;
+            resetData.step = 3;
+            updateModalContent();
+        } else {
+            messageDiv.className = 'message error';
+            messageDiv.textContent = result.message;
+        }
+    } catch (error) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+    }
+}
+
+async function resetPasswordFromModal() {
+    const newPassword = document.getElementById('newResetPassword').value;
+    const confirmPassword = document.getElementById('confirmResetPassword').value;
+    const messageDiv = document.getElementById('resetMessage');
+
+    if (newPassword.length < 8) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Пароль має бути мінімум 8 символів';
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Паролі не співпадають';
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                emailOrPhone: resetData.emailOrPhone,
+                code: resetData.code,
+                newPassword
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            messageDiv.className = 'message success';
+            messageDiv.textContent = 'Пароль успішно змінено! Перенаправлення на сторінку входу...';
+            setTimeout(() => {
+                closeForgotPasswordModal();
+                window.location.href = '/login';
+            }, 2000);
+        } else {
+            messageDiv.className = 'message error';
+            messageDiv.textContent = result.message;
+        }
+    } catch (error) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -111,9 +324,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setupAvatarUpload();
     setupForms();
 
-    // Ініціалізуємо форматування телефону
     const phoneInput = document.getElementById('phone');
     initPhoneInput(phoneInput);
+
+    // Закриття модалки при кліку поза нею
+    document.getElementById('forgotPasswordModal')?.addEventListener('click', (e) => {
+        if (e.target.id === 'forgotPasswordModal') {
+            closeForgotPasswordModal();
+        }
+    });
 });
 
 async function loadSettingsData() {
@@ -126,7 +345,6 @@ async function loadSettingsData() {
 
         const data = await response.json();
 
-        // Форматуємо телефон перед збереженням
         const formattedPhone = data.Customer?.phone || '+380';
 
         originalData = {
@@ -149,7 +367,6 @@ async function loadSettingsData() {
             document.getElementById('last_name').value = originalData.last_name;
             document.getElementById('patronymic').value = originalData.patronymic;
 
-            // Встановлюємо та форматуємо телефон
             const phoneInput = document.getElementById('phone');
             phoneInput.value = formattedPhone;
             formatPhoneNumber(phoneInput);
@@ -356,7 +573,6 @@ function setupForms() {
         const emailInput = document.getElementById('email');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // Перевіряємо довжину телефону
         if (cleanPhone.length !== 12) {
             showNotification('Введіть повний номер телефону', 'error');
             return;
@@ -396,7 +612,7 @@ function setupForms() {
                     showNotification('Дані збережено!', 'success');
                     originalData = {
                         ...formData,
-                        phone: phoneInput.value // Зберігаємо форматований телефон
+                        phone: phoneInput.value
                     };
                     document.getElementById('displayUsername').textContent = formData.username;
 
@@ -448,7 +664,7 @@ function setupForms() {
                 showNotification(result.message, 'error');
             }
         } catch (error) {
-            showNotification('Помилка зміни паролю', 'error');
+            showNotification('Помилка зміни пароля', 'error');
         }
     });
 }

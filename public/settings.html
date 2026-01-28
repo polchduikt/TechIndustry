@@ -73,7 +73,6 @@
                             <label for="patronymic">По-батькові</label>
                             <input type="text" id="patronymic" class="glass-input">
                         </div>
-                        <!-- Замість старого input для телефону -->
                         <div class="form-group">
                             <label for="phone">Телефон *</label>
                             <input type="tel" id="phone" class="glass-input" required maxlength="17">
@@ -90,6 +89,9 @@
                 </form>
                 <div class="divider"></div>
                 <h2 class="section-title password-title">Змінити пароль</h2>
+                <p class="modal-description" style="margin-bottom: 20px;">
+                    <a class="forgot-password-link" onclick="showForgotPasswordModal()">Забули пароль?</a>
+                </p>
                 <form id="passwordForm" class="settings-form">
                     <div class="form-grid">
                         <div class="form-group">
@@ -140,6 +142,15 @@
         </div>
     </div>
 </section>
+
+<!-- Модальне вікно для відновлення пароля -->
+<div id="forgotPasswordModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
 <footer class="glass">
     <div class="container footer-content">
         <div class="footer-brand">

@@ -48,6 +48,7 @@
                             </svg>
                         </button>
                     </div>
+                    <a class="forgot-password-link" onclick="showForgotPasswordModal()">Забули пароль?</a>
                 </div>
                 <button type="submit" class="btn btn-primary auth-btn">Увійти</button>
                 <div id="loginMessage" class="message"></div>
@@ -101,6 +102,15 @@
         </div>
     </div>
 </div>
+
+<!-- Модальне вікно для відновлення пароля -->
+<div id="forgotPasswordModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
 <script src="js/login.js"></script>
 <script src="js/index.js"></script>
 </body>

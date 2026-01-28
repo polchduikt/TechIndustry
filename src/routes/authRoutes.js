@@ -44,4 +44,9 @@ router.patch('/change-password', auth, userController.changePassword);
 router.post('/upload-avatar', auth, upload.single('avatar'), userController.uploadAvatar);
 router.delete('/delete-avatar', auth, userController.deleteAvatar);
 
+// Нові роути для відновлення пароля
+router.post('/request-reset', authController.requestPasswordReset);
+router.post('/verify-reset-code', authController.verifyResetCode);
+router.post('/reset-password', authController.resetPassword);
+
 module.exports = router;
