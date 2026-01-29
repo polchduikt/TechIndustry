@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechIndustry</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap&subset=cyrillic" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
+
 <header>
     <div class="container">
         <nav>
-            <a href="/" class="logo">TechIndustry</a>
+            <a href="/" class="logo-link">
+                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+            </a>
             <div class="nav-links">
                 <button onclick="location.href='/'">Головна</button>
+                <button onclick="location.href='/courses'">Курси</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
                 <div id="authSlot"></div>
             </div>
         </nav>
@@ -103,7 +105,6 @@
     </div>
 </div>
 
-<!-- Модальне вікно для відновлення пароля -->
 <div id="forgotPasswordModal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>

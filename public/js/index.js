@@ -99,13 +99,13 @@ function renderUserMenu(data, authSlot, myLearningBtn) {
     authSlot.innerHTML = `
         <div class="user-menu">
             <div class="user-avatar" onclick="toggleDropdown()">
-                <img src="${avatar}">
+                <img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
             </div>
             <div class="dropdown-menu" id="dropdownMenu">
-                <a href="/profile" class="dropdown-item">Профіль</a>
-                <a href="/settings" class="dropdown-item">Налаштування</a>
+                <a href="/profile" class="dropdown-item">👤 Профіль</a>
+                <a href="/settings" class="dropdown-item">⚙️ Налаштування</a>
                 <div class="dropdown-divider"></div>
-                <a href="#" onclick="logout(event)" class="dropdown-item logout">Вийти</a>
+                <a href="#" onclick="logout(event)" class="dropdown-item logout">🚪 Вийти</a>
             </div>
         </div>
     `;
@@ -124,10 +124,15 @@ async function logout(event) {
     if (event) event.preventDefault();
     try {
         await fetch('/api/auth/logout', { method: 'POST' });
+        localStorage.removeItem('token');
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
         resetHeader();
-        location.href = '/';
-    } catch {
-        location.href = '/';
+        window.location.replace('/');
+    } catch (error) {
+        console.error('Relogin error:', error);
+        localStorage.removeItem('token');
+        window.location.replace('/');
     }
 }
 

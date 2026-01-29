@@ -1,4 +1,4 @@
-const {User, Customer} = require('../models');
+const { User, Customer } = require('../models');
 
 class UserService {
     async getProfile(userId) {
@@ -8,7 +8,6 @@ class UserService {
         });
 
         if (!user) throw new Error('Користувача не знайдено');
-
         return user;
     }
 

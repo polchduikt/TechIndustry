@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechIndustry</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap&subset=cyrillic" rel="stylesheet">
-
+    <title>TechIndustry | Головна</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+
 <header>
     <div class="container">
         <nav>
-            <a href="/" class="logo">TechIndustry</a>
+            <a href="/" class="logo-link">
+                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+            </a>
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
-                <button id="myLearningBtn" onclick="location.href='/profile.html'">Моє навчання</button>
-                <button onclick="location.href='/learning'">Навчання</button>
+                <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
                 <div id="authSlot">
                     <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
                 </div>
@@ -28,16 +27,18 @@
         </nav>
     </div>
 </header>
+
 <section>
     <div class="container">
         <div class="hero">
             <h1>Майбутнє освіти в <br><span class="gradient-text">інформаційних технологіях</span></h1>
             <p class="hero-description">Практичний підхід до навчання, автоматизована перевірка знань та актуальні курси від професіоналів для професіоналів</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary" onclick="location.href='/learning'">Почати навчання</button>
-                <button class="btn btn-secondary">Тестування</button>
+                <button class="btn btn-primary" onclick="location.href='/courses'">Почати навчання</button>
+                <button class="btn btn-secondary" onclick="location.href='/quiz.html'">Тестування</button>
             </div>
         </div>
+
         <div class="stats">
             <div class="stat-card glass">
                 <div class="stat-number">50+</div>
@@ -56,12 +57,13 @@
                 <div class="stat-label">Підтримка</div>
             </div>
         </div>
+
         <div class="carousel-section">
             <h2 class="section-title">Популярні курси</h2>
             <div class="carousel-container" id="carouselContainer">
                 <div class="carousel-track" id="carouselTrack">
-                    <div class="course-card glass primary">
-                        <div class="course-icon primary">⚡</div>
+                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);">
+                        <div class="course-icon" style="background: rgba(99, 102, 241, 0.2);">⚡</div>
                         <div class="course-title">JavaScript Fundamentals</div>
                         <div class="course-desc">Вивчіть основи сучасного JavaScript, ES6+ синтаксис та асинхронне програмування</div>
                         <div class="course-meta">
@@ -69,8 +71,8 @@
                             <span>⏱️ 24 години</span>
                         </div>
                     </div>
-                    <div class="course-card glass secondary">
-                        <div class="course-icon secondary">🐍</div>
+                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent);">
+                        <div class="course-icon" style="background: rgba(139, 92, 246, 0.2);">🐍</div>
                         <div class="course-title">Python для аналізу даних</div>
                         <div class="course-desc">Pandas, NumPy, Matplotlib та машинне навчання з scikit-learn</div>
                         <div class="course-meta">
@@ -78,8 +80,8 @@
                             <span>⏱️ 30 годин</span>
                         </div>
                     </div>
-                    <div class="course-card glass accent">
-                        <div class="course-icon accent">⚛️</div>
+                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), transparent);">
+                        <div class="course-icon" style="background: rgba(236, 72, 153, 0.2);">⚛️</div>
                         <div class="course-title">React & Next.js</div>
                         <div class="course-desc">Створення сучасних веб-додатків з React, Hooks та Server Components</div>
                         <div class="course-meta">
@@ -87,8 +89,8 @@
                             <span>⏱️ 20 годин</span>
                         </div>
                     </div>
-                    <div class="course-card glass warning">
-                        <div class="course-icon warning">🗄️</div>
+                    <div class="course-card glass" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent);">
+                        <div class="course-icon" style="background: rgba(245, 158, 11, 0.2);">🗄️</div>
                         <div class="course-title">PostgreSQL & MongoDB</div>
                         <div class="course-desc">SQL та NoSQL бази даних, оптимізація запитів та проєктування схем</div>
                         <div class="course-meta">
@@ -99,6 +101,7 @@
                 </div>
             </div>
         </div>
+
         <div class="features">
             <div class="feature-card glass">
                 <div class="feature-icon">🎯</div>
@@ -117,7 +120,83 @@
             </div>
         </div>
     </div>
+
+    <section class="quiz-info-section">
+        <div class="container quiz-grid">
+            <div class="quiz-content">
+                <h2 class="section-title" style="text-align: left;">Перевірка знань <br><span class="gradient-text">в реальному часі</span></h2>
+                <p class="hero-description" style="text-align: left; margin: 0 0 32px 0;">Наші інтелектуальні тести адаптуються під ваш рівень. Отримуйте миттєвий фідбек та детальний розбір помилок після кожного модуля.</p>
+                <ul class="quiz-features-list">
+                    <li><span>✓</span> Автоматизована перевірка коду</li>
+                    <li><span>✓</span> Рейтингова система серед студентів</li>
+                    <li><span>✓</span> Доступ до складних кейсів після теорії</li>
+                </ul>
+                <button class="btn btn-primary" onclick="location.href='/quiz'">Спробувати тест</button>
+            </div>
+            <div class="quiz-visual">
+                <div class="quiz-card-mockup glass">
+                    <div class="scan-line"></div>
+                    <div class="mockup-header">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                    <div class="mockup-body">
+                        <div class="code-line" style="width: 80%;"></div>
+                        <div class="code-line" style="width: 60%;"></div>
+                        <div class="code-line highlight" style="width: 90%;"></div>
+                        <div class="code-line" style="width: 40%;"></div>
+                    </div>
+                    <div class="status-badge">Processing...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="partners-section">
+        <div class="container">
+            <h3 class="stat-label" style="text-align: center; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">Наші випускники працюють в</h3>
+            <div class="partners-slider">
+                <div class="partners-track">
+                    <div class="partner-logo">Google</div>
+                    <div class="partner-logo">Microsoft</div>
+                    <div class="partner-logo">Meta</div>
+                    <div class="partner-logo">Amazon</div>
+                    <div class="partner-logo">Netflix</div>
+                    <div class="partner-logo">Apple</div>
+
+                    <div class="partner-logo">Google</div>
+                    <div class="partner-logo">Microsoft</div>
+                    <div class="partner-logo">Meta</div>
+                    <div class="partner-logo">Amazon</div>
+                    <div class="partner-logo">Netflix</div>
+                    <div class="partner-logo">Apple</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="certificate-section">
+        <div class="container cert-flex">
+            <div class="cert-image">
+                <div class="cert-wrapper">
+                    <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="cert-logo-watermark">
+                    <div class="cert-content-preview">
+                        <div class="cert-title">CERTIFICATE</div>
+                        <div class="cert-sub">of course completion</div>
+                        <div class="cert-name">John Doe</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cert-text">
+                <h2 class="section-title" style="text-align: left;">Офіційне <br><span class="gradient-text">підтвердження</span></h2>
+                <p class="hero-description" style="text-align: left; margin-bottom: 24px;">Після успішного завершення кожного курсу ви отримуєте іменний сертифікат, який можна додати в LinkedIn або резюме. Наші сертифікати мають QR-код для миттєвої верифікації роботодавцем.</p>
+                <div class="stat-card glass" style="display: inline-block; padding: 16px 32px;">
+                    <div class="stat-number" style="font-size: 24px;">Verified by TechIndustry</div>
+                </div>
+            </div>
+        </div>
+    </section>
 </section>
+
 <footer class="glass">
     <div class="container footer-content">
         <div class="footer-brand">
@@ -127,7 +206,7 @@
         <div class="footer-links">
             <div class="footer-col">
                 <h4>Платформа</h4>
-                <a href="/learning">Навчання</a>
+                <a href="/courses">Навчання</a>
                 <a href="/quiz">Тестування</a>
                 <a href="/courses">Всі курси</a>
             </div>

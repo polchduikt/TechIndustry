@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechIndustry</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap&subset=cyrillic" rel="stylesheet">
-
+    <title>TechIndustry | Профіль</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/profile.css">
 </head>
@@ -17,11 +13,14 @@
 <header>
     <div class="container">
         <nav>
-            <a href="/" class="logo">TechIndustry</a>
+            <a href="/" class="logo-link">
+                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+            </a>
             <div class="nav-links">
                 <button onclick="location.href='/'">Головна</button>
-                <button id="myLearningBtn" class="hidden" onclick="location.href='/profile'">Моє навчання</button>
+                <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
                 <div id="authSlot"></div>
             </div>
         </nav>
@@ -77,32 +76,32 @@
         <div class="courses-grid" id="coursesGrid">
             <div class="course-progress-card glass" data-status="in-progress" data-category="frontend">
                 <div class="course-header">
-                    <div class="course-icon-small primary">⚡</div>
+                    <div class="course-icon-small" style="background: rgba(99, 102, 241, 0.2);">⚡</div>
                     <div class="course-badge in-progress">В процесі</div>
                 </div>
                 <h3 class="course-name">JavaScript Fundamentals</h3>
-                <p class="course-progress-text">7 з 12 модулів завершено</p>
+                <p class="course-progress-text">0 з 12 модулів завершено</p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar-fill progress-58"></div>
+                    <div class="progress-bar-fill" style="width: 0%"></div>
                 </div>
                 <div class="course-meta-small">
-                    <span>⏱️ 14/24 год</span>
-                    <span class="progress-percent">58%</span>
+                    <span>⏱️ 0/24 год</span>
+                    <span class="progress-percent">0%</span>
                 </div>
-                <button class="btn btn-primary btn-continue" onclick="location.href='/course/javascript'">
-                    Продовжити навчання
+                <button class="btn btn-primary btn-continue" onclick="location.href='/course?course=javascript-basics'">
+                    Почати навчання
                 </button>
             </div>
 
             <div class="course-progress-card glass" data-status="completed" data-category="frontend">
                 <div class="course-header">
-                    <div class="course-icon-small accent">⚛️</div>
+                    <div class="course-icon-small" style="background: rgba(236, 72, 153, 0.2);">⚛️</div>
                     <div class="course-badge completed">Завершено</div>
                 </div>
                 <h3 class="course-name">React & Next.js</h3>
                 <p class="course-progress-text">10 з 10 модулів завершено</p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar-fill completed progress-100"></div>
+                    <div class="progress-bar-fill completed" style="width: 100%"></div>
                 </div>
                 <div class="course-meta-small">
                     <span>⏱️ 20/20 год</span>
@@ -115,13 +114,13 @@
 
             <div class="course-progress-card glass" data-status="in-progress" data-category="backend">
                 <div class="course-header">
-                    <div class="course-icon-small secondary">🐍</div>
+                    <div class="course-icon-small" style="background: rgba(139, 92, 246, 0.2);">🐍</div>
                     <div class="course-badge in-progress">В процесі</div>
                 </div>
                 <h3 class="course-name">Python для аналізу даних</h3>
                 <p class="course-progress-text">3 з 15 модулів завершено</p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar-fill progress-20"></div>
+                    <div class="progress-bar-fill" style="width: 20%"></div>
                 </div>
                 <div class="course-meta-small">
                     <span>⏱️ 6/30 год</span>
@@ -134,13 +133,13 @@
 
             <div class="course-progress-card glass" data-status="in-progress" data-category="backend">
                 <div class="course-header">
-                    <div class="course-icon-small warning">🗄️</div>
+                    <div class="course-icon-small" style="background: rgba(245, 158, 11, 0.2);">🗄️</div>
                     <div class="course-badge in-progress">В процесі</div>
                 </div>
                 <h3 class="course-name">PostgreSQL & MongoDB</h3>
                 <p class="course-progress-text">5 з 8 модулів завершено</p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar-fill progress-62"></div>
+                    <div class="progress-bar-fill" style="width: 62%"></div>
                 </div>
                 <div class="course-meta-small">
                     <span>⏱️ 10/16 год</span>
@@ -152,7 +151,7 @@
             </div>
         </div>
 
-        <div class="empty-state hidden" id="emptyState">
+        <div class="empty-state" id="emptyState" style="display: none;">
             <div class="empty-icon">📚</div>
             <h3>Курсів не знайдено</h3>
             <p>За вибраним фільтром немає курсів</p>

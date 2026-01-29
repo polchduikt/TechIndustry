@@ -16,7 +16,6 @@ function togglePassword(inputId, button) {
     button.classList.toggle('active');
 }
 
-// Форматування телефону
 function formatPhoneNumber(input) {
     let value = input.value.replace(/\D/g, '');
 
@@ -49,11 +48,10 @@ function formatPhoneNumber(input) {
     input.value = formatted;
 }
 
-// Модальне вікно для відновлення пароля
 let resetData = {
     emailOrPhone: '',
     code: '',
-    step: 1 // 1 - введення email/phone, 2 - введення коду, 3 - новий пароль
+    step: 1
 };
 
 function showForgotPasswordModal() {
@@ -258,11 +256,8 @@ async function resetPassword() {
             messageDiv.textContent = 'Пароль успішно змінено! Перенаправлення...';
             setTimeout(() => {
                 closeForgotPasswordModal();
-                // Якщо користувач на сторінці логіну
                 if (window.location.pathname === '/login') {
-                    // Просто закриваємо модалку
                 } else {
-                    // Якщо на settings, перенаправляємо на логін
                     window.location.href = '/login';
                 }
             }, 2000);
@@ -276,7 +271,6 @@ async function resetPassword() {
     }
 }
 
-// Ініціалізація поля телефону при завантаженні
 document.addEventListener('DOMContentLoaded', () => {
     const phoneInput = document.getElementById('phoneInput');
 
@@ -346,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Закриття модалки при кліку поза нею
     document.getElementById('forgotPasswordModal')?.addEventListener('click', (e) => {
         if (e.target.id === 'forgotPasswordModal') {
             closeForgotPasswordModal();
@@ -357,8 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function handleLogin(event) {
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(new FormData(form));
     const messageDiv = document.getElementById('loginMessage');
 
     try {
@@ -367,10 +359,9 @@ async function handleLogin(event) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
-
         const result = await response.json();
-
         if (response.ok) {
+            localStorage.setItem('token', result.token);
             messageDiv.className = 'message success';
             messageDiv.textContent = result.message;
             setTimeout(() => window.location.href = '/', 1000);
@@ -380,7 +371,7 @@ async function handleLogin(event) {
         }
     } catch (error) {
         messageDiv.className = 'message error';
-        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+        messageDiv.textContent = 'Connection error';
     }
 }
 
@@ -420,6 +411,6 @@ async function handleRegister(event) {
         }
     } catch (error) {
         messageDiv.className = 'message error';
-        messageDiv.textContent = 'Помилка з\'єднання з сервером';
+        messageDiv.textContent = 'Connection error';
     }
 }

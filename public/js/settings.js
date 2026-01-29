@@ -1,7 +1,6 @@
 let originalData = {};
 let hasAvatar = false;
 
-// Функція форматування телефону (така ж як в login.js)
 function formatPhoneNumber(input) {
     let value = input.value.replace(/\D/g, '');
 
@@ -34,7 +33,6 @@ function formatPhoneNumber(input) {
     input.value = formatted;
 }
 
-// Ініціалізація поля телефону
 function initPhoneInput(phoneInput) {
     if (!phoneInput) return;
 
@@ -98,7 +96,6 @@ function initPhoneInput(phoneInput) {
     });
 }
 
-// Модальне вікно для відновлення пароля
 let resetData = {
     emailOrPhone: '',
     code: '',
@@ -206,10 +203,7 @@ async function requestResetCode() {
         if (response.ok) {
             resetData.emailOrPhone = emailOrPhone;
             resetData.step = 2;
-
-            // Показуємо notification з кодом
             showCodeNotification(result.code);
-
             updateModalContent();
         } else {
             messageDiv.className = 'message error';
@@ -221,7 +215,6 @@ async function requestResetCode() {
     }
 }
 
-// Нова функція для показу коду (додати в settings.js)
 function showCodeNotification(code) {
     const notification = document.createElement('div');
     notification.className = 'code-notification';
