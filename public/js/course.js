@@ -6,7 +6,6 @@ async function loadCourse() {
   try {
     const token = localStorage.getItem('token');
 
-    // 1. Отримуємо дані курсу
     const res = await fetch(`/api/courses/${slug}`);
     if (!res.ok) throw new Error('Не вдалося завантажити курс');
     const course = await res.json();
