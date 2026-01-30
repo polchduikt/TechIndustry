@@ -1,0 +1,29 @@
+{
+  "id": "python",
+  "title": "Python Developer Roadmap",
+  "description": "Універсальний шлях для backend, data та automation",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Основи Python",
+      "order": 1,
+      "topics": [
+        { "name": "Syntax & Data Types", "important": true },
+        { "name": "Functions", "important": true },
+        { "name": "Modules & Packages", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Backend Basics",
+      "order": 2,
+      "topics": [
+        { "name": "Flask / FastAPI", "important": true },
+        { "name": "ORM Basics", "important": false },
+        { "name": "REST APIs", "important": true }
+      ]
+    }
+  ]
+}

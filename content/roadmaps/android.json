@@ -1,0 +1,29 @@
+{
+  "id": "android",
+  "title": "Android Developer Roadmap",
+  "description": "Розробка нативних Android-додатків",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Android Basics",
+      "order": 1,
+      "topics": [
+        { "name": "Kotlin Basics", "important": true },
+        { "name": "Android Studio", "important": true },
+        { "name": "Activity Lifecycle", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "UI & Navigation",
+      "order": 2,
+      "topics": [
+        { "name": "XML Layouts", "important": true },
+        { "name": "Navigation Component", "important": false },
+        { "name": "Material Design", "important": true }
+      ]
+    }
+  ]
+}

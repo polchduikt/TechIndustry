@@ -8,6 +8,7 @@ const progressRoutes = require('./src/routes/progressRoutes');
 const { protectPage } = require('./src/middleware/pageAuth');
 const certificateRoutes = require('./src/routes/certificateRoutes');
 const quizRoutes = require('./src/routes/quizRoutes');
+const roadmapRoutes = require('./src/routes/roadmapRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/courses', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/certificates', certificateRoutes);
+app.use('/api/roadmaps', roadmapRoutes);
 
 
 app.get('/', (req, res) => {
@@ -66,6 +68,10 @@ app.get('/certificate', protectPage, (req, res) => {
 
 app.get('/quiz', protectPage, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'quiz.html'));
+});
+
+app.get('/roadmap', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'roadmap.html'));
 });
 
 

@@ -1,0 +1,29 @@
+{
+  "id": "java",
+  "title": "Java Developer Roadmap",
+  "description": "Розробка надійних enterprise-рішень",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Core Java",
+      "order": 1,
+      "topics": [
+        { "name": "OOP Principles", "important": true },
+        { "name": "Collections", "important": true },
+        { "name": "JVM Basics", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Backend Development",
+      "order": 2,
+      "topics": [
+        { "name": "Spring Boot", "important": true },
+        { "name": "REST APIs", "important": true },
+        { "name": "JPA & Hibernate", "important": false }
+      ]
+    }
+  ]
+}

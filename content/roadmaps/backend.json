@@ -1,0 +1,109 @@
+{
+  "id": "backend",
+  "title": "Backend Developer Roadmap",
+  "description": "Шлях архітектора серверних рішень: від баз даних до хмарного масштабування",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Programming Foundations",
+      "order": 1,
+      "topics": [
+        { "name": "JavaScript / TypeScript Basics", "important": true },
+        { "name": "Node.js Fundamentals", "important": true },
+        { "name": "Data Types & Control Flow", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Backend Basics",
+      "order": 2,
+      "topics": [
+        { "name": "HTTP & REST Principles", "important": true },
+        { "name": "Express.js Framework", "important": true },
+        { "name": "MVC Architecture", "important": true }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "name": "Databases Fundamentals",
+      "order": 3,
+      "topics": [
+        { "name": "PostgreSQL", "important": true },
+        { "name": "Indexes & Relations", "important": true },
+        { "name": "Transactions", "important": true }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "name": "Advanced Database Design",
+      "order": 4,
+      "topics": [
+        { "name": "Normalization", "important": true },
+        { "name": "Query Optimization", "important": true },
+        { "name": "Database Migrations", "important": false }
+      ]
+    },
+    {
+      "id": "phase-5",
+      "name": "Authentication & Security",
+      "order": 5,
+      "topics": [
+        { "name": "JWT Authentication", "important": true },
+        { "name": "Password Hashing", "important": true },
+        { "name": "RBAC", "important": true }
+      ]
+    },
+    {
+      "id": "phase-6",
+      "name": "APIs & Integrations",
+      "order": 6,
+      "topics": [
+        { "name": "REST Advanced Patterns", "important": true },
+        { "name": "GraphQL Basics", "important": false },
+        { "name": "Third-party APIs", "important": true }
+      ]
+    },
+    {
+      "id": "phase-7",
+      "name": "Testing",
+      "order": 7,
+      "topics": [
+        { "name": "Unit Testing", "important": true },
+        { "name": "Integration Testing", "important": true },
+        { "name": "API Testing", "important": false }
+      ]
+    },
+    {
+      "id": "phase-8",
+      "name": "Performance & Scaling",
+      "order": 8,
+      "topics": [
+        { "name": "Caching (Redis)", "important": true },
+        { "name": "Load Balancing", "important": true },
+        { "name": "Horizontal Scaling", "important": false }
+      ]
+    },
+    {
+      "id": "phase-9",
+      "name": "DevOps Basics",
+      "order": 9,
+      "topics": [
+        { "name": "Docker", "important": true },
+        { "name": "CI/CD Pipelines", "important": true },
+        { "name": "Environment Configs", "important": false }
+      ]
+    },
+    {
+      "id": "phase-10",
+      "name": "Production & Architecture",
+      "order": 10,
+      "topics": [
+        { "name": "Monitoring & Logging", "important": true },
+        { "name": "System Design Basics", "important": true },
+        { "name": "Production Best Practices", "important": true }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "csharp",
+  "title": "C# Developer Roadmap",
+  "description": "Розробка desktop, web та enterprise рішень",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "C# Fundamentals",
+      "order": 1,
+      "topics": [
+        { "name": "OOP in C#", "important": true },
+        { "name": "LINQ", "important": true },
+        { "name": "Collections", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": ".NET Ecosystem",
+      "order": 2,
+      "topics": [
+        { "name": "ASP.NET Core", "important": true },
+        { "name": "Entity Framework", "important": true },
+        { "name": "Dependency Injection", "important": false }
+      ]
+    }
+  ]
+}
