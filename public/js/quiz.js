@@ -46,20 +46,25 @@ function buildQuizModuleId(module) {
 
 async function openQuizFromLesson(slug, lessonId) {
     const courseRes = await fetch(`/api/courses/${slug}`, { credentials: 'include' });
-    if (!courseRes.ok) throw new Error('Failed to load course');
-
     const course = await courseRes.json();
     const lid = Number(lessonId);
-    const module = course.modules?.find(m => m.lessons?.some(l => l.id === lid));
 
-    if (!module || module.order == null) throw new Error('Module mapping error');
+    let foundLesson = null;
+    course.modules?.forEach(m => {
+        const lesson = m.lessons?.find(l => Number(l.id) === lid);
+        if (lesson) foundLesson = lesson;
+    });
+
+    if (!foundLesson || foundLesson.order == null) throw new Error('Урок не знайдено або не вказано order');
 
     const quizzesRes = await fetch(`/api/courses/${slug}/quizzes`, { credentials: 'include' });
     const quizzes = await quizzesRes.json();
-    const orderPrefix = String(module.order).padStart(2, '0') + '-';
+
+    const orderPrefix = String(foundLesson.order).padStart(2, '0') + '-';
+
     const quiz = quizzes.find(q => typeof q.moduleId === 'string' && q.moduleId.startsWith(orderPrefix));
 
-    if (!quiz) throw new Error('Quiz not found');
+    if (!quiz) throw new Error(`Тест із префіксом ${orderPrefix} не знайдено`);
 
     currentCourseSlug = slug;
     loadQuiz(slug, quiz.moduleId);
@@ -76,6 +81,18 @@ async function openQuizFromLesson(slug, lessonId) {
     const moduleId = params.get('moduleId');
     const lessonId = params.get('lessonId');
 
+    if (slug && lessonId) {
+        try {
+            showQuizContainer();
+            await openQuizFromLesson(slug, lessonId);
+            return;
+        } catch (e) {
+            console.error("Тест не знайдено:", e.message);
+            loadCourse(slug);
+            return;
+        }
+    }
+
     if (slug && moduleId) {
         currentCourseSlug = slug;
         showQuizContainer();
@@ -83,23 +100,11 @@ async function openQuizFromLesson(slug, lessonId) {
         return;
     }
 
-    if (slug && lessonId) {
-        try {
-            showQuizContainer();
-            await openQuizFromLesson(slug, lessonId);
-            return;
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
     showQuizList();
     fetch('/api/courses', { credentials: 'include' })
         .then(res => res.json())
         .then(renderCourses)
-        .catch(() => {
-            quizListEl.innerHTML = '<p>Не вдалося завантажити курси</p>';
-        });
+        .catch(() => { quizListEl.innerHTML = '<p>Помилка завантаження</p>'; });
 })();
 
 function renderCourses(courses) {
@@ -190,14 +195,14 @@ function renderQuestion() {
     quizContainerEl.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
             <h2 style="margin:0">${currentQuiz.title}</h2>
-            <button class="btn btn-secondary" onclick="showQuizList(); loadCourse('${currentCourseSlug}')">← Назад</button>
+            <button class="quiz-header-back" onclick="showQuizList(); loadCourse('${currentCourseSlug}')">Назад</button>
         </div>
         ${renderProgress()}
         <div class="question">
             <p>${q.question}</p>
             <div id="optionsContainer"></div>
         </div>
-        <div id="quizNav" style="display:flex;justify-content:space-between;margin-top:30px"></div>
+        <div id="quizNav"></div>
     `;
 
     const optionsBox = document.getElementById('optionsContainer');
@@ -216,17 +221,22 @@ function renderQuestion() {
     }
 
     const nav = document.getElementById('quizNav');
+
     if (currentIndex > 0) {
         const btnBack = document.createElement('button');
-        btnBack.textContent = '← Назад';
-        btnBack.onclick = () => { saveAnswer(); currentIndex--; renderQuestion(); };
+        btnBack.textContent = 'Попереднє';
+        btnBack.onclick = () => {
+            saveAnswer();
+            currentIndex--;
+            renderQuestion();
+        };
         nav.appendChild(btnBack);
     } else {
         nav.appendChild(document.createElement('div'));
     }
 
     const btnNext = document.createElement('button');
-    btnNext.textContent = currentIndex === currentQuiz.questions.length - 1 ? 'Завершити' : 'Далі →';
+    btnNext.textContent = currentIndex === currentQuiz.questions.length - 1 ? 'Завершити' : 'Наступне';
     btnNext.onclick = () => {
         saveAnswer();
         if (currentIndex < currentQuiz.questions.length - 1) {
@@ -267,12 +277,18 @@ function submitQuiz() {
 function showResult(result) {
     const passed = result.passed;
     quizContainerEl.innerHTML = `
-        <div class="glass" style="padding:40px;text-align:center;border-radius:24px">
-            <h2 style="color:${passed ? '#4ade80' : '#f87171'}">${passed ? '🎉 Пройдено!' : '❌ Не пройдено'}</h2>
-            <p>Результат: ${result.percent}%</p>
-            <div style="display:flex;gap:12px;justify-content:center;margin-top:24px">
-                <button onclick="loadQuiz('${currentCourseSlug}', '${currentQuiz.moduleId}')">Спробувати ще раз</button>
-                <button class="btn btn-secondary" onclick="location.href='/course?course=${currentCourseSlug}'">До курсу</button>
+        <div class="quiz-result-modal">
+            <h2 style="color:${passed ? '#4ade80' : '#f87171'}">
+                ${passed ? 'Вітаємо! Тест пройдено!' : 'Тест не пройдено'}
+            </h2>
+            <p>Ваш результат: <strong>${result.percent}%</strong></p>
+            <div class="result-buttons">
+                <button onclick="loadQuiz('${currentCourseSlug}', '${currentQuiz.moduleId}')">
+                    Спробувати ще раз
+                </button>
+                <button onclick="location.href='/course?course=${currentCourseSlug}'">
+                    Повернутися до курсу
+                </button>
             </div>
         </div>
     `;

@@ -34,7 +34,6 @@ class QuizService {
                 correct = Number(answer) === Number(q.correctAnswer);
             }
 
-            // MULTIPLE
             if (q.type === 'multiple') {
                 if (Array.isArray(answer) && Array.isArray(q.correctAnswer)) {
                     const a = answer.map(Number).sort().join(',');
@@ -43,7 +42,6 @@ class QuizService {
                 }
             }
 
-            // CODE
             if (q.type === 'code' && q.expectedPattern) {
                 const regex = new RegExp(q.expectedPattern, 'm');
                 correct = regex.test(answer);
