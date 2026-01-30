@@ -3,110 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechIndustry | Налаштування</title>
+    <title>TechIndustry</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
-
 <header>
     <div class="container">
         <nav>
             <a href="/" class="logo-link">
                 <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
             </a>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
                 <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
                 <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
-                <div id="authSlot"></div>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
             </div>
         </nav>
     </div>
 </header>
-
 <section class="settings-section">
     <div class="container">
         <div class="settings-container">
             <div class="settings-sidebar glass">
                 <div class="avatar-edit-container">
                     <div class="avatar-preview">
-                        <img id="currentAvatar" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="Avatar">
-                        <label for="avatarInput" class="avatar-upload-label">
-                            <span>📷</span>
-                        </label>
+                        <img id="currentAvatar" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff"
+                             alt="...">
                     </div>
                     <input type="file" id="avatarInput" accept="image/*" hidden>
-                    <h3 id="displayUsername">Користувач</h3>
-                    <p id="displayEmail">email@example.com</p>
+                    <button type="button" class="btn btn-secondary delete-avatar-btn hidden" id="deleteAvatarBtn">
+                        Видалити аватар
+                    </button>
+                    <h3 id="displayUsername"></h3>
+                    <p id="displayEmail"></p>
                 </div>
                 <div class="settings-nav">
                     <button class="nav-btn active">Основне</button>
-                    <button class="nav-btn">Безпека</button>
-                    <button class="nav-btn">Сповіщення</button>
                 </div>
             </div>
-
             <div class="settings-content glass">
-                <h2 class="section-title" style="text-align: left; margin-bottom: 32px;">Редагувати профіль</h2>
-
+                <h2 class="section-title profile-title">Редагувати профіль</h2>
                 <form id="settingsForm" class="settings-form">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="username">Username *</label>
-                            <input type="text" id="username" class="glass-input" placeholder="Ваш нікнейм" required>
+                            <label for="username">Ім'я користувача *</label>
+                            <input type="text" id="username" class="glass-input" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email *</label>
-                            <input type="email" id="email" class="glass-input" placeholder="example@mail.com" required>
+                            <input type="email" id="email" class="glass-input" required>
                         </div>
                         <div class="form-group">
                             <label for="first_name">Ім'я *</label>
-                            <input type="text" id="first_name" class="glass-input" placeholder="Іван" required>
+                            <input type="text" id="first_name" class="glass-input" required>
                         </div>
                         <div class="form-group">
                             <label for="last_name">Прізвище *</label>
-                            <input type="text" id="last_name" class="glass-input" placeholder="Іваненко" required>
+                            <input type="text" id="last_name" class="glass-input" required>
                         </div>
                         <div class="form-group">
-                            <label for="patronymic">По батькові</label>
-                            <input type="text" id="patronymic" class="glass-input" placeholder="Іванович">
+                            <label for="patronymic">По-батькові</label>
+                            <input type="text" id="patronymic" class="glass-input">
                         </div>
                         <div class="form-group">
                             <label for="phone">Телефон *</label>
-                            <input type="tel" id="phone" class="glass-input" placeholder="+380XXXXXXXXX" required>
+                            <input type="tel" id="phone" class="glass-input" required maxlength="17">
                         </div>
                         <div class="form-group">
                             <label for="birth_date">Дата народження</label>
                             <input type="date" id="birth_date" class="glass-input">
                         </div>
                     </div>
-
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="location.href='/profile'">Скасувати</button>
+                        <button type="button" class="btn btn-secondary" id="cancelProfileBtn">Скасувати</button>
                         <button type="submit" class="btn btn-primary">Зберегти зміни</button>
                     </div>
                 </form>
-
                 <div class="divider"></div>
-
-                <h2 class="section-title" style="text-align: left; margin-bottom: 32px;">Змінити пароль</h2>
+                <h2 class="section-title password-title">Змінити пароль</h2>
+                <p class="modal-description" style="margin-bottom: 20px;">
+                    <a class="forgot-password-link" onclick="showForgotPasswordModal()">Забули пароль?</a>
+                </p>
                 <form id="passwordForm" class="settings-form">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="oldPassword">Поточний пароль *</label>
-                            <input type="password" id="oldPassword" class="glass-input" placeholder="Введіть поточний пароль" required>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="oldPassword" class="glass-input" required>
+                                <button type="button" class="toggle-password" onclick="togglePasswordSettings('oldPassword', this)">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="newPassword">Новий пароль *</label>
-                            <input type="password" id="newPassword" class="glass-input" placeholder="Мінімум 6 символів" required minlength="6">
+                            <div class="password-input-wrapper">
+                                <input type="password" id="newPassword" class="glass-input" required minlength="8">
+                                <button type="button" class="toggle-password" onclick="togglePasswordSettings('newPassword', this)">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="confirmPassword">Підтвердіть пароль *</label>
-                            <input type="password" id="confirmPassword" class="glass-input" placeholder="Повторіть новий пароль" required>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="confirmPassword" class="glass-input" required>
+                                <button type="button" class="toggle-password" onclick="togglePasswordSettings('confirmPassword', this)">
+                                    <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -117,6 +142,13 @@
         </div>
     </div>
 </section>
+
+<div id="forgotPasswordModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
 
 <footer class="glass">
     <div class="container footer-content">

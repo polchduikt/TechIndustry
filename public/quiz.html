@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестування | TechIndustry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/quiz.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo-link">
+                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+            </a>
+            <div class="nav-links" id="navLinks">
+                <button onclick="location.href='/'">Головна</button>
+                <button onclick="location.href='/courses'">Курси</button>
+                <button onclick="location.href='/quiz'">Тестування</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="page-content">
+    <div class="container">
+        <h1 class="section-title">Центр тестування</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Перевірте свої знання та отримайте підтвердження навичок</p>
+
+        <div id="quizList"></div>
+
+        <div id="quizContainer"></div>
+    </div>
+</main>
+
+<footer class="glass">
+    <div class="container footer-content">
+        <div class="footer-brand">
+            <div class="logo">TechIndustry</div>
+            <p>Ваш шлях у світ високих технологій починається тут.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Платформа</h4>
+                <a href="/courses">Навчання</a>
+                <a href="/quiz">Тестування</a>
+                <a href="/courses">Всі курси</a>
+            </div>
+            <div class="footer-col">
+                <h4>Підтримка</h4>
+                <a href="#">Допомога</a>
+                <a href="#">Контакти</a>
+                <a href="#">Спільнота</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
+    </div>
+</footer>
+
+<script src="js/index.js"></script>
+<script src="js/quiz.js"></script>
+</body>
+</html>

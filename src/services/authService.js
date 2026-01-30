@@ -14,7 +14,16 @@ class AuthService {
         });
         if (existingCustomer) throw new Error('User with this email or phone already exists');
 
-        const customer = await Customer.create({ first_name, last_name, email, phone, birth_date, patronymic });
+        const birthDate = birth_date && birth_date.trim() !== '' ? birth_date : null;
+
+        const customer = await Customer.create({
+            first_name,
+            last_name,
+            email,
+            phone,
+            birth_date: birthDate,
+            patronymic
+        });
         const user = await User.create({ username, password, customer_id: customer.id });
 
         return user;
@@ -41,6 +50,71 @@ class AuthService {
         }
 
         return foundUser;
+    }
+
+    async requestPasswordReset(emailOrPhone) {
+        const customer = await Customer.findOne({
+            where: { [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }] }
+        });
+
+        if (!customer) {
+            throw new Error('Користувача з такою поштою або телефоном не знайдено');
+        }
+
+        const user = await User.findOne({ where: { customer_id: customer.id } });
+        if (!user) {
+            throw new Error('Користувача не знайдено');
+        }
+
+        const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+        await user.update({
+            reset_code: resetCode,
+            reset_code_expires: expiresAt
+        });
+
+        return { resetCode, email: customer.email, phone: customer.phone };
+    }
+
+    async verifyResetCode(emailOrPhone, code) {
+        const customer = await Customer.findOne({
+            where: { [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }] }
+        });
+
+        if (!customer) {
+            throw new Error('Користувача не знайдено');
+        }
+
+        const user = await User.findOne({ where: { customer_id: customer.id } });
+        if (!user) {
+            throw new Error('Користувача не знайдено');
+        }
+
+        if (!user.reset_code || !user.reset_code_expires) {
+            throw new Error('Код не був запитаний');
+        }
+
+        if (new Date() > user.reset_code_expires) {
+            throw new Error('Код прострочений');
+        }
+
+        if (user.reset_code !== code) {
+            throw new Error('Невірний код');
+        }
+
+        return user;
+    }
+
+    async resetPassword(emailOrPhone, code, newPassword) {
+        const user = await this.verifyResetCode(emailOrPhone, code);
+
+        user.password = newPassword;
+        user.reset_code = null;
+        user.reset_code_expires = null;
+        await user.save();
+
+        return true;
     }
 
     generateToken(userId, username) {

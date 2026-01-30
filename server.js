@@ -7,6 +7,7 @@ const courseRoutes = require('./src/routes/courseRoutes');
 const progressRoutes = require('./src/routes/progressRoutes');
 const { protectPage } = require('./src/middleware/pageAuth');
 const certificateRoutes = require('./src/routes/certificateRoutes');
+const quizRoutes = require('./src/routes/quizRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -27,13 +28,14 @@ app.use((req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/courses', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/certificates', certificateRoutes);
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
 app.get('/profile', protectPage, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
@@ -61,6 +63,11 @@ app.get('/lesson', (req, res) => {
 app.get('/certificate', protectPage, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'certificate.html'));
 });
+
+app.get('/quiz', protectPage, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'quiz.html'));
+});
+
 
 const startServer = async () => {
     try {

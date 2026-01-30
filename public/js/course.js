@@ -6,7 +6,6 @@ async function loadCourse() {
   try {
     const token = localStorage.getItem('token');
 
-    // 1. Отримуємо дані курсу
     const res = await fetch(`/api/courses/${slug}`);
     if (!res.ok) throw new Error('Не вдалося завантажити курс');
     const course = await res.json();
@@ -27,7 +26,6 @@ async function loadCourse() {
     modulesDiv.innerHTML = '';
     let lessonToLoad = null;
 
-    // 3. Рендеримо модулі та уроки
     course.modules.sort((a, b) => a.order - b.order);
     course.modules.forEach(module => {
       const moduleTitle = document.createElement('h3');
@@ -88,8 +86,10 @@ async function loadLesson(lessonId, clickedEl) {
         `<button class="btn btn-primary" onclick="loadNext(${data.next})">Наступний урок</button>` :
         `<button class="btn btn-primary" disabled>Курс завершено</button>`
     }
-          <button class="btn btn-secondary" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);" 
-                  onclick="location.href='/quiz?lesson=${data.id}'">Пройти тест</button>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);" 
+                  onclick="location.href='/quiz?course=${encodeURIComponent(slug)}&lessonId=${data.id}'">
+            Почати тестування
+          </button>
         </div>
       </div>
     `;

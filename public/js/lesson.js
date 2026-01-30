@@ -1,5 +1,3 @@
-let currentLessonId = null;
-
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const lessonId = params.get('lesson');

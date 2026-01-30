@@ -24,6 +24,14 @@ module.exports = (sequelize) => {
                 model: 'customers',
                 key: 'id'
             }
+        },
+        reset_code: {
+            type: DataTypes.STRING(6),
+            allowNull: true
+        },
+        reset_code_expires: {
+            type: DataTypes.DATE,
+            allowNull: true
         }
     }, {
         tableName: 'users',

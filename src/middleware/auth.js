@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
         if (!token) {
             return res.status(401).json({ message: 'Немає токену авторизації' });
         }
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const id = decoded.userId || decoded.id || decoded;
         req.user = { id, username: decoded.username };

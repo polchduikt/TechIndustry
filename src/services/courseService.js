@@ -41,6 +41,7 @@ class CourseService {
             where: { module_id: lesson.module_id },
             order: [['order', 'ASC']]
         });
+
         const index = lessons.findIndex(l => l.id === lesson.id);
 
         return {
