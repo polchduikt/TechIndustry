@@ -17,7 +17,7 @@ The platform is built using a robust and maintainable technology stack:
 * **Backend:** Node.js, Express.js
 * **Database:** PostgreSQL
 * **ORM:** Sequelize
-* **Architecture:** Layered MVC (Routes, Controllers, Services, Models)
+* **Architecture:** SPA (Single Page Application), Layered MVC (Routes, Controllers, Services, Models)
 * **Authentication:** JWT-based authentication
 * **UI/UX:** Custom CSS (Glassmorphism), responsive layout, modern typography
 * **Environment Configuration:** Secure `.env` configuration
