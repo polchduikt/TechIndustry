@@ -133,11 +133,49 @@ npm run dev
 ---
 
 ## API Highlights
+## Public APIs (No Authentication Required)
 
-* `/api/auth` – Authentication and user profile
-* `/api/courses` – Course catalog
-* `/api/progress` – User progress tracking
-* `/api/certificates` – Certificate availability and PDF generation
+### Authentication
+
+* `POST /api/auth/register` – Register a new user with optional avatar upload
+* `POST /api/auth/login` – User login (returns a JWT token)
+
+### Courses & Roadmaps
+
+* `GET /api/courses` – Retrieve the full catalog of available courses
+* `GET /api/courses/:slug` – Get detailed course information (modules, descriptions)
+* `GET /api/courses/lessons/:lessonId` – Retrieve lesson content and materials
+* `GET /api/roadmaps/:id` – Load a structured learning roadmap (frontend, backend, etc.)
+
+### Quizzes & Assessments
+
+* `GET /api/courses/:slug/quizzes` – List available quizzes for a specific course
+* `GET /api/courses/:slug/quizzes/:moduleId` – Retrieve quiz questions (without correct answers)
+* `POST /api/courses/:slug/quizzes/:moduleId/submit` – Submit quiz answers for server-side validation
+
+
+## Protected APIs (Authentication Required)
+
+### Profile Management
+
+* `GET /api/auth/profile` – Retrieve the current user profile data
+* `PATCH /api/auth/update-profile` – Update email, phone number, or username
+* `PATCH /api/auth/change-password` – Secure password change with old password verification
+* `POST /api/auth/upload-avatar` – Upload or replace profile avatar (Base64)
+* `DELETE /api/auth/delete-avatar` – Remove the current profile avatar
+
+### Learning Progress
+
+* `GET /api/progress` – Retrieve all enrolled courses with their progress status
+* `POST /api/progress/start` – Start a new course and create a progress record
+* `GET /api/progress/course/:courseSlug` – Retrieve detailed progress for a specific course
+* `POST /api/progress/lesson` – Mark a lesson as completed
+
+### Certificates
+
+* `GET /api/certificates/check/:courseId` – Check certificate eligibility
+* `GET /api/certificates/generate/:courseId` – Generate a certificate record
+* `GET /api/certificates/download/:courseId` – Download the certificate as a PDF file
 
 ---
 
