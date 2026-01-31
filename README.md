@@ -29,6 +29,15 @@ The platform is built using a robust and maintainable technology stack:
 ### Home Page
 ![Home Page](assets/screenshots/home.jpg)
 
+### Course Catalog
+![Course Catalog](assets/screenshots/course.jpg)
+
+### User Profile
+![User Profile](assets/screenshots/profile.jpg)
+
+### Quiz & Testing
+![Quiz System](assets/screenshots/test.jpg)
+
 ---
 
 ## Core Features
