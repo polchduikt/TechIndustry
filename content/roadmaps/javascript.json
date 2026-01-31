@@ -1,0 +1,29 @@
+{
+  "id": "javascript",
+  "title": "JavaScript Developer Roadmap",
+  "description": "Глибоке розуміння мови JavaScript та її внутрішніх механізмів",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Базовий синтаксис",
+      "order": 1,
+      "topics": [
+        { "name": "Variables & Types", "important": true },
+        { "name": "Functions & Scope", "important": true },
+        { "name": "Loops & Conditions", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Асинхронність",
+      "order": 2,
+      "topics": [
+        { "name": "Promises", "important": true },
+        { "name": "Async / Await", "important": true },
+        { "name": "Event Loop", "important": false }
+      ]
+    }
+  ]
+}

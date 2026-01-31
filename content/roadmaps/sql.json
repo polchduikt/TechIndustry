@@ -1,0 +1,29 @@
+{
+  "id": "sql",
+  "title": "SQL & Databases Roadmap",
+  "description": "Проєктування, оптимізація та аналіз даних",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "SQL Basics",
+      "order": 1,
+      "topics": [
+        { "name": "SELECT Queries", "important": true },
+        { "name": "Filtering & Sorting", "important": true },
+        { "name": "Joins", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Advanced SQL",
+      "order": 2,
+      "topics": [
+        { "name": "Indexes", "important": true },
+        { "name": "Transactions", "important": true },
+        { "name": "Query Optimization", "important": false }
+      ]
+    }
+  ]
+}
