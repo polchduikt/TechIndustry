@@ -107,7 +107,7 @@ cd TechIndustry
 2. Install dependencies:
 
 ```bash
-npm install
+npm install express cookie-parser dotenv jsonwebtoken express-validator multer sequelize
 ```
 
 3. Configure environment variables:
