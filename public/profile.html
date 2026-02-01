@@ -16,13 +16,17 @@
             <a href="/" class="logo-link">
                 <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
             </a>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
                 <button onclick="location.href='/roadmap'">Роадмапи</button>
                 <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
-                <div id="authSlot"></div>
+                <button onclick="location.href='/about'">Про нас</button>
+                <button onclick="location.href='/faq'">FAQ</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'" class="nav-active">Моє навчання</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
             </div>
         </nav>
     </div>
@@ -172,15 +176,15 @@
         <div class="footer-links">
             <div class="footer-col">
                 <h4>Платформа</h4>
-                <a href="/learning">Навчання</a>
+                <a href="/courses">Навчання</a>
                 <a href="/quiz">Тестування</a>
-                <a href="/courses">Всі курси</a>
+                <a href="/roadmap">Роадмапи</a>
             </div>
             <div class="footer-col">
-                <h4>Підтримка</h4>
-                <a href="#">Допомога</a>
+                <h4>Інформація</h4>
+                <a href="/about">Про нас</a>
+                <a href="/faq">Питання та відповіді</a>
                 <a href="#">Контакти</a>
-                <a href="#">Спільнота</a>
             </div>
         </div>
     </div>
@@ -188,6 +192,7 @@
         <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
     </div>
 </footer>
+
 <script src="js/profile.js"></script>
 <script src="js/index.js"></script>
 </body>

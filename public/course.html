@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+
 <header>
     <div class="container">
         <nav>
@@ -19,9 +20,11 @@
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
                 <button onclick="location.href='/roadmap'">Роадмапи</button>
-                <button onclick="location.href='/courses'">Курси</button>
+                <button onclick="location.href='/courses'" class="nav-active">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button onclick="location.href='/about'">Про нас</button>
+                <button onclick="location.href='/faq'">FAQ</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
                 <div id="authSlot">
                     <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
                 </div>
@@ -29,6 +32,7 @@
         </nav>
     </div>
 </header>
+
 <section class="course-section">
     <div class="container">
         <h1 id="courseTitle" class="course-page-title">Завантаження курсу...</h1>
@@ -45,6 +49,7 @@
         </div>
     </div>
 </section>
+
 <footer class="glass">
     <div class="container footer-content">
         <div class="footer-brand">
@@ -56,13 +61,13 @@
                 <h4>Платформа</h4>
                 <a href="/courses">Навчання</a>
                 <a href="/quiz">Тестування</a>
-                <a href="/courses">Всі курси</a>
+                <a href="/roadmap">Роадмапи</a>
             </div>
             <div class="footer-col">
-                <h4>Підтримка</h4>
-                <a href="#">Допомога</a>
+                <h4>Інформація</h4>
+                <a href="/about">Про нас</a>
+                <a href="/faq">Питання та відповіді</a>
                 <a href="#">Контакти</a>
-                <a href="#">Спільнота</a>
             </div>
         </div>
     </div>
