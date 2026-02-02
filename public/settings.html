@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
+
 <header>
     <div class="container">
         <nav>
@@ -22,7 +23,9 @@
                 <button onclick="location.href='/roadmap'">Роадмапи</button>
                 <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
+                <button onclick="location.href='/about'">Про нас</button>
+                <button onclick="location.href='/faq'">FAQ</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
                 <div id="authSlot">
                     <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
                 </div>
@@ -30,6 +33,7 @@
         </nav>
     </div>
 </header>
+
 <section class="settings-section">
     <div class="container">
         <div class="settings-container">
@@ -160,15 +164,15 @@
         <div class="footer-links">
             <div class="footer-col">
                 <h4>Платформа</h4>
-                <a href="/learning">Навчання</a>
+                <a href="/courses">Навчання</a>
                 <a href="/quiz">Тестування</a>
-                <a href="/courses">Всі курси</a>
+                <a href="/roadmap">Роадмапи</a>
             </div>
             <div class="footer-col">
-                <h4>Підтримка</h4>
-                <a href="#">Допомога</a>
+                <h4>Інформація</h4>
+                <a href="/about">Про нас</a>
+                <a href="/faq">Питання та відповіді</a>
                 <a href="#">Контакти</a>
-                <a href="#">Спільнота</a>
             </div>
         </div>
     </div>
@@ -176,6 +180,7 @@
         <p>&copy; 2026 TechIndustry. Всі права захищені.</p>
     </div>
 </footer>
+
 <script src="js/index.js"></script>
 <script src="js/settings.js"></script>
 </body>

@@ -16,17 +16,22 @@
             <a href="/" class="logo-link">
                 <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
             </a>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'">Головна</button>
                 <button onclick="location.href='/roadmap'">Роадмапи</button>
                 <button onclick="location.href='/courses'">Курси</button>
                 <button onclick="location.href='/quiz'">Тестування</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile.html'">Моє навчання</button>
-                <div id="authSlot"></div>
+                <button onclick="location.href='/about'">Про нас</button>
+                <button onclick="location.href='/faq'">FAQ</button>
+                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
+                <div id="authSlot">
+                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
+                </div>
             </div>
         </nav>
     </div>
 </header>
+
 <div class="container-fluid">
     <div class="auth-container glass">
         <div class="tabs">

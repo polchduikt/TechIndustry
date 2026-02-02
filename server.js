@@ -74,6 +74,14 @@ app.get('/roadmap', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'roadmap.html'));
 });
 
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
+app.get('/faq', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'faq.html'));
+});
+
 
 const startServer = async () => {
     try {
