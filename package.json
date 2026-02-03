@@ -23,6 +23,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-validator": "^7.3.1",
+    "hbs": "^4.2.0",
     "jsonwebtoken": "^9.0.3",
     "marked": "^17.0.1",
     "multer": "^2.0.2",

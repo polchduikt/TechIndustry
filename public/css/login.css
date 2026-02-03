@@ -2,18 +2,8 @@ body {
     overflow-y: scroll;
 }
 
-.logo {
-    font-size: 32px;
-    font-weight: normal;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -1px;
-    text-decoration: none;
-}
-
 .container-fluid {
-    min-height: 50vh;
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,9 +68,8 @@ label {
     display: block;
     margin-bottom: 10px;
     color: var(--text-muted);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
-    padding-left: 0;
 }
 
 .password-input-wrapper {
@@ -104,23 +93,10 @@ label {
     align-items: center;
     justify-content: center;
     color: var(--text-muted);
-    transition: color 0.5s ease;
-}
-
-.toggle-password:hover {
-    color: var(--primary);
-}
-
-.toggle-password .eye-icon {
-    stroke-width: 2;
-}
-
-.toggle-password .eye-slash {
-    display: none;
 }
 
 .toggle-password.active .eye-slash {
-    display: block;
+    display: none;
 }
 
 .glass-input {
@@ -128,9 +104,9 @@ label {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     border-radius: 10px;
-    padding: 20px;
+    padding: 16px;
     color: var(--text);
-    font-size: 18px;
+    font-size: 16px;
     outline: none;
     transition: all 0.5s ease;
 }
@@ -138,13 +114,12 @@ label {
 .glass-input:focus {
     border-color: var(--primary);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 15px;
 }
 
 .auth-btn {
@@ -152,14 +127,14 @@ label {
     margin-top: 10px;
     border-radius: 10px;
     font-size: 18px;
-    padding: 20px;
+    padding: 16px;
 }
 
 .message {
     margin-top: 20px;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 15px;
     text-align: center;
     display: none;
 }
@@ -168,7 +143,6 @@ label {
     display: block;
     background: rgba(239, 68, 68, 0.1);
     color: #fca5a5;
-    border: 1px solid rgba(239, 68, 68, 0.2);
     border-left: 5px solid #EF4444;
 }
 
@@ -176,40 +150,24 @@ label {
     display: block;
     background: rgba(34, 197, 94, 0.1);
     color: #86efac;
-    border: 1px solid rgba(34, 197, 94, 0.2);
     border-left: 5px solid #22C55E;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    opacity: 0.5;
-    cursor: pointer;
-}
-
-/* Модальне вікно */
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
     z-index: 9999;
-    animation: fadeIn 0.3s ease;
 }
 
-.modal-overlay.active {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.modal-overlay.active { display: flex; justify-content: center; align-items: center; }
 
 .modal-content {
     background: var(--dark-light);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
+    border-radius: 24px;
     padding: 40px;
     max-width: 500px;
     width: 90%;
@@ -218,124 +176,41 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 @keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 28px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-close:hover {
-    color: var(--text);
-}
-
-.modal-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: var(--text);
-}
-
-.modal-description {
-    font-size: 16px;
-    color: var(--text-muted);
-    margin-bottom: 30px;
-    line-height: 1.5;
+    position: absolute; top: 20px; right: 20px;
+    background: transparent; border: none;
+    color: var(--text-muted); font-size: 28px; cursor: pointer;
 }
 
 .forgot-password-link {
     display: inline-block;
-    margin-top: 10px;
+    margin-top: 12px;
     color: var(--primary);
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
-    transition: color 0.3s ease;
     text-decoration: none;
 }
 
-.forgot-password-link:hover {
-    color: var(--secondary);
-    text-decoration: underline;
-}
+.forgot-password-link:hover { text-decoration: underline; }
 
-.code-input {
-    text-align: center;
-    font-size: 24px;
-    letter-spacing: 10px;
-    font-weight: bold;
-}
-
-/* Notification для коду */
 .code-notification {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10001;
-    background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(10px);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.3s ease;
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 10001; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px);
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
 }
 
 .code-notification-content {
-    background: var(--dark-light);
-    border: 2px solid var(--primary);
-    border-radius: 20px;
-    padding: 40px;
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
-}
-
-.code-notification-content h4 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: var(--text);
+    background: var(--dark-light); border: 2px solid var(--primary);
+    border-radius: 20px; padding: 40px; text-align: center; max-width: 500px;
 }
 
 .code-display {
-    font-size: 48px;
-    font-weight: bold;
-    letter-spacing: 10px;
+    font-size: 42px; font-weight: bold; letter-spacing: 8px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    padding: 20px;
-    margin: 20px 0;
-    border: 2px dashed var(--primary);
-    border-radius: 10px;
-    font-family: 'Courier New', monospace;
-}
-
-.code-notification-content p {
-    font-size: 16px;
-    color: var(--text-muted);
-    margin-bottom: 10px;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    padding: 20px; margin: 20px 0; border: 2px dashed var(--primary);
 }

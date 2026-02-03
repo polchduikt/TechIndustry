@@ -1,0 +1,61 @@
+<header>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo-link">
+                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
+            </a>
+            <div class="nav-links" id="navLinks">
+                <button onclick="location.href='/'" class="{{#ifCond currentPath '==' '/'}}nav-active{{/ifCond}}">Головна</button>
+                <button onclick="location.href='/roadmap'" class="{{#ifCond currentPath '==' '/roadmap'}}nav-active{{/ifCond}}">Роадмапи</button>
+                <button onclick="location.href='/courses'" class="{{#ifCond currentPath '==' '/courses'}}nav-active{{/ifCond}}">Курси</button>
+                <button onclick="location.href='/quiz'" class="{{#ifCond currentPath '==' '/quiz'}}nav-active{{/ifCond}}">Тестування</button>
+                <button onclick="location.href='/about'" class="{{#ifCond currentPath '==' '/about'}}nav-active{{/ifCond}}">Про нас</button>
+                <button onclick="location.href='/faq'" class="{{#ifCond currentPath '==' '/faq'}}nav-active{{/ifCond}}">FAQ</button>
+
+                {{#if user}}
+                    <button onclick="location.href='/profile'" class="{{#ifCond currentPath '==' '/profile'}}nav-active{{/ifCond}}">Моє навчання</button>
+                    <div class="user-menu">
+                        <div class="user-avatar" onclick="document.getElementById('dropdownMenu').classList.toggle('show')">
+                            {{#if user.Customer.avatar_data}}
+                                <img src="{{user.Customer.avatar_data}}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                            {{else}}
+                                <span>{{substring user.username 0 1}}</span>
+                            {{/if}}
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="/profile" class="dropdown-item">👤 Профіль</a>
+                            <a href="/settings" class="dropdown-item">⚙️ Налаштування</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="logout(event)" class="dropdown-item logout">🚪 Вийти</a>
+                        </div>
+                    </div>
+                {{else}}
+                    <div id="authSlot">
+                        <button class="btn btn-primary" onclick="location.href='/login'">Увійти</button>
+                    </div>
+                {{/if}}
+            </div>
+        </nav>
+    </div>
+</header>
+
+<script>
+    async function logout(event) {
+        event.preventDefault();
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.replace('/');
+        } catch (e) {
+            console.error('Logout error:', e);
+        }
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.closest('.user-menu')) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        }
+    }
+</script>

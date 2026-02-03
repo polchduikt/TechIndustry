@@ -3,40 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechIndustry</title>
+    <title>{{title}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <nav>
-            <a href="/" class="logo-link">
-                <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
-            </a>
-            <div class="nav-links" id="navLinks">
-                <button onclick="location.href='/'">Головна</button>
-                <button onclick="location.href='/roadmap'">Роадмапи</button>
-                <button onclick="location.href='/courses'">Курси</button>
-                <button onclick="location.href='/quiz'">Тестування</button>
-                <button onclick="location.href='/about'">Про нас</button>
-                <button onclick="location.href='/faq'">FAQ</button>
-                <button id="myLearningBtn" style="display: none;" onclick="location.href='/profile'">Моє навчання</button>
-                <div id="authSlot">
-                    <button class="btn btn-primary" onclick="location.href='/login.html'">Увійти</button>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
+{{> nav}}
 
 <div class="container-fluid">
     <div class="auth-container glass">
         <div class="tabs">
-            <div class="tab active" onclick="showTab('login')">Вхід</div>
-            <div class="tab" onclick="showTab('register')">Реєстрація</div>
+            <div class="tab active" onclick="showTab('login', this)">Вхід</div>
+            <div class="tab" onclick="showTab('register', this)">Реєстрація</div>
         </div>
         <div class="form-container">
             <form id="loginForm" class="form active" onsubmit="handleLogin(event)">
@@ -52,7 +32,7 @@
                             <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle class="eye-open" cx="12" cy="12" r="3"></circle>
-                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"></line>
                             </svg>
                         </button>
                     </div>
@@ -61,14 +41,17 @@
                 <button type="submit" class="btn btn-primary auth-btn">Увійти</button>
                 <div id="loginMessage" class="message"></div>
             </form>
+
             <form id="registerForm" class="form" onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label>Ім'я *</label>
-                    <input type="text" name="first_name" class="glass-input" required>
-                </div>
-                <div class="form-group">
-                    <label>Прізвище *</label>
-                    <input type="text" name="last_name" class="glass-input" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ім'я *</label>
+                        <input type="text" name="first_name" class="glass-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Прізвище *</label>
+                        <input type="text" name="last_name" class="glass-input" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>По-батькові</label>
@@ -84,8 +67,7 @@
                 </div>
                 <div class="form-group">
                     <label>Телефон *</label>
-                    <input type="tel" name="phone" class="glass-input" placeholder="+380" required
-                           id="phoneInput" maxlength="17">
+                    <input type="tel" name="phone" class="glass-input" placeholder="+380" required id="phoneInput" maxlength="17">
                 </div>
                 <div class="form-group">
                     <label>Ім'я користувача *</label>
@@ -99,7 +81,7 @@
                             <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle class="eye-open" cx="12" cy="12" r="3"></circle>
-                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"></line>
                             </svg>
                         </button>
                     </div>
@@ -110,15 +92,14 @@
         </div>
     </div>
 </div>
-
 <div id="forgotPasswordModal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
         <div id="modalBody"></div>
     </div>
 </div>
-
-<script src="js/login.js"></script>
-<script src="js/index.js"></script>
+{{> footer}}
+<script src="/js/login.js"></script>
+<script src="/js/index.js"></script>
 </body>
 </html>

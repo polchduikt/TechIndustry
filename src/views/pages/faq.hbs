@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/faq.css">
+</head>
+<body>
+
+{{> nav}}
+
+<main>
+    <section class="faq-hero">
+        <div class="faq-hero__bg">
+            <svg class="faq-hero__particles" viewBox="0 0 1400 500" preserveAspectRatio="none">
+                <circle class="faq-particle" cx="120" cy="80" r="3" fill="#6366f1" opacity="0.5"/>
+                <circle class="faq-particle" cx="300" cy="200" r="2" fill="#8b5cf6" opacity="0.4" style="animation-delay:0.5s"/>
+                <circle class="faq-particle" cx="500" cy="60" r="2.5" fill="#ec4899" opacity="0.35" style="animation-delay:1s"/>
+                <circle class="faq-particle" cx="700" cy="150" r="2" fill="#6366f1" opacity="0.3" style="animation-delay:1.5s"/>
+                <circle class="faq-particle" cx="900" cy="100" r="3" fill="#8b5cf6" opacity="0.4" style="animation-delay:0.8s"/>
+                <circle class="faq-particle" cx="1100" cy="180" r="2" fill="#ec4899" opacity="0.3" style="animation-delay:2s"/>
+                <circle class="faq-particle" cx="1300" cy="70" r="2.5" fill="#6366f1" opacity="0.35" style="animation-delay:1.2s"/>
+                <circle class="faq-particle" cx="200" cy="350" r="2" fill="#ec4899" opacity="0.25" style="animation-delay:0.3s"/>
+                <circle class="faq-particle" cx="600" cy="380" r="3" fill="#8b5cf6" opacity="0.3" style="animation-delay:1.8s"/>
+                <circle class="faq-particle" cx="1000" cy="400" r="2" fill="#6366f1" opacity="0.25" style="animation-delay:0.7s"/>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="faq-hero__content reveal">
+                <span class="faq-hero__label">FAQ</span>
+                <h1 class="faq-hero__title">Поширені запитання <br><span class="gradient-text">та відповіді</span></h1>
+                <p class="faq-hero__desc">Знайдіть відповіді на найпопулярніші питання про TechIndustry. Не знайшли потрібного — напишіть нам!</p>
+                <div class="faq-search">
+                    <svg class="faq-search__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" class="faq-search__input" id="faqSearch" placeholder="Шукати питання…">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-body">
+        <div class="container">
+            <div class="faq-cats reveal">
+                <button class="faq-cat active" data-cat="all">Всі</button>
+                <button class="faq-cat" data-cat="start">Початок</button>
+                <button class="faq-cat" data-cat="courses">Курси</button>
+                <button class="faq-cat" data-cat="quiz">Тести</button>
+                <button class="faq-cat" data-cat="cert">Сертифікати</button>
+                <button class="faq-cat" data-cat="tech">Технічні</button>
+            </div>
+
+            <div class="faq-list" id="faqList">
+                <div class="faq-group reveal" data-cat="start">
+                    <div class="faq-item" data-index="0">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Як зареєструватися на платформі?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Натисніть кнопку «Увійти» у навігаційній панелі, потім — «Реєстрація». Введіть ім'я, email та придумайте пароль (мінімум 8 символів). Після заповнення форми ви одразу потрапите в систему.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="1">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Скільки це коштує?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Наразі платформа <strong style="color: var(--primary);">повністю безкоштовна</strong>. Усі курси, тести та сертифікати доступні без обмежень. У майбутньому можуть з'явитися преміум-опції, але базовий доступ завжди залишатиметься вільним.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="2">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Чи потрібен попередній досвід?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Ні! Наші курси розроблені для всіх рівнів — від новачків до тих, хто прагне поглибити знання. Роадмапи допоможуть вам зорієнтуватися та обрати правильний шлях.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group reveal" data-cat="courses">
+                    <div class="faq-item" data-index="3">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Скільки курсів доступно?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>На платформі представлено понад <strong style="color: var(--primary);">50 курсів</strong> за різними напрямками: JavaScript, Python, React, Node.js, PostgreSQL, DevOps та інші. Нові матеріали додаються регулярно.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="4">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Чи можна навчатися у власному темпі?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Абсолютно! Немає жодних дедлайнів чи часових обмежень. Ви можете навчатися тоді, коли вам зручно. Прогрес зберігається автоматично.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="5">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Як часто оновлюється контент?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Наша команда оновлює контент щоквартально. Якщо з'являється нова версія бібліотеки чи фреймворку — ми оперативно актуалізуємо наші матеріали.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group reveal" data-cat="quiz">
+                    <div class="faq-item" data-index="6">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Як працюють тести?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Після кожного модуля відкривається тест із теоретичними та практичними питаннями. Тести включають вибір відповідей та завдання на написання коду. Результат обчислюється автоматично.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="7">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Яка мінімальна оцінка для успішного проходження?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Для успішного проходження тесту необхідно набрати <strong style="color: var(--primary);">не менше 70%</strong> правильних відповідей. Якщо не вдалося з першого разу — ви можете спробувати знову.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group reveal" data-cat="cert">
+                    <div class="faq-item" data-index="9">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Як отримати сертифікат?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Сертифікат генерується автоматично після завершення всіх модулів та тестів курсу з позитивною оцінкою. Він буде доступний для завантаження у вашому профілі.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="10">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Чи цінуються ці сертифікати роботодавцями?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Наші сертифікати містять <strong style="color: var(--primary);">QR-код для верифікації</strong>. Роботодавець може миттєво перевірити справжність документа.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group reveal" data-cat="tech">
+                    <div class="faq-item" data-index="11">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">На яких пристроях працює платформа?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>Платформа адаптована для ПК, планшетів та смартфонів. Ми підтримуємо сучасні версії Chrome, Firefox, Safari та Edge.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-index="12">
+                        <button class="faq-item__head">
+                            <span class="faq-item__q">Що робити, якщо я забув пароль?</span>
+                            <svg class="faq-item__arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="faq-item__body">
+                            <p>На сторінці входу натисніть «Забули пароль?». Введіть ваш email, і ми надішлемо код для відновлення.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-empty" id="faqEmpty" style="display:none;">
+                <svg viewBox="0 0 80 80" width="80" height="80">
+                    <circle cx="40" cy="40" r="36" fill="none" stroke="var(--glass-border)" stroke-width="2"/>
+                    <path d="M28 40 h24 M40 28 v24" fill="none" stroke="var(--glass-border)" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 40 40)"/>
+                </svg>
+                <p>Не знайдено жодного запитання за цим запитом</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-cta">
+        <div class="faq-cta__bg">
+            <svg viewBox="0 0 500 500" class="faq-cta__orb">
+                <defs>
+                    <radialGradient id="faqCtaOrb" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#ec4899" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="250" cy="250" r="250" fill="url(#faqCtaOrb)"/>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="faq-cta__content reveal">
+                <h2 class="about-section__title">Не знайшли відповіді на<br> <span class="gradient-text">своє запитання?</span></h2>
+                <p class="faq-cta__desc">Наша команда завжди готова допомогти. Напишіть нам — ми відповімо протягом 2 годин.</p>
+                <button class="btn btn-primary" onclick="location.href='mailto:support@techindustry.com'">Написати підтримці</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+{{> footer}}
+
+<script src="/js/index.js"></script>
+<script src="/js/faq.js"></script>
+</body>
+</html>

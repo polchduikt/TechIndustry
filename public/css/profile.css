@@ -329,3 +329,55 @@
         grid-template-columns: 1fr;
     }
 }
+
+.course-actions-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: -10px;
+}
+
+.course-progress-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.course-badge.completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+}
+
+.progress-bar-fill.completed {
+    background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+}
+
+.btn-disabled {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-muted) !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.6;
+}
+
+.course-badge.completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+}
+
+.progress-bar-fill.completed {
+    background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+}

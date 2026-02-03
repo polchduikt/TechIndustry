@@ -1,69 +1,89 @@
 const userService = require('../services/userService');
-const { validationResult } = require('express-validator');
+const progressService = require('../services/progressService');
+const db = require('../models'); // Додано для прямого оновлення якщо треба
 
-exports.getProfile = async (req, res) => {
+exports.renderProfile = async (req, res) => {
     try {
-        const user = await userService.getProfile(req.userId);
-        res.json(user);
-    } catch (error) {
-        res.status(404).json({ message: error.message });
+        const progressRaw = await progressService.getUserProgress(req.userId);
+        const progressFormatted = await Promise.all(progressRaw.map(async (p) => {
+            const data = p.get({ plain: true });
+            let totalLessons = 0;
+
+            if (data.course && data.course.modules) {
+                data.course.modules.forEach(m => {
+                    totalLessons += (m.lessons?.length || 0);
+                });
+            }
+            const completedCount = data.completed_lessons?.length || 0;
+            const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+            if (percent === 100 && data.status !== 'completed') {
+                await db.UserProgress.update(
+                    { status: 'completed' },
+                    { where: { id: data.id } }
+                );
+                data.status = 'completed';
+            }
+
+            const isFinished = data.status === 'completed' || percent === 100;
+            return {
+                ...data,
+                totalLessons,
+                completedCount,
+                percent,
+                totalHours: totalLessons * 2,
+                completedHours: completedCount * 2,
+                isFinished
+            };
+        }));
+
+        res.render('profile', {
+            title: 'TechIndustry | Профіль',
+            progress: progressFormatted,
+            stats: {
+                total: progressFormatted.length,
+                completed: progressFormatted.filter(p => p.isFinished).length,
+                streak: 1
+            },
+            user: res.locals.user
+        });
+    } catch (e) {
+        console.error("Profile SSR Error:", e);
+        res.status(500).send('Помилка завантаження профілю');
     }
 };
 
-exports.updateProfile = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errors.array()[0].msg });
-    }
+exports.renderSettings = async (req, res) => {
+    try {
+        const user = await userService.getProfile(req.userId);
+        res.render('settings', { title: 'Налаштування', userData: user });
+    } catch (e) { res.status(500).send('Error'); }
+};
 
+exports.updateProfile = async (req, res) => {
     try {
         const result = await userService.updateProfile(req.userId, req.body);
-
-        if (result.requiresReauth) {
-            res.clearCookie('token');
-            return res.json({
-                message: 'Профіль оновлено. Потрібна повторна авторизація',
-                requiresReauth: true
-            });
-        }
-
-        res.json({
-            message: 'Профіль оновлено',
-            username: result.user.username,
-            requiresReauth: false
-        });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+        res.json({ message: 'Оновлено', requiresReauth: result.requiresReauth });
+    } catch (e) { res.status(400).json({ message: e.message }); }
 };
 
 exports.changePassword = async (req, res) => {
     try {
         await userService.changePassword(req.userId, req.body.oldPassword, req.body.newPassword);
-        res.clearCookie('token');
-        res.json({
-            message: 'Пароль успішно змінено. Потрібна повторна авторизація',
-            requiresReauth: true
-        });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+        res.clearCookie('token').json({ message: 'Пароль змінено' });
+    } catch (e) { res.status(400).json({ message: e.message }); }
 };
 
 exports.uploadAvatar = async (req, res) => {
     try {
         const avatarUrl = await userService.saveAvatar(req.userId, req.file);
-        res.json({ message: 'Аватар успішно оновлено', avatarUrl });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        res.json({ avatarUrl });
+    } catch (e) { res.status(500).json({ message: e.message }); }
 };
 
 exports.deleteAvatar = async (req, res) => {
     try {
         await userService.deleteAvatar(req.userId);
-        res.json({ message: 'Аватар видалено' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        res.json({ message: 'Видалено' });
+    } catch (e) { res.status(500).json({ message: e.message }); }
 };

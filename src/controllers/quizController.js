@@ -1,0 +1,112 @@
+const fs = require('fs');
+const path = require('path');
+const db = require('../models');
+const progressService = require('../services/progressService');
+const COURSES_PATH = path.join(__dirname, '../../content/courses');
+
+function readQuizFile(slug) {
+    const quizPath = path.join(COURSES_PATH, slug, 'modules', 'quiz.json');
+    if (!fs.existsSync(quizPath)) return null;
+    return JSON.parse(fs.readFileSync(quizPath, 'utf-8'));
+}
+
+exports.renderCourseSelection = async (req, res) => {
+    try {
+        const courses = await db.Course.findAll();
+        res.render('quiz-courses', {
+            title: 'Центр тестування',
+            courses,
+            user: res.locals.user
+        });
+    } catch (e) {
+        res.status(500).send('Помилка завантаження курсів');
+    }
+};
+
+exports.renderQuizList = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const course = await db.Course.findOne({ where: { slug } });
+        if (!course) return res.redirect('/quiz');
+
+        const quizzes = readQuizFile(slug);
+
+        res.render('quiz-list', {
+            title: `Тести: ${course.title}`,
+            quizzes: quizzes || [],
+            courseSlug: slug,
+            courseTitle: course.title,
+            user: res.locals.user
+        });
+    } catch (e) {
+        res.status(500).send('Помилка завантаження списку тестів');
+    }
+};
+
+exports.renderQuiz = async (req, res) => {
+    try {
+        const { slug, moduleId } = req.params;
+        const quizzes = readQuizFile(slug);
+        const quiz = quizzes?.find(q => q.moduleId === moduleId);
+        if (!quiz) return res.redirect('/quiz/' + slug);
+        const sanitizedQuiz = {
+            ...quiz,
+            questions: quiz.questions.map(q => {
+                const { correctAnswer, ...rest } = q;
+                return rest;
+            })
+        };
+
+        res.render('quiz-view', {
+            title: quiz.title,
+            quiz: sanitizedQuiz,
+            courseSlug: slug,
+            moduleId: moduleId
+        });
+    } catch (e) {
+        res.status(500).send('Помилка завантаження тесту');
+    }
+};
+
+exports.submitQuiz = async (req, res) => {
+    try {
+        const { slug, moduleId } = req.params;
+        const { answers } = req.body;
+        const userId = req.userId;
+        const quizzes = readQuizFile(slug);
+        const quiz = quizzes?.find(q => q.moduleId === moduleId);
+        if (!quiz) return res.status(404).json({ message: 'Тест не знайдено' });
+        let correctCount = 0;
+        const totalQuestions = quiz.questions.length;
+
+        quiz.questions.forEach(q => {
+            const userAnswer = answers[q.id];
+            if (Array.isArray(q.correctAnswer)) {
+                if (Array.isArray(userAnswer) &&
+                    userAnswer.length === q.correctAnswer.length &&
+                    userAnswer.every(val => q.correctAnswer.includes(val))) {
+                    correctCount++;
+                }
+            } else {
+                if (userAnswer === q.correctAnswer) {
+                    correctCount++;
+                }
+            }
+        });
+
+        const percent = Math.round((correctCount / totalQuestions) * 100);
+        const passed = percent >= quiz.passingScore;
+        if (passed && userId) {
+        }
+        res.json({
+            passed,
+            percent,
+            correctCount,
+            totalQuestions,
+            message: passed ? 'Вітаємо! Тест пройдено.' : 'Недостатньо балів для проходження.'
+        });
+    } catch (error) {
+        console.error("Quiz Error:", error);
+        res.status(500).json({ message: 'Помилка на сервері під час перевірки' });
+    }
+};
