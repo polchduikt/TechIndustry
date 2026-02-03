@@ -20,6 +20,9 @@ const homeController = require('./src/controllers/homeController');
 const userController = require('./src/controllers/userController');
 const { protectPage } = require('./src/middleware/pageAuth');
 
+const getCourseIcon = require('./src/helpers/courseIconHelper');
+hbs.registerHelper('getCourseIcon', getCourseIcon);
+
 require('dotenv').config();
 
 const app = express();

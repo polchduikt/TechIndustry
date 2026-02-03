@@ -30,13 +30,14 @@
             {{#each courses}}
                 <div class="language-card glass" data-category="{{this.category}}">
                     <div class="lang-header">
-                        <div class="lang-icon">⚡</div>
+                        <div class="lang-icon">{{{getCourseIcon this.category this.slug this.title}}}</div>
                         <div class="lang-info">
                             {{#if this.userProgress}}
-                                <div class="course-badge {{#ifCond this.userProgress.status '==' 'completed'}}completed{{else}}in-progress{{/ifCond}}"
-                                     style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 12px; width: fit-content; margin-bottom: 8px;">
-                                    {{#ifCond this.userProgress.status '==' 'completed'}}Завершено{{else}}У процесі{{/ifCond}}
-                                </div>
+                                {{#if this.userProgress}}
+                                    <div class="course-badge {{#ifCond this.userProgress.status '==' 'completed'}}completed{{else}}in-progress{{/ifCond}}">
+                                        {{#ifCond this.userProgress.status '==' 'completed'}}Завершено{{else}}У процесі{{/ifCond}}
+                                    </div>
+                                {{/if}}
                             {{/if}}
                             <h3>{{this.title}}</h3>
                             <div class="lang-level">{{this.level}}</div>

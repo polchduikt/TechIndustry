@@ -24,7 +24,9 @@
         <div class="quiz-grid">
             {{#each courses}}
                 <div class="quiz-card glass animate-fade-in">
-                    <div class="quiz-card-icon">📝</div>
+                    <div class="quiz-card-icon">
+                        {{{getCourseIcon this.category this.slug this.title}}}
+                    </div>
                     <h3>{{this.title}}</h3>
                     <p class="quiz-card-level">Рівень: <span>{{this.level}}</span></p>
                     <button class="btn btn-primary" onclick="location.href='/quiz/{{this.slug}}'">Відкрити тести</button>

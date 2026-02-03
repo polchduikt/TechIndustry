@@ -42,24 +42,39 @@
                 </div>
             </div>
 
-            <div class="carousel-section">
-                <h2 class="section-title">Популярні курси</h2>
-                <div class="carousel-container" id="carouselContainer">
-                    <div class="carousel-track" id="carouselTrack">
-                        {{#each courses}}
-                            <div class="course-card glass">
-                                <div class="course-icon" style="background: rgba(99, 102, 241, 0.2);">⚡</div>
-                                <div class="course-title">{{this.title}}</div>
-                                <div class="course-desc">{{this.description}}</div>
-                                <div class="course-meta">
-                                    <span>🎓 {{this.duration}} год</span>
-                                    <a href="/course/{{this.id}}" style="color: inherit; text-decoration: underline;">Детальніше</a>
+            <section class="carousel-section">
+                <div class="container">
+                    <h2 class="section-title">Популярні курси</h2>
+                    <div class="carousel-container" id="carouselContainer">
+                        <div class="carousel-track" id="carouselTrack">
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(99, 102, 241, 0.2);">
+                                    {{{getCourseIcon 'programming' 'javascript-fundamentals' 'JavaScript Fundamentals'}}}
                                 </div>
+                                <div class="course-title">JavaScript Fundamentals</div>
+                                <div class="course-desc">Вивчіть основи сучасного JavaScript та асинхронне програмування</div>
+                                <div class="course-meta"><span>🎓 12 модулів</span><span>⏱️ 24 години</span></div>
                             </div>
-                        {{/each}}
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(139, 92, 246, 0.2);">
+                                    {{{getCourseIcon 'data-science' 'python-data-analysis' 'Python для аналізу даних'}}}
+                                </div>
+                                <div class="course-title">Python для аналізу даних</div>
+                                <div class="course-desc">Pandas, NumPy та машинне навчання з scikit-learn</div>
+                                <div class="course-meta"><span>🎓 15 модулів</span><span>⏱️ 30 годин</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(236, 72, 153, 0.2);">
+                                    {{{getCourseIcon 'frontend' 'react-nextjs' 'React & Next.js'}}}
+                                </div>
+                                <div class="course-title">React & Next.js</div>
+                                <div class="course-desc">Створення сучасних веб-додатків з React та Hooks</div>
+                                <div class="course-meta"><span>🎓 10 модулів</span><span>⏱️ 20 годин</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <div class="features">
                 <div class="feature-card glass">

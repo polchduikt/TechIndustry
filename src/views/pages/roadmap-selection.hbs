@@ -22,7 +22,10 @@
     <div class="roadmap-grid">
         {{#each roadmaps}}
             <div class="roadmap-card glass" onclick="location.href='/roadmap/{{this.id}}'">
-                <div class="roadmap-icon">{{this.icon}}</div>
+                <div class="roadmap-icon">
+                    {{{getCourseIcon 'roadmap' this.id this.title}}}
+                </div>
+
                 <h3>{{this.title}}</h3>
                 <p>{{this.description}}</p>
                 <button class="btn btn-primary btn-open">Відкрити карту</button>

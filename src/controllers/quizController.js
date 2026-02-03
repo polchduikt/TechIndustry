@@ -12,6 +12,28 @@ function readQuizFile(slug) {
 
 exports.renderCourseSelection = async (req, res) => {
     try {
+        const { course: courseSlug, lessonId } = req.query;
+        if (courseSlug && lessonId) {
+            const lesson = await db.Lesson.findByPk(parseInt(lessonId));
+            if (!lesson) {
+                return res.redirect(`/quiz/${courseSlug}`);
+            }
+            const lessonOrder = lesson.order;
+            const quizzes = readQuizFile(courseSlug);
+
+            if (quizzes && quizzes.length > 0) {
+                const orderPrefix = String(lessonOrder).padStart(2, '0') + '-';
+                const matchingQuiz = quizzes.find(q =>
+                    typeof q.moduleId === 'string' && q.moduleId.startsWith(orderPrefix)
+                );
+
+                if (matchingQuiz) {
+                    return res.redirect(`/quiz/${courseSlug}/${matchingQuiz.moduleId}`);
+                }
+            }
+            return res.redirect(`/quiz/${courseSlug}`);
+        }
+
         const courses = await db.Course.findAll();
         res.render('quiz-courses', {
             title: 'Центр тестування',
@@ -19,6 +41,7 @@ exports.renderCourseSelection = async (req, res) => {
             user: res.locals.user
         });
     } catch (e) {
+        console.error('renderCourseSelection error:', e);
         res.status(500).send('Помилка завантаження курсів');
     }
 };
@@ -39,6 +62,7 @@ exports.renderQuizList = async (req, res) => {
             user: res.locals.user
         });
     } catch (e) {
+        console.error('renderQuizList error:', e);
         res.status(500).send('Помилка завантаження списку тестів');
     }
 };
@@ -52,7 +76,7 @@ exports.renderQuiz = async (req, res) => {
         const sanitizedQuiz = {
             ...quiz,
             questions: quiz.questions.map(q => {
-                const { correctAnswer, ...rest } = q;
+                const { correctAnswer, expectedPattern, ...rest } = q;
                 return rest;
             })
         };
@@ -64,6 +88,7 @@ exports.renderQuiz = async (req, res) => {
             moduleId: moduleId
         });
     } catch (e) {
+        console.error('renderQuiz error:', e);
         res.status(500).send('Помилка завантаження тесту');
     }
 };
@@ -78,17 +103,23 @@ exports.submitQuiz = async (req, res) => {
         if (!quiz) return res.status(404).json({ message: 'Тест не знайдено' });
         let correctCount = 0;
         const totalQuestions = quiz.questions.length;
-
         quiz.questions.forEach(q => {
             const userAnswer = answers[q.id];
-            if (Array.isArray(q.correctAnswer)) {
+            if (q.type === 'multiple' && Array.isArray(q.correctAnswer)) {
                 if (Array.isArray(userAnswer) &&
                     userAnswer.length === q.correctAnswer.length &&
                     userAnswer.every(val => q.correctAnswer.includes(val))) {
                     correctCount++;
                 }
-            } else {
-                if (userAnswer === q.correctAnswer) {
+            }
+            else if (q.type === 'single') {
+                if (Number(userAnswer) === Number(q.correctAnswer)) {
+                    correctCount++;
+                }
+            }
+            else if (q.type === 'code' && q.expectedPattern) {
+                const regex = new RegExp(q.expectedPattern, 'm');
+                if (regex.test(userAnswer)) {
                     correctCount++;
                 }
             }
@@ -96,8 +127,7 @@ exports.submitQuiz = async (req, res) => {
 
         const percent = Math.round((correctCount / totalQuestions) * 100);
         const passed = percent >= quiz.passingScore;
-        if (passed && userId) {
-        }
+
         res.json({
             passed,
             percent,
@@ -106,7 +136,7 @@ exports.submitQuiz = async (req, res) => {
             message: passed ? 'Вітаємо! Тест пройдено.' : 'Недостатньо балів для проходження.'
         });
     } catch (error) {
-        console.error("Quiz Error:", error);
+        console.error("submitQuiz error:", error);
         res.status(500).json({ message: 'Помилка на сервері під час перевірки' });
     }
 };
