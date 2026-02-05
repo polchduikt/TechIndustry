@@ -5,6 +5,10 @@ module.exports = (sequelize) => {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         title: { type: DataTypes.STRING, allowNull: false },
         order: { type: DataTypes.INTEGER, defaultValue: 1 }
+    }, {
+        tableName: 'modules',
+        underscored: true,
+        timestamps: true
     });
 
     return Module;

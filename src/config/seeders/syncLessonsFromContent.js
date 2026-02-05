@@ -1,11 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
-
-dotenv.config({ path: path.join(__dirname, '../../.env') });
-
-const db = require('../models');
-const CONTENT_DIR = path.join(__dirname, '../../content/courses');
+const db = require('../../models');
+dotenv.config({ path: path.join(__dirname, '../../../.env') });
+const CONTENT_DIR = path.join(__dirname, '../../../content/courses');
 
 function parseOrderFromFilename(filename) {
   const match = filename.match(/^(\d+)/);

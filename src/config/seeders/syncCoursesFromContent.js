@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const db = require('../models');
+const db = require('../../models');
 const dotenv = require('dotenv');
-dotenv.config({ path: path.join(__dirname, '../../.env') });
-const CONTENT_DIR = path.join(__dirname, '../../content/courses');
+dotenv.config({ path: path.join(__dirname, '../../../.env') });
+const CONTENT_DIR = path.join(__dirname, '../../../content/courses');
 
 function normalizeLevel(level) {
   if (!level) return 'beginner';

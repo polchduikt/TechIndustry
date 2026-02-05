@@ -1,0 +1,50 @@
+<div id="mentorTrigger" class="mentor-bubble glass" onclick="toggleMentor()">
+    <span class="mentor-icon">🤖</span>
+</div>
+
+<div id="mentorPopup" class="mentor-window glass animate-slide-up" style="display: none;">
+    <div class="mentor-header">
+        <div class="mentor-status-info">
+            <span class="status-dot"></span>
+            <h4 class="mentor-name">TechIndustry Mentor</h4>
+        </div>
+        <div class="mentor-controls">
+            <button class="control-btn" onclick="confirmClearChat()" title="Очистити чат">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    <line x1="10" y1="11" x2="10" y2="17"/>
+                    <line x1="14" y1="11" x2="14" y2="17"/>
+                </svg>
+            </button>
+
+            <button class="control-btn" onclick="toggleFullscreen()" title="Розгорнути">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+            </button>
+
+            <button class="control-btn close-btn" onclick="toggleMentor()">✕</button>
+        </div>
+    </div>
+
+    <div class="mentor-messages" id="mentorMessages">
+        <div class="message mentor-msg">
+            Привіт! Я твій IT-ментор. Готовий допомогти з JavaScript, Python або тестами! 🚀
+        </div>
+    </div>
+
+    <div class="mentor-footer">
+        <div class="mentor-limit" id="mentorLimit">
+            <span id="limitText">Запитів: <strong id="limitCount">0</strong>/10</span>
+            <span id="resetTimer" style="display: none; font-size: 12px; color: #fca5a5; margin-top: 4px; font-weight: 600;"></span>
+        </div>
+        <div class="mentor-input-area">
+            <input type="text" id="mentorInput" placeholder="Запитай про код..." onkeypress="handleMentorKey(event)">
+            <button id="mentorSendBtn" onclick="sendMessageToMentor()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
