@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/roadmap.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+{{> nav}}
+
+<div class="container" style="padding-top: 80px;">
+    <h1 class="section-title">Оберіть свій <span class="gradient-text">шлях розвитку</span></h1>
+
+    <p class="roadmap-intro">
+        Наші роадмапи — це детальні покрокові інструкції, які допоможуть вам опанувати професію з нуля до рівня Junior/Middle.
+        Вибирайте цікавий напрям та починайте рух до мети. Ми зібрали найактуальніші технології та ресурси для вашого успіху.
+    </p>
+
+    <div class="roadmap-grid">
+        {{#each roadmaps}}
+            <div class="roadmap-card glass" onclick="location.href='/roadmap/{{this.id}}'">
+                <div class="roadmap-icon">
+                    {{{getCourseIcon 'roadmap' this.id this.title}}}
+                </div>
+
+                <h3>{{this.title}}</h3>
+                <p>{{this.description}}</p>
+                <button class="btn btn-primary btn-open">Відкрити карту</button>
+            </div>
+        {{else}}
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px;">
+                <div style="font-size: 50px; margin-bottom: 20px;">📂</div>
+                <p style="color: var(--text-muted); font-size: 18px;">Наразі немає доступних шляхів розвитку. Зайдіть пізніше! 👋</p>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+{{> footer}}
+</body>
+</html>

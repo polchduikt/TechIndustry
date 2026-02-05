@@ -2,19 +2,33 @@ const fs = require('fs');
 const path = require('path');
 
 class RoadmapService {
-    async getRoadmapData(roadmapId) {
+    get roadmapsPath() {
+        return path.join(__dirname, '../../content/roadmaps');
+    }
+
+    async listRoadmaps() {
         try {
-            const roadmapPath = path.join(__dirname, '../../content/roadmaps', `${roadmapId}.json`);
-
-            if (!fs.existsSync(roadmapPath)) {
-                throw new Error('Карту за таким ID не знайдено');
-            }
-
-            const data = fs.readFileSync(roadmapPath, 'utf-8');
-            return JSON.parse(data);
+            if (!fs.existsSync(this.roadmapsPath)) return [];
+            const files = fs.readdirSync(this.roadmapsPath).filter(f => f.endsWith('.json'));
+            return files.map(file => {
+                const content = JSON.parse(fs.readFileSync(path.join(this.roadmapsPath, file), 'utf-8'));
+                return {
+                    id: file.replace('.json', ''),
+                    title: content.title,
+                    description: content.description,
+                    icon: content.icon || '🚀'
+                };
+            });
         } catch (error) {
-            throw new Error(error.message || 'Не вдалося завантажити карту розвитку');
+            console.error('Error listing roadmaps:', error);
+            return [];
         }
+    }
+
+    async getRoadmapData(roadmapId) {
+        const roadmapPath = path.join(this.roadmapsPath, `${roadmapId}.json`);
+        if (!fs.existsSync(roadmapPath)) throw new Error('Карту не знайдено');
+        return JSON.parse(fs.readFileSync(roadmapPath, 'utf-8'));
     }
 }
 

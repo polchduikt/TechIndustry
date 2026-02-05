@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+{{> nav}}
+
+<main>
+    <section>
+        <div class="container">
+            <div class="hero">
+                <h1>Майбутнє освіти в <br><span class="gradient-text">інформаційних технологіях</span></h1>
+                <p class="hero-description">Практичний підхід до навчання, автоматизована перевірка знань та актуальні курси від професіоналів для професіоналів</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="location.href='/courses'">Почати навчання</button>
+                    <button class="btn btn-secondary" onclick="location.href='/quiz'">Тестування</button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card glass">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Курсів</div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-number">15K+</div>
+                    <div class="stat-label">Студентів</div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Задоволених</div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Підтримка</div>
+                </div>
+            </div>
+
+            <section class="carousel-section">
+                <div class="container">
+                    <h2 class="section-title">Популярні курси</h2>
+                    <div class="carousel-container" id="carouselContainer">
+                        <div class="carousel-track" id="carouselTrack">
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(99, 102, 241, 0.2);">
+                                    {{{getCourseIcon 'programming' 'javascript-fundamentals' 'JavaScript Fundamentals'}}}
+                                </div>
+                                <div class="course-title">JavaScript Fundamentals</div>
+                                <div class="course-desc">Вивчіть основи сучасного JavaScript та асинхронне програмування</div>
+                                <div class="course-meta"><span>🎓 12 модулів</span><span>⏱️ 24 години</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(139, 92, 246, 0.2);">
+                                    {{{getCourseIcon 'data-science' 'python-data-analysis' 'Python для аналізу даних'}}}
+                                </div>
+                                <div class="course-title">Python для аналізу даних</div>
+                                <div class="course-desc">Pandas, NumPy та машинне навчання з scikit-learn</div>
+                                <div class="course-meta"><span>🎓 15 модулів</span><span>⏱️ 30 годин</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(236, 72, 153, 0.2);">
+                                    {{{getCourseIcon 'frontend' 'react-nextjs' 'React & Next.js'}}}
+                                </div>
+                                <div class="course-title">React & Next.js</div>
+                                <div class="course-desc">Створення сучасних веб-додатків з React та Hooks</div>
+                                <div class="course-meta"><span>🎓 10 модулів</span><span>⏱️ 20 годин</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="features">
+                <div class="feature-card glass">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Практичні проєкти</div>
+                    <div class="feature-desc">Застосовуйте знання на реальних кейсах та створюйте портфоліо</div>
+                </div>
+                <div class="feature-card glass">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">AI-асистент</div>
+                    <div class="feature-desc">Отримуйте підказки та пояснення в режимі реального часу</div>
+                </div>
+                <div class="feature-card glass">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Аналітика прогресу</div>
+                    <div class="feature-desc">Відслідковуйте свій розвиток та досягнення</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quiz-info-section">
+        <div class="container quiz-grid">
+            <div class="quiz-content">
+                <h2 class="section-title" style="text-align: left;">Перевірка знань <br><span class="gradient-text">в реальному часі</span></h2>
+                <p class="hero-description" style="text-align: left; margin: 0 0 32px 0;">Наші інтелектуальні тести адаптуються під ваш рівень. Отримуйте миттєвий фідбек.</p>
+                <button class="btn btn-primary" onclick="location.href='/quiz'">Спробувати тест</button>
+            </div>
+            <div class="quiz-visual">
+                <div class="quiz-card-mockup glass">
+                    <div class="scan-line"></div>
+                    <div class="mockup-body">
+                        <div class="code-line highlight" style="width: 90%;"></div>
+                        <div class="code-line" style="width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="partners-section">
+        <div class="container">
+            <h3 class="stat-label" style="text-align: center; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">Наші випускники працюють в</h3>
+            <div class="partners-slider">
+                <div class="partners-track">
+                    <div class="partner-logo">Google</div>
+                    <div class="partner-logo">Microsoft</div>
+                    <div class="partner-logo">Meta</div>
+                    <div class="partner-logo">Amazon</div>
+                    <div class="partner-logo">Netflix</div>
+                    <div class="partner-logo">Apple</div>
+                    <div class="partner-logo">Google</div>
+                    <div class="partner-logo">Microsoft</div>
+                    <div class="partner-logo">Meta</div>
+                    <div class="partner-logo">Amazon</div>
+                    <div class="partner-logo">Netflix</div>
+                    <div class="partner-logo">Apple</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="certificate-section">
+        <div class="container cert-flex">
+            <div class="cert-image">
+                <div class="cert-wrapper">
+                    <img src="/assets/img/logo.png" alt="Logo" class="cert-logo-watermark">
+                    <div class="cert-content-preview">
+                        <div class="cert-title">CERTIFICATE</div>
+                        <div class="cert-sub">of course completion</div>
+                        <div class="cert-name">John Doe</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cert-text">
+                <h2 class="section-title" style="text-align: left;">Офіційне <br><span class="gradient-text">підтвердження</span></h2>
+                <p class="hero-description" style="text-align: left; margin-bottom: 24px;">Після успішного завершення курсу ви отримуєте іменний сертифікат для LinkedIn.</p>
+                <div class="stat-card glass" style="display: inline-block; padding: 16px 32px;">
+                    <div class="stat-number" style="font-size: 24px;">Verified by TechIndustry</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-preview-section">
+        <div class="container about-grid">
+            <div class="about-visual">
+                <div class="about-glow-box glass">
+                    <div class="floating-icons">
+                        <span class="icon-orb i1">💻</span>
+                        <span class="icon-orb i2">🚀</span>
+                        <span class="icon-orb i3">🎓</span>
+                    </div>
+                    <div class="about-content-inner">
+                        <div class="mini-label">Наша місія</div>
+                        <h3>Ми будуємо спільноту професіоналів</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="about-text-content">
+                <h2 class="section-title" style="text-align: left;">Хто ми <br><span class="gradient-text">та чому ми тут</span></h2>
+                <p class="hero-description" style="text-align: left; margin-bottom: 32px;">TechIndustry — це екосистема, створена розробниками для майбутніх колег.</p>
+                <button class="btn btn-secondary" onclick="location.href='/about'">Дізнатися більше</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-preview-section">
+        <div class="container">
+            <div class="faq-box glass">
+                <div class="faq-info">
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 16px;">Залишилися <span class="gradient-text">запитання?</span></h2>
+                    <p class="stat-label">Ми зібрали відповіді на найпопулярніші запити наших студентів.</p>
+                </div>
+                <div class="faq-action">
+                    <div class="faq-icon-animation">
+                        <div class="msg-bubble">?</div>
+                        <div class="msg-bubble">!</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="location.href='/faq'">Перейти до FAQ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{{> footer}}
+<script src="/js/index.js"></script> </body>
+</body>
+</html>

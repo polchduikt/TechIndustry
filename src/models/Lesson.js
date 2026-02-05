@@ -5,13 +5,16 @@ module.exports = (sequelize) => {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         title: { type: DataTypes.STRING, allowNull: false },
         order: { type: DataTypes.INTEGER, defaultValue: 1 },
-        type: { 
-            type: DataTypes.ENUM('text', 'quiz', 'video'), 
-            defaultValue: 'text' 
+        type: {
+            type: DataTypes.ENUM('text', 'quiz', 'video'),
+            defaultValue: 'text'
         },
-        
-        content_path: { type: DataTypes.STRING, allowNull: false }, 
+        content_path: { type: DataTypes.STRING, allowNull: false },
         duration_minutes: { type: DataTypes.INTEGER, defaultValue: 10 }
+    }, {
+        tableName: 'lessons',
+        underscored: true,
+        timestamps: true
     });
 
     return Lesson;

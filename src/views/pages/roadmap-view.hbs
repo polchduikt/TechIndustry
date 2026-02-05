@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/roadmap.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+{{> nav}}
+<div class="container">
+    <button class="btn btn-secondary" onclick="location.href='/roadmap'" style="margin: 20px 0;">← До вибору</button>
+
+    <div class="roadmap-header glass">
+        <h1 class="gradient-text">{{roadmap.title}}</h1>
+        <p>{{roadmap.description}}</p>
+    </div>
+
+    <div class="roadmap-tree">
+        {{#each roadmap.phases}}
+            <div class="roadmap-phase glass">
+                <div class="phase-number">{{add @index 1}}</div>
+                <div class="phase-content">
+                    <h3>{{this.name}}</h3>
+                    <div class="topics-grid">
+                        {{#each this.topics}}
+                            <div class="topic-tag {{#if this.important}}important{{/if}}">
+                                <span>{{this.name}}</span>
+                                {{#if this.link}}
+                                    <a href="{{this.link}}" target="_blank" class="topic-link">📖</a>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+        <div class="roadmap-end glass">Ви досягли мети! 🎉</div>
+    </div>
+</div>
+{{> footer}}
+</body>
+</html>

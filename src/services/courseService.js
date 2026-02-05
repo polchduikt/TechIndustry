@@ -41,14 +41,15 @@ class CourseService {
             where: { module_id: lesson.module_id },
             order: [['order', 'ASC']]
         });
-
         const index = lessons.findIndex(l => l.id === lesson.id);
 
         return {
             id: lesson.id,
             title: lesson.title,
             content: marked.parse(rawMarkdown),
-            next: index < lessons.length - 1 ? lessons[index + 1].id : null
+            moduleId: lesson.module_id,
+            next: index < lessons.length - 1 ? lessons[index + 1].id : null,
+            prev: index > 0 ? lessons[index - 1].id : null
         };
     }
 }
