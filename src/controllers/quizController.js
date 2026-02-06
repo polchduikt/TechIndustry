@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const db = require('../models');
 const progressService = require('../services/progressService');
+const gamificationService = require('../services/gamificationService');
 const COURSES_PATH = path.join(__dirname, '../../content/courses');
 
 function readQuizFile(slug) {
@@ -51,9 +52,7 @@ exports.renderQuizList = async (req, res) => {
         const { slug } = req.params;
         const course = await db.Course.findOne({ where: { slug } });
         if (!course) return res.redirect('/quiz');
-
         const quizzes = readQuizFile(slug);
-
         res.render('quiz-list', {
             title: `Тести: ${course.title}`,
             quizzes: quizzes || [],
@@ -127,13 +126,65 @@ exports.submitQuiz = async (req, res) => {
 
         const percent = Math.round((correctCount / totalQuestions) * 100);
         const passed = percent >= quiz.passingScore;
+        let gamificationResult = null;
+        let isFirstCompletion = false;
 
+        if (passed && userId) {
+            const course = await db.Course.findOne({ where: { slug } });
+            if (course) {
+                let progress = await db.UserProgress.findOne({
+                    where: { user_id: userId, course_id: course.id }
+                });
+                if (!progress) {
+                    progress = await db.UserProgress.create({
+                        user_id: userId,
+                        course_id: course.id,
+                        status: 'in_progress',
+                        completed_lessons: [],
+                        completed_quizzes: [],
+                        started_at: new Date(),
+                        last_accessed: new Date()
+                    });
+                }
+                let completedQuizzes = progress.completed_quizzes;
+                if (!Array.isArray(completedQuizzes)) {
+                    completedQuizzes = [];
+                }
+
+                const quizIdentifier = `${slug}:${moduleId}`;
+                console.log('Quiz check:', {
+                    quizIdentifier,
+                    completedQuizzes,
+                    isIncluded: completedQuizzes.includes(quizIdentifier)
+                });
+                if (!completedQuizzes.includes(quizIdentifier)) {
+                    isFirstCompletion = true;
+                    completedQuizzes.push(quizIdentifier);
+                    await db.UserProgress.update(
+                        {
+                            completed_quizzes: completedQuizzes,
+                            last_accessed: new Date()
+                        },
+                        {
+                            where: {
+                                user_id: userId,
+                                course_id: course.id
+                            }
+                        }
+                    );
+                    gamificationResult = await gamificationService.onQuizComplete(userId, percent);
+                } else {
+                }
+            }
+        }
         res.json({
             passed,
             percent,
             correctCount,
             totalQuestions,
-            message: passed ? 'Вітаємо! Тест пройдено.' : 'Недостатньо балів для проходження.'
+            message: passed ? 'Вітаємо! Тест пройдено.' : 'Недостатньо балів для проходження.',
+            gamification: isFirstCompletion ? gamificationResult : null,
+            isRepeat: passed && !isFirstCompletion
         });
     } catch (error) {
         console.error("submitQuiz error:", error);

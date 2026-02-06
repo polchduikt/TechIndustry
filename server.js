@@ -13,6 +13,8 @@ const userController = require('./src/controllers/userController');
 const courseController = require('./src/controllers/courseController');
 const quizController = require('./src/controllers/quizController');
 const certificateController = require('./src/controllers/certificateController');
+
+const leaderboardController = require('./src/controllers/leaderboardController');
 const roadmapController = require('./src/controllers/roadmapController');
 const { protectPage } = require('./src/middleware/pageAuth');
 
@@ -81,9 +83,12 @@ app.get('/courses', courseController.renderCourses);
 app.get('/course/:slug', courseController.renderCourseDetail);
 app.get('/quiz/:slug/:moduleId', protectPage, quizController.renderQuiz);
 app.get('/certificate', protectPage, certificateController.renderCertificate);
+app.get('/certificate/:slug', protectPage, certificateController.renderCertificate);
 app.get('/roadmap', roadmapController.renderRoadmapSelection);
 app.get('/roadmap/:id', roadmapController.renderRoadmapDetail);
-
+app.get('/gamification-info', userController.renderGamificationInfo);
+app.get('/leaderboard', leaderboardController.renderLeaderboard);
+app.get('/user/:username', leaderboardController.renderPublicProfile);
 app.get('/login', (req, res) => res.render('login', { title: 'Вхід | TechIndustry' }));
 app.get('/about', (req, res) => res.render('about', { title: 'Про нас | TechIndustry' }));
 app.get('/faq', (req, res) => res.render('faq', { title: 'FAQ | TechIndustry' }));

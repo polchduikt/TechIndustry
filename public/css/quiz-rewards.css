@@ -1,0 +1,237 @@
+.rewards-section {
+    margin: 30px 0;
+    padding: 24px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.xp-reward {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.2));
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.reward-icon {
+    font-size: 32px;
+    animation: sparkle 1.5s infinite;
+}
+
+.reward-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #A78BFA;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.repeat-notice {
+    padding: 16px 24px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #93C5FD;
+}
+
+.level-up-notification {
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #F59E0B, #EAB308);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+    animation: slideDown 0.5s ease-out;
+}
+
+.new-badges {
+    margin-top: 20px;
+}
+
+.badges-title {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.badges-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.badge-earned {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    transition: all 0.3s;
+    animation: bounceIn 0.6s ease-out;
+}
+
+.badge-earned:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.badge-icon-small {
+    width: 50px;
+    height: 50px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.badge-earned span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(-10deg) scale(1.1);
+    }
+    75% {
+        transform: rotate(10deg) scale(1.1);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.result-view {
+    text-align: center;
+    padding: 40px;
+}
+
+.result-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounceIn 0.6s ease-out;
+}
+
+.result-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 24px;
+    margin: 20px 0;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-item .label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.stat-item .value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.result-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.text-success {
+    color: #22c55e;
+}
+
+.text-error {
+    color: #ef4444;
+}
+
+@media (max-width: 768px) {
+    .result-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+    .result-actions .btn {
+        width: 100%;
+    }
+
+    .badges-list {
+        gap: 12px;
+    }
+
+    .reward-text {
+        font-size: 20px;
+    }
+
+    .level-up-notification {
+        font-size: 16px;
+    }
+}
