@@ -1,0 +1,201 @@
+{
+    "id": "frontend",
+    "title": "Frontend Developer Roadmap",
+    "description": "Повний шлях розвитку frontend розробника від новачка до професіонала",
+    "source": "roadmap.sh",
+    "lastUpdated": "2026-01-30",
+    "phases": [
+        {
+            "id": "phase-1",
+            "name": "Основи веб-розробки",
+            "order": 1,
+            "topics": [
+                {
+                    "name": "HTML Basics",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "CSS Fundamentals",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "JavaScript Essentials",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "Git Version Control",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "Browser DevTools",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                }
+            ]
+        },
+        {
+            "id": "phase-2",
+            "name": "Поглиблення навичок",
+            "order": 2,
+            "topics": [
+                {
+                    "name": "Semantic HTML5",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "CSS Flexbox & Grid",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "Responsive Design",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "CSS Preprocessors (Sass)",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "JavaScript ES6+",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "DOM Manipulation",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                }
+            ]
+        },
+        {
+            "id": "phase-3",
+            "name": "Сучасні інструменти",
+            "order": 3,
+            "topics": [
+                {
+                    "name": "Package Managers (npm/yarn)",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "Module Bundlers (Webpack/Vite)",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "Task Runners",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "Linters & Formatters",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                }
+            ]
+        },
+        {
+            "id": "phase-4",
+            "name": "Фреймворки",
+            "order": 4,
+            "topics": [
+                {
+                    "name": "React.js",
+                    "link": "https://roadmap.sh/react",
+                    "important": true
+                },
+                {
+                    "name": "Vue.js",
+                    "link": "https://roadmap.sh/vue",
+                    "important": false
+                },
+                {
+                    "name": "Angular",
+                    "link": "https://roadmap.sh/angular",
+                    "important": false
+                },
+                {
+                    "name": "State Management",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "Component Libraries",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                }
+            ]
+        },
+        {
+            "id": "phase-5",
+            "name": "Тестування",
+            "order": 5,
+            "topics": [
+                {
+                    "name": "Jest",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "React Testing Library",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "Cypress E2E",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "Unit Testing",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                }
+            ]
+        },
+        {
+            "id": "phase-6",
+            "name": "Production Ready",
+            "order": 6,
+            "topics": [
+                {
+                    "name": "TypeScript",
+                    "link": "https://roadmap.sh/typescript",
+                    "important": true
+                },
+                {
+                    "name": "Performance Optimization",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "Web Accessibility (A11y)",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": true
+                },
+                {
+                    "name": "SEO Basics",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "Progressive Web Apps",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                },
+                {
+                    "name": "CI/CD for Frontend",
+                    "link": "https://roadmap.sh/frontend",
+                    "important": false
+                }
+            ]
+        }
+    ]
+}

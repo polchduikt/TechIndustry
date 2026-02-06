@@ -1,20 +1,69 @@
 const courseService = require('../services/courseService');
+const progressService = require('../services/progressService');
 
-exports.getAllCourses = async (req, res) => {
+exports.renderCourses = async (req, res) => {
   try {
-    const courses = await courseService.getAllCourses();
-    res.json(courses);
+    const allCourses = await courseService.getAllCourses();
+    let userProgress = [];
+    const userId = res.locals.user ? res.locals.user.id : null;
+    if (userId) {
+      userProgress = await progressService.getUserProgress(userId);
+    }
+
+    const coursesWithProgress = allCourses.map(course => {
+      const progress = userProgress.find(p => p.course_id === course.id);
+      let totalLessons = 0;
+      course.modules.forEach(m => totalLessons += (m.lessons?.length || 0));
+      const completedCount = progress?.completed_lessons?.length || 0;
+      const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+      return {
+        ...course.toJSON(),
+        userProgress: progress,
+        progressPercent: percent,
+        totalLessons,
+        totalHours: totalLessons * 2,
+        isCompleted: progress?.status === 'completed',
+        isInProgress: progress && progress.status !== 'completed',
+        isGuest: !userId
+      };
+    });
+
+    res.render('courses', {
+      title: 'TechIndustry | Каталог курсів',
+      courses: coursesWithProgress
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send('Помилка завантаження каталогу');
   }
 };
 
-exports.getCourseBySlug = async (req, res) => {
+exports.renderCourseDetail = async (req, res) => {
   try {
-    const course = await courseService.getCourseBySlug(req.params.slug);
-    res.json(course);
+    const { slug } = req.params;
+    const course = await courseService.getCourseBySlug(slug);
+    if (!course) return res.status(404).send('Курс не знайдено');
+    let completedLessons = [];
+    const isLoggedIn = !!res.locals.user;
+    if (isLoggedIn) {
+      const progress = await progressService.getUserProgressByCourse(res.locals.user.id, course.id);
+      completedLessons = progress?.completed_lessons || [];
+    }
+
+    const coursePlain = course.get({ plain: true });
+    coursePlain.modules.forEach(module => {
+      module.lessons.forEach(lesson => {
+        lesson.isCompleted = completedLessons.includes(lesson.id);
+      });
+    });
+    res.render('course', {
+      title: `Курс: ${coursePlain.title}`,
+      course: coursePlain,
+      isLoggedIn,
+      slug
+    });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).send('Помилка');
   }
 };
 

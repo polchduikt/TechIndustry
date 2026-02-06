@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/settings.css">
+</head>
+<body>
+
+{{> nav}}
+
+<section class="settings-section">
+    <div class="container">
+        <div class="settings-container">
+            <aside class="settings-sidebar glass">
+                <div class="avatar-edit-container">
+                    <div class="avatar-preview {{#if userData.Customer.avatar_data}}has-avatar{{/if}}"
+                         id="avatarPreviewContainer"
+                         onclick="document.getElementById('avatarInput').click()">
+                    <img id="currentAvatar"
+                            src="{{#if userData.Customer.avatar_data}}{{userData.Customer.avatar_data}}{{else}}https://ui-avatars.com/api/?name={{userData.username}}&background=6366f1&color=fff{{/if}}"
+                        alt="Avatar">
+                    </div>
+                    <input type="file" id="avatarInput" accept="image/*" hidden>
+
+                    <div class="avatar-delete-link-wrapper">
+                        <span id="deleteAvatarBtn" class="delete-text-link {{#unless userData.Customer.avatar_data}}hidden{{/unless}}">
+                            Видалити фото
+                        </span>
+                    </div>
+
+                    <h3 id="displayUsername">{{userData.username}}</h3>
+                    <p id="displayEmail">{{userData.Customer.email}}</p>
+                </div>
+            </aside>
+
+            <main class="settings-main">
+                <div class="settings-content glass">
+                    <h2 class="section-title">Редагувати профіль</h2>
+                    <form id="settingsForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Ім'я користувача *</label>
+                                <input type="text" id="username" class="glass-input" value="{{userData.username}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="email" class="glass-input" value="{{userData.Customer.email}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ім'я</label>
+                                <input type="text" id="first_name" class="glass-input" value="{{userData.Customer.first_name}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Прізвище</label>
+                                <input type="text" id="last_name" class="glass-input" value="{{userData.Customer.last_name}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Телефон *</label>
+                                <input type="tel" id="phone" class="glass-input" value="{{userData.Customer.phone}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Дата народження</label>
+                                <input type="date" id="birth_date" class="glass-input" value="{{userData.Customer.birth_date}}">
+                            </div>
+                        </div>
+                        <div class="form-actions" style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="settings-content glass" style="margin-top: 30px;">
+                    <h2 class="section-title">Змінити пароль</h2>
+                    <p><a class="forgot-password-link" onclick="showForgotPasswordModal()">Забули пароль?</a></p>
+                    <form id="passwordForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Поточний пароль *</label>
+                                <input type="password" id="oldPassword" class="glass-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Новий пароль *</label>
+                                <input type="password" id="newPassword" class="glass-input" required minlength="8">
+                            </div>
+                            <div class="form-group">
+                                <label>Підтвердіть новий пароль *</label>
+                                <input type="password" id="confirmPassword" class="glass-input" required minlength="8">
+                            </div>
+                        </div>
+                        <div class="form-actions" style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-primary">Оновити пароль</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<div id="forgotPasswordModal" class="modal-overlay">
+    <div class="modal-content glass">
+        <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+{{> footer}}
+
+<script src="/js/settings.js"></script>
+</body>
+</html>

@@ -14,6 +14,26 @@
     margin-bottom: 16px;
 }
 
+.course-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    width: fit-content;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.course-badge.in-progress {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+}
+
+.course-badge.completed {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
 .category-tabs {
     display: flex;
     gap: 12px;

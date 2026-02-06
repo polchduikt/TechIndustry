@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/public-profile.css">
+</head>
+<body>
+
+{{> badge}}
+{{> nav}}
+
+<section class="profile-section">
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-info">
+                <div class="profile-avatar-large">
+                    {{#if profileData.avatar}}
+                        <img src="{{profileData.avatar}}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    {{else}}
+                        <span>{{substring profileData.username 0 2}}</span>
+                    {{/if}}
+
+                    <div class="level-badge">
+                        <svg class="level-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+                        </svg>
+                        <span class="level-number">{{profileData.level}}</span>
+                    </div>
+                </div>
+
+                <div class="profile-details">
+                    <h1>{{profileData.username}}</h1>
+                    <p class="profile-email">{{profileData.fullName}}</p>
+                    <div class="level-progress-container">
+                        <div class="level-bar-row">
+                            <div class="level-content-wrapper">
+                                <div class="level-info">
+                                    <span class="level-label">Рівень {{profileData.level}}</span>
+                                    <span class="level-xp">
+                                        {{profileData.experience}} XP
+                                        {{#if profileData.nextLevelXp}}
+                                            / {{profileData.nextLevelXp}} XP
+                                        {{else}}
+                                            (Макс. рівень!)
+                                        {{/if}}
+                                    </span>
+                                </div>
+                                <div class="level-progress-bar">
+                                    <div class="level-progress-fill" style="width: {{gamification.progressPercent}}%"></div>
+                                </div>
+                            </div>
+                            <a href="/gamification-info" class="xp-info-link" title="Дізнатися більше">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Як отримати XP?
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats-inline">
+                        <div class="stat-item">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span><strong>{{profileData.stats.totalCourses}}</strong> курсів</span>
+                        </div>
+                        <div class="stat-item">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span><strong>{{profileData.stats.completedCourses}}</strong> завершено</span>
+                        </div>
+
+                        <div class="stat-item">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 22h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span><strong>{{profileData.badgeCount}}</strong> бейджів</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="badges-section glass">
+            <h3 class="badges-title">Досягнення</h3>
+            {{#if profileData.badges.length}}
+                <div class="badges-grid">
+                    {{#each profileData.badges}}
+                        <div class="badge-item" title="{{this.description}}">
+                            <svg class="badge-icon" width="80" height="80">
+                                <use href="#{{this.icon}}"></use>
+                            </svg>
+                            <p class="badge-name">{{this.name}}</p>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="empty-state" style="padding: 40px 20px;">
+                    <div class="empty-icon" style="font-size: 48px;">🏅</div>
+                    <p style="color: var(--text-muted); margin: 0;">У цього користувача поки що немає досягнень.</p>
+                </div>
+            {{/if}}
+        </div>
+
+        <h2 class="section-title" style="text-align: center; margin: 40px 0;">Курси користувача</h2>
+
+        <div class="courses-grid">
+            {{#if profileData.progress}}
+                {{#each profileData.progress}}
+                    <div class="course-progress-card glass">
+                        <div class="course-header">
+                            <div class="course-icon-small" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                                {{{getCourseIcon this.course.category this.course.slug this.course.title}}}
+                            </div>
+                            <div class="course-badge {{status}}">
+                                {{#ifCond status '===' 'completed'}}Завершено{{else}}В процесі{{/ifCond}}
+                            </div>
+                        </div>
+
+                        <h3 class="course-name">{{this.course.title}}</h3>
+                        <p class="course-progress-text">{{this.completedCount}} з {{this.totalLessons}} уроків завершено</p>
+
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill {{#if isFinished}}completed{{/if}}" style="width: {{percent}}%"></div>
+                        </div>
+
+                        <div class="course-meta-small">
+                            <span>📖 {{totalLessons}} уроків</span>
+                            <span class="progress-percent">{{percent}}%</span>
+                        </div>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="empty-state">
+                    <div class="empty-icon">📚</div>
+                    <h3>Користувач ще не розпочав жодного курсу</h3>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{> footer}}
+
+</body>
+</html>

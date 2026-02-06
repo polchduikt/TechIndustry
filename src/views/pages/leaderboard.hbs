@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/leaderboard.css">
+</head>
+<body>
+
+{{> badge}}
+{{> nav}}
+
+<section class="leaderboard-section">
+    <div class="container">
+        <!-- Header -->
+        <div class="leaderboard-header">
+            <h1 class="gradient-text">🏆 Таблиця лідерів</h1>
+            <p class="subtitle">Топ 100 найкращих учнів платформи</p>
+        </div>
+        <div class="leaderboard-container glass">
+            {{#if topUsers}}
+                {{#each topUsers}}
+                    <div class="leaderboard-item {{#ifCond rank '===' 1}}rank-1{{/ifCond}}{{#ifCond rank '===' 2}}rank-2{{/ifCond}}{{#ifCond rank '===' 3}}rank-3{{/ifCond}}">
+                        <div class="rank">
+                            {{#ifCond rank '===' 1}}
+                                <span class="rank-medal">🥇</span>
+                            {{else}}
+                                {{#ifCond rank '===' 2}}
+                                    <span class="rank-medal">🥈</span>
+                                {{else}}
+                                    {{#ifCond rank '===' 3}}
+                                        <span class="rank-medal">🥉</span>
+                                    {{else}}
+                                        <span class="rank-number">#{{rank}}</span>
+                                    {{/ifCond}}
+                                {{/ifCond}}
+                            {{/ifCond}}
+                        </div>
+                        <div class="user-info">
+                            <a href="/user/{{username}}" class="user-avatar-link">
+                                <div class="user-avatar">
+                                    {{#if avatar}}
+                                        <img src="{{avatar}}" alt="{{username}}">
+                                    {{else}}
+                                        <span>{{substring username 0 2}}</span>
+                                    {{/if}}
+                                    <div class="level-badge-small">{{level}}</div>
+                                </div>
+                            </a>
+                            <div class="user-details">
+                                <a href="/user/{{username}}" class="username">{{username}}</a>
+                                <p class="full-name">{{fullName}}</p>
+                            </div>
+                        </div>
+                        <div class="level-info-compact">
+                            <span class="level-label">Рівень {{level}}</span>
+                            <span class="xp-label">{{experience}} XP</span>
+                        </div>
+                        <div class="recent-badges">
+                            {{#if recentBadges}}
+                                {{#each recentBadges}}
+                                    <div class="badge-mini" title="{{this.name}} - {{this.description}}">
+                                        <svg width="32" height="32">
+                                            <use href="#{{this.icon}}"></use>
+                                        </svg>
+                                    </div>
+                                {{/each}}
+                            {{else}}
+                                <span class="no-badges">Немає бейджів</span>
+                            {{/if}}
+                        </div>
+                        <div class="badge-count">
+                            <span>🏆 {{badgeCount}}</span>
+                        </div>
+                        <div class="view-profile-btn">
+                            <a href="/user/{{username}}" class="btn btn-sm btn-secondary">
+                                Профіль
+                            </a>
+                        </div>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="empty-state">
+                    <p>Таблиця лідерів порожня</p>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{> footer}}
+
+</body>
+</html>

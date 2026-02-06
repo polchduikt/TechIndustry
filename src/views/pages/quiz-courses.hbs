@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/quiz.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+{{> nav}}
+
+<main class="page-content">
+    <div class="container">
+        <div class="quiz-header-section">
+            <h1 class="section-title">Центр <span class="gradient-text">тестування</span></h1>
+            <p class="quiz-intro">
+                Оберіть напрямок, щоб перевірити свої теоретичні знання та навички написання коду.
+                Кожен тест адаптований під актуальні вимоги IT-індустрії.
+            </p>
+        </div>
+
+        <div class="quiz-grid">
+            {{#each courses}}
+                <div class="quiz-card glass animate-fade-in">
+                    <div class="quiz-card-icon">
+                        {{{getCourseIcon this.category this.slug this.title}}}
+                    </div>
+                    <h3>{{this.title}}</h3>
+                    <p class="quiz-card-level">Рівень: <span>{{this.level}}</span></p>
+                    <button class="btn btn-primary" onclick="location.href='/quiz/{{this.slug}}'">Відкрити тести</button>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</main>
+{{> footer}}
+</body>
+</html>

@@ -27,6 +27,10 @@ module.exports = (sequelize) => {
             type: DataTypes.JSON,
             defaultValue: []
         },
+        completed_quizzes: {
+            type: DataTypes.JSON,
+            defaultValue: []
+        },
         last_accessed: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
@@ -44,6 +48,5 @@ module.exports = (sequelize) => {
         timestamps: true,
         underscored: true
     });
-
     return UserProgress;
 };

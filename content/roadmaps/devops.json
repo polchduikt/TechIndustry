@@ -1,0 +1,29 @@
+{
+  "id": "devops",
+  "title": "DevOps Engineer Roadmap",
+  "description": "Автоматизація, деплой та підтримка інфраструктури",
+  "source": "roadmap.sh",
+  "lastUpdated": "2026-01-30",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Основи DevOps",
+      "order": 1,
+      "topics": [
+        { "name": "Linux Basics", "important": true },
+        { "name": "Networking Fundamentals", "important": true },
+        { "name": "Git Workflows", "important": true }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Контейнеризація",
+      "order": 2,
+      "topics": [
+        { "name": "Docker", "important": true },
+        { "name": "Docker Compose", "important": false },
+        { "name": "Container Registry", "important": false }
+      ]
+    }
+  ]
+}

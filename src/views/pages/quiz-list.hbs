@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/quiz.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+{{> nav}}
+
+<main class="page-content">
+    <div class="container">
+        <div class="quiz-header-top">
+            <a href="/quiz" class="back-link-modern">
+                <span class="icon">←</span> Назад до курсів
+            </a>
+            <h1 class="section-title">Тести за курсом: <span class="gradient-text">{{courseTitle}}</span></h1>
+            <p class="quiz-intro">
+                Оберіть модуль, щоб підтвердити свої знання. Кожен тест містить запитання різної складності: від теорії до практичних завдань на логіку та код.
+            </p>
+        </div>
+
+        <div class="quiz-grid">
+            {{#each quizzes}}
+                <div class="quiz-card glass animate-fade-in">
+                    <div class="quiz-card-content">
+                        <div class="quiz-icon-small">📖</div>
+                        <h3>{{this.title}}</h3>
+                        <p class="quiz-desc">Повна перевірка знань за матеріалами поточного модуля.</p>
+                    </div>
+
+                    <div class="quiz-footer-actions">
+                        <div class="passing-score-info">
+                            <span class="label">Мінімальний бал:</span>
+                            <span class="value">{{this.passingScore}}%</span>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="location.href='/quiz/{{../courseSlug}}/{{this.moduleId}}'">
+                            Відкрити тест
+                        </button>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</main>
+{{> footer}}
+</body>
+</html>
