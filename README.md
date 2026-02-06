@@ -31,13 +31,22 @@ The platform is built using a robust and maintainable technology stack:
 ![Home Page](assets/screenshots/home.jpg)
 
 ### Course Catalog
-![Course Catalog](assets/screenshots/course.jpg)
+![Course Catalog](assets/screenshots/courses.jpg)
 
-### User Profile
-![User Profile](assets/screenshots/profile.jpg)
+### Profile
+![Course Catalog](assets/screenshots/profile.jpg)
+
+### Achievements
+![Quiz System](assets/screenshots/achievements.jpg)
+
+### Q&A
+![Course Catalog](assets/screenshots/qa.jpg)
+
+### Roadmap
+![Course Catalog](assets/screenshots/roadmap.jpg)
 
 ### Quiz & Testing
-![Quiz System](assets/screenshots/test.jpg)
+![User Profile](assets/screenshots/test.jpg)
 
 ---
 
