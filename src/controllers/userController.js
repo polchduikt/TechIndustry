@@ -1,6 +1,7 @@
 const userService = require('../services/userService');
 const progressService = require('../services/progressService');
-const db = require('../models'); // Додано для прямого оновлення якщо треба
+const gamificationService = require('../services/gamificationService');
+const db = require('../models');
 
 exports.renderProfile = async (req, res) => {
     try {
@@ -8,7 +9,6 @@ exports.renderProfile = async (req, res) => {
         const progressFormatted = await Promise.all(progressRaw.map(async (p) => {
             const data = p.get({ plain: true });
             let totalLessons = 0;
-
             if (data.course && data.course.modules) {
                 data.course.modules.forEach(m => {
                     totalLessons += (m.lessons?.length || 0);
@@ -16,7 +16,6 @@ exports.renderProfile = async (req, res) => {
             }
             const completedCount = data.completed_lessons?.length || 0;
             const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
             if (percent === 100 && data.status !== 'completed') {
                 await db.UserProgress.update(
                     { status: 'completed' },
@@ -36,7 +35,7 @@ exports.renderProfile = async (req, res) => {
                 isFinished
             };
         }));
-
+        const gamificationStats = await gamificationService.getUserStats(req.userId);
         res.render('profile', {
             title: 'TechIndustry | Профіль',
             progress: progressFormatted,
@@ -45,12 +44,21 @@ exports.renderProfile = async (req, res) => {
                 completed: progressFormatted.filter(p => p.isFinished).length,
                 streak: 1
             },
+            gamification: gamificationStats,
+            isOwnProfile: true,
             user: res.locals.user
         });
     } catch (e) {
         console.error("Profile SSR Error:", e);
         res.status(500).send('Помилка завантаження профілю');
     }
+};
+
+exports.renderGamificationInfo = (req, res) => {
+    res.render('gamification-info', {
+        title: 'TechIndustry | Система XP',
+        user: res.locals.user
+    });
 };
 
 exports.renderSettings = async (req, res) => {

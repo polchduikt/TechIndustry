@@ -129,6 +129,28 @@ async function submitQuiz() {
 
 function showResult(result) {
     const passed = result.passed;
+    const gamification = result.gamification;
+
+    let rewardsHTML = '';
+    if (gamification) {
+        rewardsHTML = `
+            <div class="rewards-section">
+                <div class="xp-reward">
+                    <span class="reward-icon">✨</span>
+                    <span class="reward-text">+${gamification.xpGained} XP</span>
+                </div>
+            </div>
+        `;
+    } else if (result.isRepeat) {
+        rewardsHTML = `
+            <div class="rewards-section">
+                <div class="repeat-notice">
+                    ℹ️ Тест вже був пройдений раніше. XP не нараховується.
+                </div>
+            </div>
+        `;
+    }
+
     container.innerHTML = `
         <div class="result-view animate-pop-in">
             <div class="result-icon">${passed ? '🎉' : '❌'}</div>
@@ -145,9 +167,10 @@ function showResult(result) {
                     <span class="value">${currentQuizData.passingScore}%</span>
                 </div>
             </div>
+            ${rewardsHTML}
             <div class="result-actions">
                 <button class="btn btn-secondary" onclick="location.reload()">Ще раз</button>
-                <button class="btn btn-primary" onclick="location.href='/quiz'">До списку тестів</button>
+                <button class="btn btn-primary" onclick="location.href='/profile'">До профілю</button>
             </div>
         </div>
     `;

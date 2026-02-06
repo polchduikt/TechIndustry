@@ -1,0 +1,287 @@
+.leaderboard-section {
+    padding: 60px 0;
+    min-height: 80vh;
+}
+
+.leaderboard-section .leaderboard-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.leaderboard-section .leaderboard-header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.leaderboard-section .subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+}
+
+.leaderboard-section .leaderboard-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.leaderboard-section .leaderboard-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto auto auto;
+    gap: 24px;
+    align-items: center;
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    transition: all 0.3s;
+}
+
+.leaderboard-section .leaderboard-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.leaderboard-section .leaderboard-item.rank-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 193, 7, 0.1));
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-section .leaderboard-item.rank-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(169, 169, 169, 0.1));
+    border: 2px solid rgba(192, 192, 192, 0.3);
+}
+
+.leaderboard-section .leaderboard-item.rank-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15), rgba(184, 115, 51, 0.1));
+    border: 2px solid rgba(205, 127, 50, 0.3);
+}
+
+.leaderboard-section .rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.leaderboard-section .rank-medal {
+    font-size: 36px;
+}
+
+.leaderboard-section .rank-number {
+    font-size: 24px;
+    color: var(--text-muted);
+}
+
+.leaderboard-section .user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.leaderboard-section .user-avatar-link {
+    text-decoration: none;
+    display: block;
+}
+
+.leaderboard-section .user-avatar {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.leaderboard-section .user-avatar:hover {
+    transform: scale(1.1);
+}
+
+.leaderboard-section .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.leaderboard-section .level-badge-small {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #F59E0B, #EAB308);
+    border: 2px solid var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+}
+
+.leaderboard-section .user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.leaderboard-section .username {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.leaderboard-section .username:hover {
+    color: var(--primary);
+}
+
+.leaderboard-section .full-name {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.leaderboard-section .level-info-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
+}
+
+.leaderboard-section .level-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.leaderboard-section .xp-label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.leaderboard-section .recent-badges {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 180px;
+}
+
+.leaderboard-section .badge-mini {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.leaderboard-section .badge-mini:hover {
+    transform: scale(1.2);
+}
+
+.leaderboard-section .no-badges {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.leaderboard-section .badge-count {
+    min-width: 80px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.leaderboard-section .view-profile-btn .btn {
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.leaderboard-section .btn-sm {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.leaderboard-section .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 18px;
+}
+
+@media (max-width: 1024px) {
+    .leaderboard-section .leaderboard-item {
+        grid-template-columns: 60px 1fr auto;
+        gap: 16px;
+    }
+
+    .leaderboard-section .level-info-compact,
+    .leaderboard-section .recent-badges,
+    .leaderboard-section .badge-count {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .leaderboard-section .leaderboard-header h1 {
+        font-size: 32px;
+    }
+
+    .leaderboard-section .leaderboard-container {
+        padding: 16px;
+    }
+
+    .leaderboard-section .leaderboard-item {
+        grid-template-columns: 50px 1fr auto;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .leaderboard-section .rank-medal {
+        font-size: 28px;
+    }
+
+    .leaderboard-section .rank-number {
+        font-size: 18px;
+    }
+
+    .leaderboard-section .user-avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .leaderboard-section .level-badge-small {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+
+    .leaderboard-section .username {
+        font-size: 16px;
+    }
+
+    .leaderboard-section .full-name {
+        font-size: 12px;
+    }
+
+    .leaderboard-section .view-profile-btn .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

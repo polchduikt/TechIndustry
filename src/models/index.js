@@ -23,6 +23,7 @@ db.Course = require('./Course')(sequelize);
 db.Module = require('./Module')(sequelize);
 db.Lesson = require('./Lesson')(sequelize);
 db.UserProgress = require('./UserProgress')(sequelize);
+db.UserLevel = require('./UserLevel')(sequelize);
 
 db.Customer.hasOne(db.User, {
     foreignKey: 'customer_id',
@@ -70,6 +71,16 @@ db.Course.hasMany(db.UserProgress, {
 db.UserProgress.belongsTo(db.Course, {
     foreignKey: 'course_id',
     as: 'course'
+});
+
+db.User.hasOne(db.UserLevel, {
+    foreignKey: 'user_id',
+    as: 'levelData',
+    onDelete: 'CASCADE'
+});
+db.UserLevel.belongsTo(db.User, {
+    foreignKey: 'user_id',
+    as: 'user'
 });
 
 module.exports = db;

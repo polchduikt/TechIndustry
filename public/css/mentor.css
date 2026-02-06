@@ -24,10 +24,10 @@
 }
 
 .mentor-icon {
-    animation: float 3s ease-in-out infinite;
+    animation: mentorFloat 3s ease-in-out infinite;
 }
 
-@keyframes float {
+@keyframes mentorFloat {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
