@@ -46,6 +46,11 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: true,
             defaultValue: null
+        },
+        email_verified: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     }, {
         tableName: 'customers',

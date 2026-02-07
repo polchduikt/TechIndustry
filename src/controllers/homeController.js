@@ -5,7 +5,7 @@ exports.renderIndex = async (req, res) => {
         const allCourses = await courseService.getAllCourses();
         const popularCourses = allCourses.slice(0, 4);
         res.render('index', {
-            title: 'TechIndustry | Головна',
+            title: 'Головна | TechIndustry',
             courses: popularCourses
         });
     } catch (error) {

@@ -3,7 +3,6 @@ const { UserProgress, Course } = require('../models');
 const db = require('../models');
 
 class CertificateController {
-
     async renderCertificate(req, res) {
         try {
             const userId = req.userId;
@@ -21,12 +20,10 @@ class CertificateController {
             if (!progress || progress.status !== 'completed') {
                 return res.redirect('/profile');
             }
-
             let totalLessons = 0;
             progress.course.modules.forEach(m => {
                 totalLessons += m.lessons?.length || 0;
             });
-
             const formattedDate = new Date(progress.updatedAt).toLocaleDateString('uk-UA', {
                 day: 'numeric',
                 month: 'long',
@@ -54,7 +51,6 @@ class CertificateController {
                 return res.status(401).json({ message: 'Користувач не авторизований' });
             }
             const buffer = await certificateService.generateCertificate(userId, courseId);
-
             res.contentType("application/pdf");
             res.setHeader('Content-Disposition', `inline; filename=certificate-${courseId}.pdf`);
             res.send(buffer);

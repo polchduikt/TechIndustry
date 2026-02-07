@@ -23,7 +23,6 @@ exports.renderProfile = async (req, res) => {
                 );
                 data.status = 'completed';
             }
-
             const isFinished = data.status === 'completed' || percent === 100;
             return {
                 ...data,
@@ -37,7 +36,7 @@ exports.renderProfile = async (req, res) => {
         }));
         const gamificationStats = await gamificationService.getUserStats(req.userId);
         res.render('profile', {
-            title: 'TechIndustry | Профіль',
+            title: 'Профіль | TechIndustry',
             progress: progressFormatted,
             stats: {
                 total: progressFormatted.length,
@@ -56,7 +55,7 @@ exports.renderProfile = async (req, res) => {
 
 exports.renderGamificationInfo = (req, res) => {
     res.render('gamification-info', {
-        title: 'TechIndustry | Система XP',
+        title: 'Система XP | TechIndustry',
         user: res.locals.user
     });
 };
@@ -64,34 +63,74 @@ exports.renderGamificationInfo = (req, res) => {
 exports.renderSettings = async (req, res) => {
     try {
         const user = await userService.getProfile(req.userId);
-        res.render('settings', { title: 'Налаштування', userData: user });
-    } catch (e) { res.status(500).send('Error'); }
+        let flashMessage = null;
+        if (req.session.flashMessage && req.session.flashUserId === req.userId) {
+            flashMessage = req.session.flashMessage;
+        }
+        delete req.session.flashMessage;
+        delete req.session.flashUserId;
+
+        res.render('settings', {
+            title: 'Налаштування | TechIndustry',
+            user: user,
+            flashMessage: flashMessage
+        });
+    } catch (e) {
+        res.status(500).send('Error');
+    }
 };
 
 exports.updateProfile = async (req, res) => {
     try {
         const result = await userService.updateProfile(req.userId, req.body);
-        res.json({ message: 'Оновлено', requiresReauth: result.requiresReauth });
-    } catch (e) { res.status(400).json({ message: e.message }); }
+        if (result.requiresReauth) {
+            res.clearCookie('token');
+            return res.redirect('/login');
+        }
+        req.session.flashMessage = { type: 'success', text: 'Профіль оновлено!' };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    } catch (e) {
+        req.session.flashMessage = { type: 'error', text: e.message };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    }
 };
 
 exports.changePassword = async (req, res) => {
     try {
         await userService.changePassword(req.userId, req.body.oldPassword, req.body.newPassword);
-        res.clearCookie('token').json({ message: 'Пароль змінено' });
-    } catch (e) { res.status(400).json({ message: e.message }); }
+        res.clearCookie('token');
+        res.redirect('/login');
+    } catch (e) {
+        req.session.flashMessage = { type: 'error', text: e.message };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    }
 };
 
 exports.uploadAvatar = async (req, res) => {
     try {
-        const avatarUrl = await userService.saveAvatar(req.userId, req.file);
-        res.json({ avatarUrl });
-    } catch (e) { res.status(500).json({ message: e.message }); }
+        await userService.saveAvatar(req.userId, req.file);
+        req.session.flashMessage = { type: 'success', text: 'Аватар завантажено!' };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    } catch (e) {
+        req.session.flashMessage = { type: 'error', text: e.message };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    }
 };
 
 exports.deleteAvatar = async (req, res) => {
     try {
         await userService.deleteAvatar(req.userId);
-        res.json({ message: 'Видалено' });
-    } catch (e) { res.status(500).json({ message: e.message }); }
+        req.session.flashMessage = { type: 'success', text: 'Аватар видалено!' };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    } catch (e) {
+        req.session.flashMessage = { type: 'error', text: e.message };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
+    }
 };

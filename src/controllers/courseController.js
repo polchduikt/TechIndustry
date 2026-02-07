@@ -9,14 +9,12 @@ exports.renderCourses = async (req, res) => {
     if (userId) {
       userProgress = await progressService.getUserProgress(userId);
     }
-
     const coursesWithProgress = allCourses.map(course => {
       const progress = userProgress.find(p => p.course_id === course.id);
       let totalLessons = 0;
       course.modules.forEach(m => totalLessons += (m.lessons?.length || 0));
       const completedCount = progress?.completed_lessons?.length || 0;
       const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
       return {
         ...course.toJSON(),
         userProgress: progress,
@@ -30,7 +28,7 @@ exports.renderCourses = async (req, res) => {
     });
 
     res.render('courses', {
-      title: 'TechIndustry | Каталог курсів',
+      title: 'Каталог курсів | TechIndustry',
       courses: coursesWithProgress
     });
   } catch (error) {
