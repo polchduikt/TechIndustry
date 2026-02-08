@@ -23,7 +23,8 @@ module.exports = (sequelize) => {
             references: {
                 model: 'customers',
                 key: 'id'
-            }
+            },
+            onDelete: 'CASCADE'
         },
         reset_code: {
             type: DataTypes.STRING(6),

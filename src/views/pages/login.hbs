@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
@@ -29,10 +30,13 @@
                     <div class="password-input-wrapper">
                         <input type="password" name="password" class="glass-input" required id="loginPassword">
                         <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)">
-                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
-                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"></line>
+                            <svg class="eye" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-slash" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display:none">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
                             </svg>
                         </button>
                     </div>
@@ -41,63 +45,19 @@
                 <button type="submit" class="btn btn-primary auth-btn">Увійти</button>
                 <div id="loginMessage" class="message"></div>
             </form>
-
-            <form id="registerForm" class="form" onsubmit="handleRegister(event)">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Ім'я *</label>
-                        <input type="text" name="first_name" class="glass-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Прізвище *</label>
-                        <input type="text" name="last_name" class="glass-input" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>По-батькові</label>
-                    <input type="text" name="patronymic" class="glass-input">
-                </div>
-                <div class="form-group">
-                    <label>Дата народження</label>
-                    <input type="date" name="birth_date" class="glass-input">
-                </div>
-                <div class="form-group">
-                    <label>Email *</label>
-                    <input type="email" name="email" class="glass-input" placeholder="email@gmail.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Телефон *</label>
-                    <input type="tel" name="phone" class="glass-input" placeholder="+380" required id="phoneInput" maxlength="17">
-                </div>
-                <div class="form-group">
-                    <label>Ім'я користувача *</label>
-                    <input type="text" name="username" class="glass-input" minlength="3" required>
-                </div>
-                <div class="form-group">
-                    <label>Пароль *</label>
-                    <div class="password-input-wrapper">
-                        <input type="password" name="password" class="glass-input" minlength="8" required id="registerPassword">
-                        <button type="button" class="toggle-password" onclick="togglePassword('registerPassword', this)">
-                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
-                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"></line>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary auth-btn">Зареєструватися</button>
-                <div id="registerMessage" class="message"></div>
-            </form>
+            <div id="registerForm" class="form">
+            </div>
         </div>
     </div>
 </div>
+
 <div id="forgotPasswordModal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
         <div id="modalBody"></div>
     </div>
 </div>
+
 {{> footer}}
 <script src="/js/login.js"></script>
 <script src="/js/index.js"></script>

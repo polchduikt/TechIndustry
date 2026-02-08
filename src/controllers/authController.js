@@ -2,9 +2,36 @@ const authService = require('../services/authService');
 const userService = require('../services/userService');
 const { AUTH } = require('../config/constants');
 
+exports.requestEmailVerification = async (req, res) => {
+    try {
+        const { email, first_name } = req.body;
+        const result = await authService.sendVerificationCode(email, first_name);
+        res.json({
+            message: 'Код верифікації надіслано на вашу пошту',
+            ...result
+        });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+exports.verifyEmailCode = async (req, res) => {
+    try {
+        const { email, code } = req.body;
+        const result = await authService.verifyEmailCode(email, code);
+        res.json({
+            message: 'Email успішно підтверджено',
+            ...result
+        });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 exports.register = async (req, res) => {
     try {
-        const user = await authService.register(req.body);
+        const { emailVerified } = req.body;
+        const user = await authService.register(req.body, emailVerified === 'true');
 
         if (req.file) {
             await userService.saveAvatar(user.id, req.file);
@@ -39,7 +66,15 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
     res.clearCookie('token');
-    res.json({ message: 'Вихід успішний' });
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Session destroy error:', err);
+        }
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.json({ message: 'Вихід успішний', redirect: '/' });
+    });
 };
 
 exports.requestPasswordReset = async (req, res) => {
@@ -47,8 +82,7 @@ exports.requestPasswordReset = async (req, res) => {
         const { emailOrPhone } = req.body;
         const result = await authService.requestPasswordReset(emailOrPhone);
         res.json({
-            message: 'Код відновлення згенеровано',
-            code: result.resetCode,
+            message: 'Код відновлення надіслано на вашу пошту',
             codeSent: true
         });
     } catch (error) {
@@ -73,5 +107,24 @@ exports.resetPassword = async (req, res) => {
         res.json({ message: 'Пароль успішно змінено', success: true });
     } catch (error) {
         res.status(400).json({ message: error.message });
+    }
+};
+
+exports.deleteAccount = async (req, res) => {
+    try {
+        const { confirmation } = req.body;
+        if (confirmation !== 'ВИДАЛИТИ') {
+            req.session.flashMessage = { type: 'error', text: 'Невірне підтвердження' };
+            req.session.flashUserId = req.userId;
+            return res.redirect('/settings');
+        }
+        await authService.deleteAccount(req.userId);
+        res.clearCookie('token');
+        req.session.destroy();
+        res.redirect('/');
+    } catch (error) {
+        req.session.flashMessage = { type: 'error', text: error.message };
+        req.session.flashUserId = req.userId;
+        res.redirect('/settings');
     }
 };

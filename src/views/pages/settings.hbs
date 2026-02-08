@@ -8,102 +8,179 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/profile.css">
     <link rel="stylesheet" href="/css/settings.css">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
 </head>
-<body>
+<body{{#if flashMessage}} data-flash-message="{{json flashMessage}}"{{/if}}>
 
 {{> nav}}
 
 <section class="settings-section">
     <div class="container">
         <div class="settings-container">
-            <aside class="settings-sidebar glass">
+            <div class="settings-sidebar glass">
                 <div class="avatar-edit-container">
-                    <div class="avatar-preview {{#if userData.Customer.avatar_data}}has-avatar{{/if}}"
-                         id="avatarPreviewContainer"
-                         onclick="document.getElementById('avatarInput').click()">
-                    <img id="currentAvatar"
-                            src="{{#if userData.Customer.avatar_data}}{{userData.Customer.avatar_data}}{{else}}https://ui-avatars.com/api/?name={{userData.username}}&background=6366f1&color=fff{{/if}}"
-                        alt="Avatar">
+                    <div class="avatar-preview {{#if user.Customer.avatar_data}}has-avatar{{/if}}">
+                        {{#if user.Customer.avatar_data}}
+                            <img id="currentAvatar" src="{{user.Customer.avatar_data}}" alt="Avatar">
+                        {{else}}
+                            <img id="currentAvatar" src="https://ui-avatars.com/api/?name={{user.username}}&background=6366f1&color=fff&size=200" alt="Avatar">
+                        {{/if}}
                     </div>
                     <input type="file" id="avatarInput" accept="image/*" hidden>
-
-                    <div class="avatar-delete-link-wrapper">
-                        <span id="deleteAvatarBtn" class="delete-text-link {{#unless userData.Customer.avatar_data}}hidden{{/unless}}">
-                            Видалити фото
-                        </span>
-                    </div>
-
-                    <h3 id="displayUsername">{{userData.username}}</h3>
-                    <p id="displayEmail">{{userData.Customer.email}}</p>
+                    <button type="button" class="btn btn-secondary delete-avatar-btn {{#unless user.Customer.avatar_data}}hidden{{/unless}}" id="deleteAvatarBtn">
+                        Видалити аватар
+                    </button>
+                    <h3>{{user.username}}</h3>
+                    <p>{{user.Customer.email}}</p>
                 </div>
-            </aside>
+                <div class="settings-nav">
+                    <button class="nav-btn active" data-tab="profile">Профіль</button>
+                    <button class="nav-btn" data-tab="security">Безпека</button>
+                </div>
+            </div>
 
-            <main class="settings-main">
-                <div class="settings-content glass">
+            <div class="settings-content glass">
+                <div class="tab-content active" id="profileTab">
                     <h2 class="section-title">Редагувати профіль</h2>
-                    <form id="settingsForm">
+                    <form id="settingsForm" class="settings-form" method="POST" action="/api/auth/update-profile">
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>Ім'я користувача *</label>
-                                <input type="text" id="username" class="glass-input" value="{{userData.username}}" required>
+                                <label for="username">Ім'я користувача *</label>
+                                <input type="text" id="username" name="username" class="glass-input" value="{{user.username}}" required>
                             </div>
                             <div class="form-group">
-                                <label>Email *</label>
-                                <input type="email" id="email" class="glass-input" value="{{userData.Customer.email}}" required>
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" class="glass-input" value="{{user.Customer.email}}" required>
                             </div>
                             <div class="form-group">
-                                <label>Ім'я</label>
-                                <input type="text" id="first_name" class="glass-input" value="{{userData.Customer.first_name}}">
+                                <label for="first_name">Ім'я *</label>
+                                <input type="text" id="first_name" name="first_name" class="glass-input" value="{{user.Customer.first_name}}" required>
                             </div>
                             <div class="form-group">
-                                <label>Прізвище</label>
-                                <input type="text" id="last_name" class="glass-input" value="{{userData.Customer.last_name}}">
+                                <label for="last_name">Прізвище *</label>
+                                <input type="text" id="last_name" name="last_name" class="glass-input" value="{{user.Customer.last_name}}" required>
                             </div>
                             <div class="form-group">
-                                <label>Телефон *</label>
-                                <input type="tel" id="phone" class="glass-input" value="{{userData.Customer.phone}}" required>
+                                <label for="patronymic">По-батькові</label>
+                                <input type="text" id="patronymic" name="patronymic" class="glass-input" value="{{user.Customer.patronymic}}" placeholder="Необов'язково">
                             </div>
                             <div class="form-group">
-                                <label>Дата народження</label>
-                                <input type="date" id="birth_date" class="glass-input" value="{{userData.Customer.birth_date}}">
+                                <label for="phone">Телефон *</label>
+                                <input type="tel" id="phone" name="phone" class="glass-input" value="{{user.Customer.phone}}" required maxlength="17">
+                            </div>
+                            <div class="form-group">
+                                <label for="birth_date">Дата народження</label>
+                                <input type="date" id="birth_date" name="birth_date" class="glass-input" value="{{user.Customer.birth_date}}">
                             </div>
                         </div>
-                        <div class="form-actions" style="margin-top: 30px;">
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelProfileBtn">Скасувати</button>
                             <button type="submit" class="btn btn-primary">Зберегти зміни</button>
                         </div>
                     </form>
                 </div>
 
-                <div class="settings-content glass" style="margin-top: 30px;">
-                    <h2 class="section-title">Змінити пароль</h2>
-                    <p><a class="forgot-password-link" onclick="showForgotPasswordModal()">Забули пароль?</a></p>
-                    <form id="passwordForm">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Поточний пароль *</label>
-                                <input type="password" id="oldPassword" class="glass-input" required>
+                <div class="tab-content" id="securityTab">
+                    <h2 class="section-title">Безпека акаунта</h2>
+                    <div class="security-card glass-card">
+                        <h3 class="card-title">Змінити пароль</h3>
+                        <p class="card-description">
+                            Рекомендуємо використовувати надійний пароль.
+                            <a class="forgot-password-link" onclick="showForgotPasswordModal()">Забули пароль?</a>
+                        </p>
+                        <form id="passwordForm" class="settings-form" method="POST" action="/api/auth/change-password">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="oldPassword">Поточний пароль *</label>
+                                    <div class="password-input-wrapper">
+                                        <input type="password" id="oldPassword" name="oldPassword" class="glass-input" required>
+                                        <button type="button" class="toggle-password" onclick="togglePasswordSettings('oldPassword', this)">
+                                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">Новий пароль *</label>
+                                    <div class="password-input-wrapper">
+                                        <input type="password" id="newPassword" name="newPassword" class="glass-input" required minlength="8">
+                                        <button type="button" class="toggle-password" onclick="togglePasswordSettings('newPassword', this)">
+                                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">Підтвердіть пароль *</label>
+                                    <div class="password-input-wrapper">
+                                        <input type="password" id="confirmPassword" name="confirmPassword" class="glass-input" required>
+                                        <button type="button" class="toggle-password" onclick="togglePasswordSettings('confirmPassword', this)">
+                                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle class="eye-open" cx="12" cy="12" r="3"></circle>
+                                                <line class="eye-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Новий пароль *</label>
-                                <input type="password" id="newPassword" class="glass-input" required minlength="8">
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Оновити пароль</button>
                             </div>
-                            <div class="form-group">
-                                <label>Підтвердіть новий пароль *</label>
-                                <input type="password" id="confirmPassword" class="glass-input" required minlength="8">
-                            </div>
-                        </div>
-                        <div class="form-actions" style="margin-top: 30px;">
-                            <button type="submit" class="btn btn-primary">Оновити пароль</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+
+                    <div class="security-card glass-card danger-card">
+                        <h3 class="card-title danger-title">Видалити обліковий запис</h3>
+                        <p class="card-description">
+                            Видалення акаунта є незворотною дією. Всі ваші дані, прогрес та сертифікати будуть втрачені назавжди.
+                        </p>
+                        <button type="button" class="btn btn-danger" id="deleteAccountBtn">
+                            Видалити акаунт
+                        </button>
+                    </div>
                 </div>
-            </main>
+            </div>
         </div>
     </div>
 </section>
 
+<div id="deleteAccountModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeDeleteAccountModal()">&times;</button>
+        <form id="deleteAccountForm" method="POST" action="/api/auth/delete-account">
+            <h3 class="modal-title danger-title">⚠️ Видалити акаунт?</h3>
+            <p class="modal-description">
+                Ця дія незворотна! Після видалення ви втратите:
+            </p>
+            <ul class="danger-list">
+                <li>Весь прогрес по курсах</li>
+                <li>Всі отримані сертифікати</li>
+                <li>XP, рівні та досягнення</li>
+                <li>Збережені дані профілю</li>
+            </ul>
+            <p class="modal-description" style="margin-top: 20px;">
+                Введіть <strong>"ВИДАЛИТИ"</strong> для підтвердження:
+            </p>
+            <div class="form-group">
+                <input type="text" id="deleteConfirmInput" name="confirmation" class="glass-input" placeholder="Введіть ВИДАЛИТИ" required>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteAccountModal()">Скасувати</button>
+                <button type="submit" class="btn btn-danger">Видалити назавжди</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div id="forgotPasswordModal" class="modal-overlay">
-    <div class="modal-content glass">
+    <div class="modal-content">
         <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
         <div id="modalBody"></div>
     </div>
@@ -111,6 +188,18 @@
 
 {{> footer}}
 
+<script>
+    window.originalUserData = {
+        username: '{{user.username}}',
+        email: '{{user.Customer.email}}',
+        first_name: '{{user.Customer.first_name}}',
+        last_name: '{{user.Customer.last_name}}',
+        patronymic: '{{user.Customer.patronymic}}',
+        phone: '{{user.Customer.phone}}',
+        birth_date: '{{user.Customer.birth_date}}'
+    };
+</script>
+<script src="/js/index.js"></script>
 <script src="/js/settings.js"></script>
 </body>
 </html>

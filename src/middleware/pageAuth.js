@@ -7,6 +7,9 @@ const protectPage = (req, res, next) => {
     }
     try {
         jwt.verify(token, process.env.JWT_SECRET);
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         next();
     } catch (error) {
         res.clearCookie('token');

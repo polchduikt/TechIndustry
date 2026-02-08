@@ -21,13 +21,11 @@ exports.renderCourseSelection = async (req, res) => {
             }
             const lessonOrder = lesson.order;
             const quizzes = readQuizFile(courseSlug);
-
             if (quizzes && quizzes.length > 0) {
                 const orderPrefix = String(lessonOrder).padStart(2, '0') + '-';
                 const matchingQuiz = quizzes.find(q =>
                     typeof q.moduleId === 'string' && q.moduleId.startsWith(orderPrefix)
                 );
-
                 if (matchingQuiz) {
                     return res.redirect(`/quiz/${courseSlug}/${matchingQuiz.moduleId}`);
                 }
@@ -37,7 +35,7 @@ exports.renderCourseSelection = async (req, res) => {
 
         const courses = await db.Course.findAll();
         res.render('quiz-courses', {
-            title: 'Центр тестування',
+            title: 'Центр тестування | TechIndustry',
             courses,
             user: res.locals.user
         });
@@ -79,7 +77,6 @@ exports.renderQuiz = async (req, res) => {
                 return rest;
             })
         };
-
         res.render('quiz-view', {
             title: quiz.title,
             quiz: sanitizedQuiz,
