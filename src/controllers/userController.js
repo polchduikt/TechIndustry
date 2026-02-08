@@ -45,7 +45,8 @@ exports.renderProfile = async (req, res) => {
             },
             gamification: gamificationStats,
             isOwnProfile: true,
-            user: res.locals.user
+            user: res.locals.user,
+            csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (e) {
         console.error("Profile SSR Error:", e);
@@ -56,7 +57,8 @@ exports.renderProfile = async (req, res) => {
 exports.renderGamificationInfo = (req, res) => {
     res.render('gamification-info', {
         title: 'Система XP | TechIndustry',
-        user: res.locals.user
+        user: res.locals.user,
+        csrfToken: req.csrfToken ? req.csrfToken() : ''
     });
 };
 
@@ -73,16 +75,31 @@ exports.renderSettings = async (req, res) => {
         res.render('settings', {
             title: 'Налаштування | TechIndustry',
             user: user,
-            flashMessage: flashMessage
+            flashMessage: flashMessage,
+            csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (e) {
+        console.error('renderSettings error:', e);
         res.status(500).send('Error');
     }
 };
 
 exports.updateProfile = async (req, res) => {
     try {
-        const result = await userService.updateProfile(req.userId, req.body);
+        const allowedUpdates = {
+            username: req.body.username,
+            email: req.body.email,
+            phone: req.body.phone,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            patronymic: req.body.patronymic,
+            birth_date: req.body.birth_date,
+            about: req.body.about,
+            github_link: req.body.github_link
+        };
+
+        const result = await userService.updateProfile(req.userId, allowedUpdates);
+
         if (result.requiresReauth) {
             res.clearCookie('token');
             return res.redirect('/login');

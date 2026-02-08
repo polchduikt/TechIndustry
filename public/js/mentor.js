@@ -1,6 +1,11 @@
 let chatHistory = [];
 let isFullscreen = false;
 
+function getCsrfToken() {
+    const token = document.querySelector('meta[name="csrf-token"]');
+    return token ? token.getAttribute('content') : '';
+}
+
 async function initMentor() {
     restoreChatHistory();
 }
@@ -31,7 +36,6 @@ function updateUIFromStatus(status) {
         if (count >= limit) limitContainer.classList.add('danger');
         else if (count >= limit * 0.5) limitContainer.classList.add('warning');
     }
-
     if (resetTime && Date.now() < resetTime) {
         disableInput();
         startLiveTimer(resetTime);
@@ -48,11 +52,13 @@ async function sendMessageToMentor() {
     appendMessage('user', text);
     input.value = '';
     showTypingIndicator();
-
     try {
         const response = await fetch('/api/ai/chat', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
             credentials: 'include',
             body: JSON.stringify({ message: text, history: chatHistory })
         });
@@ -60,22 +66,22 @@ async function sendMessageToMentor() {
         const data = await response.json();
         hideTypingIndicator();
 
-        if (response.status === 403) {
-            appendMessage('mentor', 'Ви вичерпали ліміт запитань на цю сесію. Зачекайте на відновлення доступу.');
+        if (!response.ok) {
+            const errorMessage = data.error || 'Сталася помилка. Спробуйте пізніше.';
+            appendMessage('mentor', `⚠️ ${errorMessage}`);
+
             if (data.resetTime) {
                 updateUIFromStatus({ count: 10, limit: 10, resetTime: data.resetTime });
             }
-        } else if (data.error) {
-            appendMessage('mentor', data.error);
-        } else {
-            appendMessage('mentor', data.response);
-            if (data.status) {
-                updateUIFromStatus(data.status);
-            }
+            return;
+        }
+        appendMessage('mentor', data.response);
+        if (data.status) {
+            updateUIFromStatus(data.status);
         }
     } catch (err) {
         hideTypingIndicator();
-        appendMessage('mentor', 'Технічна помилка. Спробуйте пізніше.');
+        appendMessage('mentor', 'Технічна помилка з\'єднання.');
         console.error('Chat error:', err);
     }
 }
@@ -94,13 +100,11 @@ function startLiveTimer(resetTimestamp) {
     window.mentorTimerInterval = setInterval(() => {
         const now = Date.now();
         const diff = resetTimestamp - now;
-
         if (diff <= 0) {
             clearInterval(window.mentorTimerInterval);
             syncStatusWithServer();
             return;
         }
-
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
         const timeString = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;

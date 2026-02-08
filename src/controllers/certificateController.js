@@ -7,35 +7,43 @@ class CertificateController {
         try {
             const userId = req.userId;
             const { course: courseId } = req.query;
-            if (!courseId) return res.redirect('/profile');
+            if (!courseId) {
+                return res.redirect('/profile');
+            }
             const progress = await UserProgress.findOne({
                 where: { user_id: userId, course_id: courseId },
                 include: [{
                     model: Course,
                     as: 'course',
-                    include: [{ model: db.Module, as: 'modules', include: ['lessons'] }]
+                    include: [{
+                        model: db.Module,
+                        as: 'modules',
+                        include: ['lessons']
+                    }]
                 }]
             });
 
             if (!progress || progress.status !== 'completed') {
                 return res.redirect('/profile');
             }
+
             let totalLessons = 0;
             progress.course.modules.forEach(m => {
                 totalLessons += m.lessons?.length || 0;
             });
+
             const formattedDate = new Date(progress.updatedAt).toLocaleDateString('uk-UA', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
             });
-
             res.render('certificate', {
                 title: `Сертифікат | ${progress.course.title}`,
                 course: progress.course.get({ plain: true }),
                 courseId: courseId,
                 completionDate: formattedDate,
-                duration: totalLessons * 2
+                duration: totalLessons * 2,
+                csrfToken: req.csrfToken ? req.csrfToken() : ''
             });
         } catch (error) {
             console.error("Certificate SSR Error:", error);
@@ -69,19 +77,17 @@ class CertificateController {
             }
             const userId = req.user.id;
             const { courseId } = req.params;
+
             const progress = await UserProgress.findOne({
                 where: {
                     user_id: userId,
                     course_id: courseId
                 },
-                include: [
-                    {
-                        model: Course,
-                        as: 'course'
-                    }
-                ]
+                include: [{
+                    model: Course,
+                    as: 'course'
+                }]
             });
-
             if (!progress) {
                 return res.json({
                     available: false,
@@ -93,25 +99,24 @@ class CertificateController {
                 courseId,
                 progress
             );
+
             const totalLessons = certificateService.calculateTotalLessons(
                 progress.course
             );
-            const completedLessons =
-                progress.completed_lessons?.length || 0;
+
+            const completedLessons = progress.completed_lessons?.length || 0;
 
             res.json({
                 available: isCompleted,
                 status: progress.status,
                 completedLessons,
                 totalLessons,
-                progressPercent:
-                    totalLessons > 0
-                        ? Math.round(
-                            (completedLessons / totalLessons) * 100
-                        )
-                        : 0
+                progressPercent: totalLessons > 0
+                    ? Math.round((completedLessons / totalLessons) * 100)
+                    : 0
             });
         } catch (error) {
+            console.error('checkAvailability error:', error);
             res.status(500).json({
                 message: 'Failed to check certificate availability'
             });

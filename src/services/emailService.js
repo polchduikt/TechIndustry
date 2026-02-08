@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const xss = require('xss');
 
 class EmailService {
     constructor() {
@@ -11,7 +12,20 @@ class EmailService {
         });
     }
 
+    sanitizeInput(input) {
+        if (!input) return '';
+
+        const cleaned = xss(input, {
+            whiteList: {},
+            stripIgnoreTag: true,
+            stripIgnoreTagBody: ['script', 'style']
+        });
+        return cleaned.trim();
+    }
+
     async sendVerificationCode(email, code, firstName) {
+        const cleanFirstName = this.sanitizeInput(firstName) || 'Користувач';
+        const cleanCode = this.sanitizeInput(code);
         const mailOptions = {
             from: `"TechIndustry" <${process.env.EMAIL_USER}>`,
             to: email,
@@ -33,7 +47,6 @@ class EmailService {
                         .info { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 20px 0; }
                         .warning { background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 15px; margin: 20px 0; border-radius: 8px; color: #fca5a5; }
                         .footer { background: #0f172a; padding: 30px; text-align: center; color: #64748b; font-size: 13px; border-top: 1px solid #334155; }
-                        .button { display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; margin: 20px 0; font-weight: 600; }
                     </style>
                 </head>
                 <body>
@@ -42,7 +55,7 @@ class EmailService {
                             <h1>🚀 TechIndustry</h1>
                         </div>
                         <div class="content">
-                            <p class="greeting">Привіт, <strong>${firstName || 'Користувач'}</strong>! 👋</p>
+                            <p class="greeting">Привіт, <strong>${cleanFirstName}</strong>! 👋</p>
                             <p class="info">
                                 Дякуємо за реєстрацію на платформі <strong>TechIndustry</strong>! 
                                 Щоб завершити створення облікового запису, будь ласка, підтвердіть свою електронну адресу.
@@ -50,7 +63,7 @@ class EmailService {
                             
                             <div class="code-container">
                                 <div style="color: #94a3b8; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">Ваш код підтвердження</div>
-                                <div class="code">${code}</div>
+                                <div class="code">${cleanCode}</div>
                             </div>
 
                             <p class="info">
@@ -86,10 +99,12 @@ class EmailService {
     }
 
     async sendPasswordResetCode(email, code, firstName) {
+        const cleanFirstName = this.sanitizeInput(firstName) || 'Користувач';
+        const cleanCode = this.sanitizeInput(code);
         const mailOptions = {
             from: `"TechIndustry" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: '🔒 Відновлення паролю - TechIndustry',
+            subject: '🔑 Відновлення паролю - TechIndustry',
             html: `
                 <!DOCTYPE html>
                 <html>
@@ -112,17 +127,17 @@ class EmailService {
                 <body>
                     <div class="container">
                         <div class="header">
-                            <h1>🔒 Відновлення паролю</h1>
+                            <h1>🔑 Відновлення паролю</h1>
                         </div>
                         <div class="content">
-                            <p class="greeting">Привіт, <strong>${firstName || 'Користувач'}</strong>! 👋</p>
+                            <p class="greeting">Привіт, <strong>${cleanFirstName}</strong>! 👋</p>
                             <p class="info">
                                 Ми отримали запит на відновлення паролю для вашого облікового запису на <strong>TechIndustry</strong>.
                             </p>
                             
                             <div class="code-container">
                                 <div style="color: #94a3b8; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">Код відновлення</div>
-                                <div class="code">${code}</div>
+                                <div class="code">${cleanCode}</div>
                             </div>
 
                             <p class="info">
@@ -131,7 +146,7 @@ class EmailService {
 
                             <div class="warning">
                                 ⚠️ <strong>Важливо:</strong> Код дійсний протягом <strong>10 хвилин</strong>. 
-                                Якщо ви не запитували відновлення паролю, проігноруйте це повідомлення або зверніться до підтримки.
+                                Якщо ви не запитували відновлення паролю, проігноруйте це повідомлення.
                             </div>
                         </div>
                         <div class="footer">
@@ -145,11 +160,11 @@ class EmailService {
                 </html>
             `
         };
-
         try {
             const info = await this.transporter.sendMail(mailOptions);
             return { success: true, messageId: info.messageId };
         } catch (error) {
+            console.error('Email sending error:', error);
             throw new Error('Помилка відправки email');
         }
     }
@@ -157,6 +172,14 @@ class EmailService {
     async verifyEmailExists(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            return false;
+        }
+
+        if (email.length > 255) {
+            return false;
+        }
+
+        if (/<|>|script/i.test(email)) {
             return false;
         }
         return true;

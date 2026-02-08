@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const db = require('../models');
-const progressService = require('../services/progressService');
 const gamificationService = require('../services/gamificationService');
 const COURSES_PATH = path.join(__dirname, '../../content/courses');
 
@@ -32,12 +31,12 @@ exports.renderCourseSelection = async (req, res) => {
             }
             return res.redirect(`/quiz/${courseSlug}`);
         }
-
         const courses = await db.Course.findAll();
         res.render('quiz-courses', {
             title: 'Центр тестування | TechIndustry',
             courses,
-            user: res.locals.user
+            user: res.locals.user,
+            csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (e) {
         console.error('renderCourseSelection error:', e);
@@ -56,7 +55,8 @@ exports.renderQuizList = async (req, res) => {
             quizzes: quizzes || [],
             courseSlug: slug,
             courseTitle: course.title,
-            user: res.locals.user
+            user: res.locals.user,
+            csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (e) {
         console.error('renderQuizList error:', e);
@@ -81,7 +81,8 @@ exports.renderQuiz = async (req, res) => {
             title: quiz.title,
             quiz: sanitizedQuiz,
             courseSlug: slug,
-            moduleId: moduleId
+            moduleId: moduleId,
+            csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (e) {
         console.error('renderQuiz error:', e);
@@ -125,7 +126,6 @@ exports.submitQuiz = async (req, res) => {
         const passed = percent >= quiz.passingScore;
         let gamificationResult = null;
         let isFirstCompletion = false;
-
         if (passed && userId) {
             const course = await db.Course.findOne({ where: { slug } });
             if (course) {
@@ -147,13 +147,7 @@ exports.submitQuiz = async (req, res) => {
                 if (!Array.isArray(completedQuizzes)) {
                     completedQuizzes = [];
                 }
-
                 const quizIdentifier = `${slug}:${moduleId}`;
-                console.log('Quiz check:', {
-                    quizIdentifier,
-                    completedQuizzes,
-                    isIncluded: completedQuizzes.includes(quizIdentifier)
-                });
                 if (!completedQuizzes.includes(quizIdentifier)) {
                     isFirstCompletion = true;
                     completedQuizzes.push(quizIdentifier);
@@ -170,7 +164,6 @@ exports.submitQuiz = async (req, res) => {
                         }
                     );
                     gamificationResult = await gamificationService.onQuizComplete(userId, percent);
-                } else {
                 }
             }
         }

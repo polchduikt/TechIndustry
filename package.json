@@ -17,15 +17,21 @@
   "type": "commonjs",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "axios": "^1.13.4",
+    "axios": "^1.13.5",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "csurf": "^1.11.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.2.1",
     "express-session": "^1.19.0",
     "express-validator": "^7.3.1",
     "hbs": "^4.2.0",
+    "helmet": "^8.1.0",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.3",
     "marked": "^17.0.1",
     "multer": "^2.0.2",
@@ -34,7 +40,8 @@
     "pdfkit": "^0.17.2",
     "pg": "^8.17.2",
     "sequelize": "^6.37.7",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "xss": "^1.0.15"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",

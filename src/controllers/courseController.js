@@ -26,12 +26,13 @@ exports.renderCourses = async (req, res) => {
         isGuest: !userId
       };
     });
-
     res.render('courses', {
       title: 'Каталог курсів | TechIndustry',
-      courses: coursesWithProgress
+      courses: coursesWithProgress,
+      csrfToken: req.csrfToken ? req.csrfToken() : ''
     });
   } catch (error) {
+    console.error('renderCourses error:', error);
     res.status(500).send('Помилка завантаження каталогу');
   }
 };
@@ -47,7 +48,6 @@ exports.renderCourseDetail = async (req, res) => {
       const progress = await progressService.getUserProgressByCourse(res.locals.user.id, course.id);
       completedLessons = progress?.completed_lessons || [];
     }
-
     const coursePlain = course.get({ plain: true });
     coursePlain.modules.forEach(module => {
       module.lessons.forEach(lesson => {
@@ -58,9 +58,11 @@ exports.renderCourseDetail = async (req, res) => {
       title: `Курс: ${coursePlain.title}`,
       course: coursePlain,
       isLoggedIn,
-      slug
+      slug,
+      csrfToken: req.csrfToken ? req.csrfToken() : ''
     });
   } catch (error) {
+    console.error('renderCourseDetail error:', error);
     res.status(500).send('Помилка');
   }
 };
@@ -70,6 +72,7 @@ exports.getLessonContent = async (req, res) => {
     const lessonData = await courseService.getLessonContent(req.params.lessonId);
     res.json(lessonData);
   } catch (error) {
+    console.error('getLessonContent error:', error);
     res.status(404).json({ message: error.message });
   }
 };

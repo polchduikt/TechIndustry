@@ -6,7 +6,8 @@ exports.renderIndex = async (req, res) => {
         const popularCourses = allCourses.slice(0, 4);
         res.render('index', {
             title: 'Головна | TechIndustry',
-            courses: popularCourses
+            courses: popularCourses,
+            csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (error) {
         console.error('Error rendering home:', error);

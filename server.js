@@ -4,8 +4,11 @@ const cookieParser = require('cookie-parser');
 const hbs = require('hbs');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
+const csrf = require('csurf');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 require('dotenv').config();
-
 const db = require('./src/models');
 const userService = require('./src/services/userService');
 const homeController = require('./src/controllers/homeController');
@@ -13,11 +16,12 @@ const userController = require('./src/controllers/userController');
 const courseController = require('./src/controllers/courseController');
 const quizController = require('./src/controllers/quizController');
 const certificateController = require('./src/controllers/certificateController');
-
 const leaderboardController = require('./src/controllers/leaderboardController');
 const roadmapController = require('./src/controllers/roadmapController');
+// Middleware
 const { protectPage } = require('./src/middleware/pageAuth');
 
+// Routes
 const authRoutes = require('./src/routes/authRoutes');
 const courseRoutes = require('./src/routes/courseRoutes');
 const progressRoutes = require('./src/routes/progressRoutes');
@@ -28,6 +32,44 @@ const aiRoutes = require('./src/routes/aiRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+// Helmet
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+            scriptSrcAttr: ["'unsafe-inline'"],
+            workerSrc: ["'self'", "blob:", "https://cdnjs.cloudflare.com"],
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'"]
+        }
+    },
+    hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+    }
+}));
+
+// Global Rate Limiter
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 1000,
+    message: 'Забагато запитів з цього IP',
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (req, res) => {
+        res.status(429).json({ error: 'Забагато запитів. Спробуйте пізніше.' });
+    }
+});
+
+app.use(globalLimiter);
 
 const getCourseIcon = require('./src/helpers/courseIconHelper');
 hbs.registerHelper('getCourseIcon', getCourseIcon);
@@ -46,29 +88,53 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'src/views/pages'));
 hbs.registerPartials(path.join(__dirname, 'src/views/partials'));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+app.use((req, res, next) => {
+    Object.defineProperty(req, 'query', {
+        value: req.query,
+        writable: true,
+        configurable: true,
+        enumerable: true
+    });
+    next();
+});
+
+app.use(mongoSanitize());
+
+// Session configuration
 app.use(session({
     secret: process.env.JWT_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000
+    },
+    name: 'sessionId'
 }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+app.use((req, res, next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 
 app.use(async (req, res, next) => {
     const token = req.cookies.token;
     res.locals.user = null;
     res.locals.currentPath = req.path;
-
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const user = await userService.getProfile(decoded.userId || decoded.id);
             res.locals.user = user;
             req.userId = user.id;
+            res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
         } catch (e) {
             res.clearCookie('token');
         }
@@ -76,23 +142,29 @@ app.use(async (req, res, next) => {
     next();
 });
 
+// Public pages
 app.get('/', homeController.renderIndex);
-app.get('/profile', protectPage, userController.renderProfile);
-app.get('/settings', protectPage, userController.renderSettings);
 app.get('/courses', courseController.renderCourses);
 app.get('/course/:slug', courseController.renderCourseDetail);
+app.get('/about', (req, res) => res.render('about', { title: 'Про нас | TechIndustry' }));
+app.get('/faq', (req, res) => res.render('faq', { title: 'FAQ | TechIndustry' }));
+app.get('/roadmap', roadmapController.renderRoadmapSelection);
+app.get('/roadmap/:id', roadmapController.renderRoadmapDetail);
+app.get('/leaderboard', leaderboardController.renderLeaderboard);
+app.get('/user/:username', leaderboardController.renderPublicProfile);
+app.get('/gamification-info', userController.renderGamificationInfo);
+app.get('/login', (req, res) => {
+    res.render('login', { title: 'Вхід | TechIndustry' });
+});
+
+// Protected pages
+app.get('/profile', protectPage, userController.renderProfile);
+app.get('/settings', protectPage, userController.renderSettings);
 app.get('/quiz/:slug/:moduleId', protectPage, quizController.renderQuiz);
 app.get('/certificate', protectPage, certificateController.renderCertificate);
 app.get('/certificate/:slug', protectPage, certificateController.renderCertificate);
-app.get('/roadmap', roadmapController.renderRoadmapSelection);
-app.get('/roadmap/:id', roadmapController.renderRoadmapDetail);
-app.get('/gamification-info', userController.renderGamificationInfo);
-app.get('/leaderboard', leaderboardController.renderLeaderboard);
-app.get('/user/:username', leaderboardController.renderPublicProfile);
-app.get('/login', (req, res) => res.render('login', { title: 'Вхід | TechIndustry' }));
-app.get('/about', (req, res) => res.render('about', { title: 'Про нас | TechIndustry' }));
-app.get('/faq', (req, res) => res.render('faq', { title: 'FAQ | TechIndustry' }));
 
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/progress', progressRoutes);
@@ -100,25 +172,25 @@ app.use('/api/certificates', certificateRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/quiz', quizRoutes);
 
+// CSRF Error Handler
+app.use((err, req, res, next) => {
+    if (err.code === 'EBADCSRFTOKEN') {
+        return res.status(403).json({
+            error: 'Сесія застаріла або невалідний токен. Оновіть сторінку.'
+        });
+    }
+    next(err);
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
     const status = err.status || 500;
     res.status(status);
 
     if (process.env.NODE_ENV === 'production') {
-        res.json({
-            error: {
-                message: 'Internal Server Error',
-                status: status
-            }
-        });
+        res.json({ error: { message: 'Internal Server Error', status: status } });
     } else {
-        res.json({
-            error: {
-                message: err.message,
-                status: status,
-                stack: err.stack
-            }
-        });
+        res.json({ error: { message: err.message, status: status, stack: err.stack } });
     }
 });
 
@@ -126,8 +198,11 @@ const startServer = async () => {
     try {
         await db.sequelize.authenticate();
         await db.sequelize.sync({ alter: true });
-        app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+        app.listen(PORT, () => {
+            console.log(`Server running on http://localhost:${PORT}`);
+        });
     } catch (err) {
+        console.error('Server startup failed:', err);
         process.exit(1);
     }
 };

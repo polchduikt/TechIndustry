@@ -5,12 +5,16 @@ let registrationState = {
     formData: null
 };
 
+function getCsrfToken() {
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.getAttribute('content') : '';
+}
+
 function showTab(tab, element) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
     element.classList.add('active');
     document.getElementById(tab + 'Form').classList.add('active');
-
     if (tab === 'register') {
         registrationState = { step: 1, email: '', firstName: '', formData: null };
         renderRegistrationForm();
@@ -38,7 +42,6 @@ function formatPhoneNumber(input) {
 }
 
 let resetData = { emailOrPhone: '', code: '', step: 1 };
-
 function showForgotPasswordModal() {
     resetData = {emailOrPhone: '', code: '', step: 1};
     document.getElementById('forgotPasswordModal').classList.add('active');
@@ -90,12 +93,14 @@ async function requestResetCode() {
     const emailOrPhone = document.getElementById('resetEmailOrPhone').value.trim();
     const res = await fetch('/api/auth/request-reset', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'CSRF-Token': getCsrfToken()
+        },
         body: JSON.stringify({ emailOrPhone })
     });
     const result = await res.json();
     const msg = document.getElementById('resetMessage');
-
     if (res.ok) {
         resetData.emailOrPhone = emailOrPhone;
         resetData.step = 2;
@@ -112,7 +117,10 @@ async function verifyResetCode() {
     const code = document.getElementById('resetCode').value.trim();
     const res = await fetch('/api/auth/verify-reset-code', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'CSRF-Token': getCsrfToken()
+        },
         body: JSON.stringify({ emailOrPhone: resetData.emailOrPhone, code })
     });
     const result = await res.json();
@@ -139,7 +147,6 @@ async function resetPasswordFinal() {
         msg.className = 'message error';
         return;
     }
-
     if (newPassword.length < 8) {
         msg.textContent = 'Пароль має бути мінімум 8 символів';
         msg.className = 'message error';
@@ -148,7 +155,10 @@ async function resetPasswordFinal() {
 
     const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'CSRF-Token': getCsrfToken()
+        },
         body: JSON.stringify({
             emailOrPhone: resetData.emailOrPhone,
             code: resetData.code,
@@ -156,7 +166,6 @@ async function resetPasswordFinal() {
         })
     });
     const result = await res.json();
-
     if (res.ok) {
         msg.textContent = 'Пароль успішно змінено!';
         msg.className = 'message success';
@@ -179,17 +188,18 @@ async function handleRegisterStep1(event) {
     registrationState.email = email;
     registrationState.firstName = firstName;
     registrationState.formData = formData;
-
     const msg = document.getElementById('registerMessage');
 
     try {
         const res = await fetch('/api/auth/request-email-verification', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
             body: JSON.stringify({ email, first_name: firstName })
         });
         const result = await res.json();
-
         if (res.ok) {
             msg.textContent = 'Код підтвердження надіслано на вашу пошту!';
             msg.className = 'message success';
@@ -216,7 +226,10 @@ async function verifyEmailAndRegister() {
     try {
         const verifyRes = await fetch('/api/auth/verify-email-code', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
             body: JSON.stringify({
                 email: registrationState.email,
                 code
@@ -231,9 +244,11 @@ async function verifyEmailAndRegister() {
         }
 
         registrationState.formData.append('emailVerified', 'true');
-
         const registerRes = await fetch('/api/auth/register', {
             method: 'POST',
+            headers: {
+                'CSRF-Token': getCsrfToken()
+            },
             body: registrationState.formData
         });
         const registerResult = await registerRes.json();
@@ -254,7 +269,6 @@ async function verifyEmailAndRegister() {
 
 function renderRegistrationForm() {
     const formContainer = document.getElementById('registerForm');
-
     if (registrationState.step === 1) {
         formContainer.innerHTML = `
             <form onsubmit="handleRegisterStep1(event)">
@@ -343,7 +357,10 @@ async function handleLogin(event) {
     const msg = document.getElementById('loginMessage');
     const res = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'CSRF-Token': getCsrfToken()
+        },
         body: JSON.stringify(data)
     });
     const result = await res.json();
@@ -359,5 +376,7 @@ async function handleLogin(event) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderRegistrationForm();
+    if (document.getElementById('registerForm')) {
+        renderRegistrationForm();
+    }
 });
