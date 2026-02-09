@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const result = await response.json();
                 if (response.ok) {
-                    showNotification('Налаштування збережено!', 'success');
+                    showNotification('Налаштування збережено', 'success');
                 } else {
                     showNotification(result.message || 'Помилка збереження', 'error');
                 }

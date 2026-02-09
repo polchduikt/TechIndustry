@@ -21,11 +21,17 @@
             <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; text-align: center;">Оберіть напрямок та почніть свій шлях у IT вже сьогодні</p>
         </div>
 
-        <div class="category-tabs">
+        <div class="category-tabs" style="flex-wrap: wrap; gap: 10px;">
             <button class="category-tab active-tab" onclick="filterCourses('all', this)">Всі</button>
             <button class="category-tab" onclick="filterCourses('frontend', this)">Frontend</button>
             <button class="category-tab" onclick="filterCourses('backend', this)">Backend</button>
             <button class="category-tab" onclick="filterCourses('data', this)">Data Science</button>
+            <button class="category-tab" onclick="filterCourses('mobile', this)">Mobile</button>
+            <button class="category-tab" onclick="filterCourses('devops', this)">DevOps</button>
+            <button class="category-tab" onclick="filterCourses('qa', this)">QA / Testing</button>
+            <button class="category-tab" onclick="filterCourses('gamedev', this)">GameDev</button>
+            <button class="category-tab" onclick="filterCourses('design', this)">Design</button>
+            <button class="category-tab" onclick="filterCourses('security', this)">Cybersecurity</button>
         </div>
 
         <div class="courses-grid" id="coursesGrid">

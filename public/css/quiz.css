@@ -555,6 +555,38 @@ pre {
     margin: 0 auto;
 }
 
+.category-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.category-tab {
+    padding: 10px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.category-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+}
+
+.category-tab.active-tab {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }

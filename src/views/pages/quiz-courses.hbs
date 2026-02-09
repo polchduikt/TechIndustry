@@ -23,9 +23,22 @@
             </p>
         </div>
 
-        <div class="quiz-grid">
+        <div class="category-tabs">
+            <button class="category-tab active-tab" onclick="filterQuizzes('all', this)">Всі</button>
+            <button class="category-tab" onclick="filterQuizzes('frontend', this)">Frontend</button>
+            <button class="category-tab" onclick="filterQuizzes('backend', this)">Backend</button>
+            <button class="category-tab" onclick="filterQuizzes('data', this)">Data Science</button>
+            <button class="category-tab" onclick="filterQuizzes('mobile', this)">Mobile</button>
+            <button class="category-tab" onclick="filterQuizzes('devops', this)">DevOps</button>
+            <button class="category-tab" onclick="filterQuizzes('qa', this)">QA / Testing</button>
+            <button class="category-tab" onclick="filterQuizzes('gamedev', this)">GameDev</button>
+            <button class="category-tab" onclick="filterQuizzes('design', this)">Design</button>
+            <button class="category-tab" onclick="filterQuizzes('security', this)">Cybersecurity</button>
+        </div>
+
+        <div class="quiz-grid" id="quizGrid">
             {{#each courses}}
-                <div class="quiz-card glass animate-fade-in">
+                <div class="quiz-card glass animate-fade-in" data-category="{{this.category}}">
                     <div class="quiz-card-icon">
                         {{{getCourseIcon this.category this.slug this.title}}}
                     </div>
@@ -37,6 +50,8 @@
         </div>
     </div>
 </main>
+
 {{> footer}}
+<script src="/js/quiz-courses.js"></script> </body>
 </body>
 </html>
