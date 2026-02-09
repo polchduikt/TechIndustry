@@ -37,7 +37,6 @@
 
                 <div class="profile-details">
                     <h1>{{profileData.username}}</h1>
-                    <p class="profile-email">{{profileData.fullName}}</p>
                     <div class="level-progress-container">
                         <div class="level-bar-row">
                             <div class="level-content-wrapper">
@@ -53,7 +52,7 @@
                                     </span>
                                 </div>
                                 <div class="level-progress-bar">
-                                    <div class="level-progress-fill" style="width: {{gamification.progressPercent}}%"></div>
+                                    <div class="level-progress-fill" style="width: {{profileData.progressPercent}}%"></div>
                                 </div>
                             </div>
                             <a href="/gamification-info" class="xp-info-link" title="Дізнатися більше">
@@ -127,7 +126,7 @@
                 {{#each profileData.progress}}
                     <div class="course-progress-card glass">
                         <div class="course-header">
-                            <div class="course-icon-small" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                            <div class="course-icon-small">
                                 {{{getCourseIcon this.course.category this.course.slug this.course.title}}}
                             </div>
                             <div class="course-badge {{status}}">

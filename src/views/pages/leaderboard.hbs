@@ -25,6 +25,7 @@
             {{#if topUsers}}
                 {{#each topUsers}}
                     <div class="leaderboard-item {{#ifCond rank '===' 1}}rank-1{{/ifCond}}{{#ifCond rank '===' 2}}rank-2{{/ifCond}}{{#ifCond rank '===' 3}}rank-3{{/ifCond}}">
+
                         <div class="rank">
                             {{#ifCond rank '===' 1}}
                                 <span class="rank-medal">🥇</span>
@@ -40,6 +41,7 @@
                                 {{/ifCond}}
                             {{/ifCond}}
                         </div>
+
                         <div class="user-info">
                             <a href="/user/{{username}}" class="user-avatar-link">
                                 <div class="user-avatar">
@@ -48,18 +50,18 @@
                                     {{else}}
                                         <span>{{substring username 0 2}}</span>
                                     {{/if}}
-                                    <div class="level-badge-small">{{level}}</div>
                                 </div>
                             </a>
                             <div class="user-details">
                                 <a href="/user/{{username}}" class="username">{{username}}</a>
-                                <p class="full-name">{{fullName}}</p>
                             </div>
                         </div>
+
                         <div class="level-info-compact">
                             <span class="level-label">Рівень {{level}}</span>
                             <span class="xp-label">{{experience}} XP</span>
                         </div>
+
                         <div class="recent-badges">
                             {{#if recentBadges}}
                                 {{#each recentBadges}}
@@ -73,9 +75,11 @@
                                 <span class="no-badges">Немає бейджів</span>
                             {{/if}}
                         </div>
+
                         <div class="badge-count">
                             <span>🏆 {{badgeCount}}</span>
                         </div>
+
                         <div class="view-profile-btn">
                             <a href="/user/{{username}}" class="btn btn-sm btn-secondary">
                                 Профіль

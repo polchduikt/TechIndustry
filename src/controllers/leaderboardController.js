@@ -2,7 +2,20 @@ const leaderboardService = require('../services/leaderboardService');
 
 exports.renderLeaderboard = async (req, res) => {
     try {
-        const topUsers = await leaderboardService.getTopUsers(100);
+        const rawUsers = await leaderboardService.getTopUsers(100);
+
+        // Фільтруємо дані для приватності (прибираємо first_name, last_name, email тощо)
+        const topUsers = rawUsers.map(user => ({
+            rank: user.rank,
+            username: user.username, // Тільки юзернейм
+            avatar: user.avatar,
+            level: user.level,
+            points: user.points, // Або experience, залежно від вашої моделі
+            experience: user.experience,
+            badgeCount: user.badgeCount,
+            recentBadges: user.recentBadges
+        }));
+
         res.render('leaderboard', {
             title: 'Таблиця лідерів | TechIndustry',
             topUsers,
@@ -19,6 +32,7 @@ exports.renderPublicProfile = async (req, res) => {
         const { username } = req.params;
         const profileData = await leaderboardService.getPublicProfile(username);
         const isOwnProfile = res.locals.user && res.locals.user.username === username;
+
         res.render('public-profile', {
             title: `${profileData.username} | TechIndustry`,
             profileData,
