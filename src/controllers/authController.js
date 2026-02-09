@@ -137,3 +137,24 @@ exports.deleteAccount = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+// Додайте в кінець файлу перед module.exports
+
+exports.googleAuth = (req, res, next) => {
+    // Passport middleware буде обробляти це
+};
+
+exports.googleCallback = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.redirect('/login?error=auth_failed');
+        }
+
+        const token = authService.generateToken(req.user.id, req.user.username);
+        res.cookie('token', token, AUTH.COOKIE_OPTIONS);
+        res.redirect('/profile');
+    } catch (error) {
+        console.error('Google OAuth error:', error);
+        res.redirect('/login?error=auth_failed');
+    }
+};

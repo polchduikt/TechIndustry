@@ -31,6 +31,7 @@ const roadmapRoutes = require('./src/routes/roadmapRoutes');
 const aiRoutes = require('./src/routes/aiRoutes');
 
 const app = express();
+const passport = require('./src/config/passport');
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -116,6 +117,9 @@ app.use(session({
     },
     name: 'sessionId'
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 const csrfProtection = csrf({ cookie: true });
 app.use(csrfProtection);

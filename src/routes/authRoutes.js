@@ -63,4 +63,22 @@ router.post('/request-reset', passwordResetLimiter, authController.requestPasswo
 router.post('/verify-reset-code', passwordResetLimiter, authController.verifyResetCode);
 router.post('/reset-password', passwordResetLimiter, resetPasswordValidation, authController.resetPassword);
 
+
+const passport = require('../config/passport');
+
+// Додайте ці роути перед module.exports
+router.get('/google',
+    passport.authenticate('google', {
+        scope: ['profile', 'email']
+    })
+);
+
+router.get('/google/callback',
+    passport.authenticate('google', {
+        failureRedirect: '/login',
+        session: false
+    }),
+    authController.googleCallback
+);
+
 module.exports = router;

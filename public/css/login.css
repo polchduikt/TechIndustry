@@ -214,3 +214,12 @@ label {
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     padding: 20px; margin: 20px 0; border: 2px dashed var(--primary);
 }
+
+.btn-secondary.auth-btn:hover {
+    background: #f8f9fa !important;
+    transform: translateY(-2px);
+}
+
+.btn-secondary.auth-btn:active {
+    transform: translateY(0);
+}
