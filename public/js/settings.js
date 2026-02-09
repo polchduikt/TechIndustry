@@ -1,3 +1,14 @@
+let resetData = {
+    emailOrPhone: '',
+    code: '',
+    step: 1
+};
+
+function getCsrfToken() {
+    const token = document.querySelector('meta[name="csrf-token"]');
+    return token ? token.getAttribute('content') : '';
+}
+
 function formatPhoneNumber(input) {
     let value = input.value.replace(/\D/g, '');
     if (value.length === 0) { input.value = '+380'; return; }
@@ -25,7 +36,6 @@ function initPhoneInput(phoneInput) {
 function switchTab(tabName) {
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
     document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
     document.getElementById(`${tabName}Tab`).classList.add('active');
 }
@@ -39,19 +49,178 @@ function closeDeleteAccountModal() {
     document.getElementById('deleteConfirmInput').value = '';
 }
 
+function togglePasswordSettings(inputId, button) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    button.classList.toggle('active');
+}
+
 function showForgotPasswordModal() {
+    resetData = { emailOrPhone: '', code: '', step: 1 };
     document.getElementById('forgotPasswordModal').classList.add('active');
+    updateModalContent();
 }
 
 function closeForgotPasswordModal() {
     document.getElementById('forgotPasswordModal').classList.remove('active');
 }
 
-function togglePasswordSettings(inputId, button) {
-    const input = document.getElementById(inputId);
-    const type = input.type === 'password' ? 'text' : 'password';
-    input.type = type;
-    button.classList.toggle('active');
+function updateModalContent() {
+    const modalBody = document.getElementById('modalBody');
+    if (!modalBody) return;
+
+    if (resetData.step === 1) {
+        modalBody.innerHTML = `
+            <h3 class="modal-title">Відновлення паролю</h3>
+            <p class="modal-description">Введіть email або телефон вашого акаунта</p>
+            <div class="form-group">
+                <input type="text" id="resetEmailOrPhone" class="glass-input" placeholder="email@example.com або +380...">
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <button onclick="requestResetCode()" class="btn btn-primary auth-btn">Надіслати код</button>
+        `;
+    } else if (resetData.step === 2) {
+        modalBody.innerHTML = `
+            <h3 class="modal-title">Введіть код</h3>
+            <p class="modal-description">Код надіслано на <strong>${resetData.emailOrPhone}</strong></p>
+            <div class="form-group">
+                <input type="text" id="resetCode" class="glass-input" style="text-align:center;letter-spacing:10px" maxlength="6" placeholder="000000">
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <button onclick="verifyResetCode()" class="btn btn-primary auth-btn">Підтвердити код</button>
+        `;
+    } else {
+        modalBody.innerHTML = `
+            <h3 class="modal-title">Новий пароль</h3>
+            <div class="form-group">
+                <input type="password" id="newResetPassword" class="glass-input" placeholder="Мінімум 8 символів">
+            </div>
+            <div class="form-group">
+                <input type="password" id="confirmResetPassword" class="glass-input" placeholder="Підтвердіть пароль">
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <button onclick="resetPasswordFinal()" class="btn btn-primary auth-btn">Змінити пароль</button>
+        `;
+    }
+}
+
+async function requestResetCode() {
+    const emailInput = document.getElementById('resetEmailOrPhone');
+    const emailOrPhone = emailInput.value.trim();
+    const msg = document.getElementById('resetMessage');
+
+    if (!emailOrPhone) {
+        msg.textContent = 'Введіть дані';
+        msg.className = 'message error';
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/auth/request-reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
+            body: JSON.stringify({ emailOrPhone })
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            resetData.emailOrPhone = emailOrPhone;
+            resetData.step = 2;
+            msg.textContent = 'Код надіслано!';
+            msg.className = 'message success';
+            setTimeout(() => updateModalContent(), 1000);
+        } else {
+            msg.textContent = result.message || 'Помилка';
+            msg.className = 'message error';
+        }
+    } catch (e) {
+        msg.textContent = 'Помилка з\'єднання';
+        msg.className = 'message error';
+    }
+}
+
+async function verifyResetCode() {
+    const codeInput = document.getElementById('resetCode');
+    const code = codeInput.value.trim();
+    const msg = document.getElementById('resetMessage');
+
+    try {
+        const res = await fetch('/api/auth/verify-reset-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
+            body: JSON.stringify({ emailOrPhone: resetData.emailOrPhone, code })
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            resetData.code = code;
+            resetData.step = 3;
+            msg.textContent = 'Код вірний!';
+            msg.className = 'message success';
+            setTimeout(() => updateModalContent(), 1000);
+        } else {
+            msg.textContent = result.message || 'Невірний код';
+            msg.className = 'message error';
+        }
+    } catch (e) {
+        msg.textContent = 'Помилка з\'єднання';
+        msg.className = 'message error';
+    }
+}
+
+async function resetPasswordFinal() {
+    const newPassword = document.getElementById('newResetPassword').value;
+    const confirmPassword = document.getElementById('confirmResetPassword').value;
+    const msg = document.getElementById('resetMessage');
+
+    if (newPassword !== confirmPassword) {
+        msg.textContent = 'Паролі не співпадають';
+        msg.className = 'message error';
+        return;
+    }
+    if (newPassword.length < 8) {
+        msg.textContent = 'Мінімум 8 символів';
+        msg.className = 'message error';
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
+            body: JSON.stringify({
+                emailOrPhone: resetData.emailOrPhone,
+                code: resetData.code,
+                newPassword
+            })
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            msg.textContent = 'Пароль успішно змінено!';
+            msg.className = 'message success';
+            setTimeout(() => {
+                closeForgotPasswordModal();
+                window.location.reload();
+            }, 1500);
+        } else {
+            msg.textContent = result.message || 'Помилка';
+            msg.className = 'message error';
+        }
+    } catch (e) {
+        msg.textContent = 'Помилка з\'єднання';
+        msg.className = 'message error';
+    }
 }
 
 function checkProfileChanges() {
@@ -74,7 +243,6 @@ function checkProfileChanges() {
         birth_date: window.originalUserData.birth_date || '',
         phone: cleanOriginalPhone
     };
-
     return Object.keys(originalDataClean).some(key => currentData[key] !== originalDataClean[key]);
 }
 
@@ -112,7 +280,6 @@ function validateProfileForm(e) {
         alert('Введіть валідну email адресу');
         return false;
     }
-
     return true;
 }
 
@@ -132,14 +299,39 @@ function validatePasswordForm(e) {
     return true;
 }
 
-function validateDeleteForm(e) {
+async function handleDeleteAccount(e) {
+    e.preventDefault();
     const confirmInput = document.getElementById('deleteConfirmInput').value;
     if (confirmInput !== 'ВИДАЛИТИ') {
-        e.preventDefault();
         alert('Введіть "ВИДАЛИТИ" для підтвердження');
-        return false;
+        return;
     }
-    return confirm('Ви впевнені? Всі дані будуть втрачені назавжди!');
+
+    if (!confirm('Ви впевнені? Всі дані будуть втрачені назавжди!')) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/auth/delete-account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
+            body: JSON.stringify({ confirmation: 'ВИДАЛИТИ' })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            window.location.href = result.redirect || '/';
+        } else {
+            alert(result.message || 'Помилка видалення акаунту');
+        }
+    } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('Сталася помилка. Спробуйте пізніше.');
+    }
 }
 
 function showFlashMessage() {
@@ -170,6 +362,17 @@ function showNotification(message, type = 'info') {
 
 document.addEventListener('DOMContentLoaded', () => {
     showFlashMessage();
+    const csrfToken = getCsrfToken();
+    document.querySelectorAll('form').forEach(form => {
+        if (form.id !== 'deleteAccountForm' && !form.querySelector('input[name="_csrf"]')) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = '_csrf';
+            input.value = csrfToken;
+            form.appendChild(input);
+        }
+    });
+
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
         initPhoneInput(phoneInput);
@@ -187,22 +390,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deleteBtn) {
         deleteBtn.addEventListener('click', showDeleteAccountModal);
     }
-
     const deleteForm = document.getElementById('deleteAccountForm');
     if (deleteForm) {
-        deleteForm.addEventListener('submit', validateDeleteForm);
+        deleteForm.addEventListener('submit', handleDeleteAccount);
     }
-
     const passwordForm = document.getElementById('passwordForm');
     if (passwordForm) {
         passwordForm.addEventListener('submit', validatePasswordForm);
     }
-
     const settingsForm = document.getElementById('settingsForm');
     if (settingsForm) {
         settingsForm.addEventListener('submit', validateProfileForm);
     }
-
     const cancelBtn = document.getElementById('cancelProfileBtn');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', (e) => {
@@ -217,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
             saveButton.disabled = true;
             saveButton.style.opacity = '0.5';
             saveButton.style.cursor = 'not-allowed';
-
             const inputs = settingsForm.querySelectorAll('input');
             inputs.forEach(input => {
                 input.addEventListener('input', () => {
@@ -229,13 +427,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
     if (passwordForm) {
         const updatePasswordBtn = passwordForm.querySelector('button[type="submit"]');
         if (updatePasswordBtn) {
             updatePasswordBtn.disabled = true;
             updatePasswordBtn.style.opacity = '0.5';
             updatePasswordBtn.style.cursor = 'not-allowed';
-
             const passwordInputs = passwordForm.querySelectorAll('input');
             passwordInputs.forEach(input => {
                 input.addEventListener('input', () => {
@@ -250,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const avatarInput = document.getElementById('avatarInput');
     const avatarPreview = document.querySelector('.avatar-preview');
-
     if (avatarPreview && avatarInput) {
         avatarPreview.addEventListener('click', () => avatarInput.click());
         avatarInput.addEventListener('change', (e) => {
@@ -267,16 +464,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 avatarInput.value = '';
                 return;
             }
+
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/api/auth/upload-avatar';
+            form.action = `/api/auth/upload-avatar?_csrf=${getCsrfToken()}`;
             form.enctype = 'multipart/form-data';
             form.style.display = 'none';
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.name = 'avatar';
             fileInput.files = e.target.files;
-
             form.appendChild(fileInput);
             document.body.appendChild(form);
             form.submit();
@@ -291,6 +488,11 @@ document.addEventListener('DOMContentLoaded', () => {
             form.method = 'POST';
             form.action = '/api/auth/delete-avatar';
             form.style.display = 'none';
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_csrf';
+            csrfInput.value = getCsrfToken();
+            form.appendChild(csrfInput);
             document.body.appendChild(form);
             form.submit();
         });

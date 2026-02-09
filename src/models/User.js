@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
             onDelete: 'CASCADE'
         },
         reset_code: {
-            type: DataTypes.STRING(6),
+            type: DataTypes.STRING,
             allowNull: true
         },
         reset_code_expires: {

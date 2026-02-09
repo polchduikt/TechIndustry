@@ -24,10 +24,10 @@
                             {{/if}}
                         </div>
                         <div class="dropdown-menu" id="dropdownMenu">
-                            <a href="/profile" class="dropdown-item">👤 Профіль</a>
-                            <a href="/settings" class="dropdown-item">⚙️ Налаштування</a>
+                            <a href="/profile" class="dropdown-item">Профіль</a>
+                            <a href="/settings" class="dropdown-item">Налаштування</a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" onclick="logout(event)" class="dropdown-item logout">🚪 Вийти</a>
+                            <a href="#" onclick="logout(event)" class="dropdown-item logout">Вийти</a>
                         </div>
                     </div>
                 {{else}}
@@ -44,11 +44,27 @@
     async function logout(event) {
         event.preventDefault();
         try {
-            await fetch('/api/auth/logout', { method: 'POST' });
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'CSRF-Token': csrfToken
+                }
+            });
             window.location.replace('/');
         } catch (e) {
-            console.error('Logout error:', e);
+            //console.error('Logout error:', e);
+            window.location.replace('/');
         }
+    }
+
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+    if (window.performance && window.performance.navigation.type === 2) {
+        window.location.reload();
     }
 
     window.onclick = function(event) {

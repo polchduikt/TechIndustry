@@ -1,9 +1,14 @@
+const { validationResult } = require('express-validator');
 const authService = require('../services/authService');
 const userService = require('../services/userService');
 const { AUTH } = require('../config/constants');
 
 exports.requestEmailVerification = async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
         const { email, first_name } = req.body;
         const result = await authService.sendVerificationCode(email, first_name);
         res.json({
@@ -30,13 +35,15 @@ exports.verifyEmailCode = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
         const { emailVerified } = req.body;
         const user = await authService.register(req.body, emailVerified === 'true');
-
         if (req.file) {
             await userService.saveAvatar(user.id, req.file);
         }
-
         const token = authService.generateToken(user.id, user.username);
         res.cookie('token', token, AUTH.COOKIE_OPTIONS);
         res.status(201).json({
@@ -51,6 +58,10 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
         const user = await authService.login(req.body.login, req.body.password);
         const token = authService.generateToken(user.id, user.username);
         res.cookie('token', token, AUTH.COOKIE_OPTIONS);
@@ -67,9 +78,7 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
     res.clearCookie('token');
     req.session.destroy((err) => {
-        if (err) {
-            console.error('Session destroy error:', err);
-        }
+        if (err) console.error('Session destroy error:', err);
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');
@@ -102,6 +111,10 @@ exports.verifyResetCode = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
         const { emailOrPhone, code, newPassword } = req.body;
         await authService.resetPassword(emailOrPhone, code, newPassword);
         res.json({ message: 'Пароль успішно змінено', success: true });
@@ -114,17 +127,13 @@ exports.deleteAccount = async (req, res) => {
     try {
         const { confirmation } = req.body;
         if (confirmation !== 'ВИДАЛИТИ') {
-            req.session.flashMessage = { type: 'error', text: 'Невірне підтвердження' };
-            req.session.flashUserId = req.userId;
-            return res.redirect('/settings');
+            return res.status(400).json({ message: 'Невірне підтвердження' });
         }
         await authService.deleteAccount(req.userId);
         res.clearCookie('token');
         req.session.destroy();
-        res.redirect('/');
+        res.json({ message: 'Акаунт видалено', redirect: '/' });
     } catch (error) {
-        req.session.flashMessage = { type: 'error', text: error.message };
-        req.session.flashUserId = req.userId;
-        res.redirect('/settings');
+        res.status(400).json({ message: error.message });
     }
 };

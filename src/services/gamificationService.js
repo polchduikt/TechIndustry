@@ -210,13 +210,11 @@ class GamificationService {
                 if (!badges.includes(badgeId)) {
                     badges.push(badgeId);
                     hasChanges = true;
-                    console.log(`Awarded badge ${badgeId} to user ${userId} for level ${lvl}`);
                 }
             }
         }
         if (hasChanges) {
             await userLevel.update({ badges });
-            console.log(`User ${userId} badges updated:`, badges);
         }
         return hasChanges;
     }
@@ -235,17 +233,14 @@ class GamificationService {
         if (completedCourses >= 1 && !badges.includes(BADGES.FIRST_COURSE.id)) {
             badges.push(BADGES.FIRST_COURSE.id);
             hasChanges = true;
-            console.log(`Awarded FIRST_COURSE badge to user ${userId}`);
         }
         if (completedCourses >= 3 && !badges.includes(BADGES.COURSE_3.id)) {
             badges.push(BADGES.COURSE_3.id);
             hasChanges = true;
-            console.log(`Awarded COURSE_3 badge to user ${userId}`);
         }
         if (completedCourses >= 5 && !badges.includes(BADGES.COURSE_5.id)) {
             badges.push(BADGES.COURSE_5.id);
             hasChanges = true;
-            console.log(`Awarded COURSE_5 badge to user ${userId}`);
         }
         if (hasChanges) {
             await userLevel.update({ badges });

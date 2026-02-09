@@ -1,3 +1,8 @@
+function getCsrfToken() {
+  const token = document.querySelector('meta[name="csrf-token"]');
+  return token ? token.getAttribute('content') : '';
+}
+
 async function loadLessonSSR(lessonId, clickedEl) {
   const preview = document.getElementById('lessonPreview');
   preview.innerHTML = `
@@ -7,17 +12,24 @@ async function loadLessonSSR(lessonId, clickedEl) {
     </div>`;
 
   try {
-    const res = await fetch(`/api/courses/lessons/${lessonId}`);
+    const res = await fetch(`/api/courses/lessons/${lessonId}`, {
+      credentials: 'same-origin'
+    });
     if (!res.ok) throw new Error('Не вдалося завантажити урок');
     const data = await res.json();
-
     if (isLoggedInUser) {
       await fetch('/api/progress/lesson', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lessonId: parseInt(lessonId), completed: true })
+        headers: {
+          'Content-Type': 'application/json',
+          'CSRF-Token': getCsrfToken()
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          lessonId: parseInt(lessonId),
+          completed: true
+        })
       });
-
       const sidebarLink = document.getElementById(`sidebar-lesson-${lessonId}`);
       if (sidebarLink) {
         sidebarLink.classList.add('completed');
@@ -51,7 +63,6 @@ async function loadLessonSSR(lessonId, clickedEl) {
         </div>
       </div>
     `;
-
     document.querySelectorAll('.lessons-link').forEach(el => el.classList.remove('active'));
     clickedEl?.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -63,17 +74,6 @@ async function loadLessonSSR(lessonId, clickedEl) {
 document.addEventListener('DOMContentLoaded', () => {
   let targetLesson = document.querySelector('.lessons-link:not(.completed)');
   if (!targetLesson) targetLesson = document.querySelector('.lessons-link');
-  if (targetLesson) {
-    const lessonId = targetLesson.id.replace('sidebar-lesson-', '');
-    loadLessonSSR(lessonId, targetLesson);
-  }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  let targetLesson = document.querySelector('.lessons-link:not(.completed)');
-  if (!targetLesson) {
-    targetLesson = document.querySelector('.lessons-link');
-  }
   if (targetLesson) {
     const lessonId = targetLesson.id.replace('sidebar-lesson-', '');
     loadLessonSSR(lessonId, targetLesson);

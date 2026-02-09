@@ -2,6 +2,11 @@ let currentIndex = 0;
 let userAnswers = {};
 const container = document.getElementById('quizContainer');
 
+function getCsrfToken() {
+    const token = document.querySelector('meta[name="csrf-token"]');
+    return token ? token.getAttribute('content') : '';
+}
+
 function renderProgress() {
     const total = currentQuizData.questions.length;
     const percent = Math.round(((currentIndex + 1) / total) * 100);
@@ -21,16 +26,15 @@ function renderProgress() {
 function renderQuestion() {
     const q = currentQuizData.questions[currentIndex];
     const savedAnswer = userAnswers[q.id];
-
     container.innerHTML = `
         <div class="quiz-card-content animate-fade-in">
             <div class="quiz-card-header">
                 <h2 class="gradient-text">${currentQuizData.title}</h2>
                 <button class="quiz-header-back" onclick="location.href='/quiz'">До списку тестів</button>
             </div>
-
+            
             ${renderProgress()}
-
+            
             <div class="question-section">
                 <p class="question-text">${q.question} ${q.type === 'multiple' ? '<br><small style="color:var(--text-muted); font-size: 0.8em;">(можна обрати кілька варіантів)</small>' : ''}</p>
                 <div id="optionsContainer" class="options-grid"></div>
@@ -51,7 +55,6 @@ function renderQuestion() {
             let isSelected = false;
             if (q.type === 'single') isSelected = savedAnswer == i;
             if (q.type === 'multiple') isSelected = Array.isArray(savedAnswer) && savedAnswer.includes(i);
-
             const label = document.createElement('label');
             label.className = `option-item glass ${isSelected ? 'selected' : ''}`;
             label.innerHTML = `<span>${opt}</span>`;
@@ -114,15 +117,18 @@ async function submitQuiz() {
     try {
         const res = await fetch(`/quiz/${currentCourseSlug}/${currentModuleId}/submit`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
+            credentials: 'same-origin',
             body: JSON.stringify({ answers: userAnswers })
         });
-
         if (!res.ok) throw new Error('Помилка сервера');
         const result = await res.json();
         showResult(result);
     } catch (e) {
-        console.error(e);
+        console.error('Quiz submission error:', e);
         alert('Помилка при отриманні результатів.');
     }
 }
@@ -130,7 +136,6 @@ async function submitQuiz() {
 function showResult(result) {
     const passed = result.passed;
     const gamification = result.gamification;
-
     let rewardsHTML = '';
     if (gamification) {
         rewardsHTML = `
