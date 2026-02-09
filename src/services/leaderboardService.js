@@ -48,7 +48,7 @@ class LeaderboardService {
             attributes: ['id', 'username', 'createdAt'],
             include: [{
                 model: db.Customer,
-                attributes: ['first_name', 'last_name', 'avatar_data']
+                attributes: ['first_name', 'last_name', 'avatar_data', 'hide_courses']
             }, {
                 model: db.UserLevel,
                 as: 'levelData'
@@ -145,7 +145,8 @@ class LeaderboardService {
                 completedCourses,
                 inProgressCourses
             },
-            progress: progressFormatted
+            progress: progressFormatted,
+            hideCourses: user.Customer.hide_courses || false
         };
     }
 

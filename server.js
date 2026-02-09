@@ -18,7 +18,6 @@ const quizController = require('./src/controllers/quizController');
 const certificateController = require('./src/controllers/certificateController');
 const leaderboardController = require('./src/controllers/leaderboardController');
 const roadmapController = require('./src/controllers/roadmapController');
-// Middleware
 const { protectPage } = require('./src/middleware/pageAuth');
 
 // Routes

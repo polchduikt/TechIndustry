@@ -51,6 +51,11 @@ module.exports = (sequelize) => {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+        },
+        hide_courses: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     }, {
         tableName: 'customers',

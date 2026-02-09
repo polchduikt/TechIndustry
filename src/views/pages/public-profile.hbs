@@ -119,41 +119,42 @@
             {{/if}}
         </div>
 
-        <h2 class="section-title" style="text-align: center; margin: 40px 0;">Курси користувача</h2>
-
-        <div class="courses-grid">
-            {{#if profileData.progress}}
-                {{#each profileData.progress}}
-                    <div class="course-progress-card glass">
-                        <div class="course-header">
-                            <div class="course-icon-small">
-                                {{{getCourseIcon this.course.category this.course.slug this.course.title}}}
+        {{#unless profileData.hideCourses}}
+            <h2 class="section-title" style="text-align: center; margin: 40px 0;">Курси користувача</h2>
+            <div class="courses-grid">
+                {{#if profileData.progress}}
+                    {{#each profileData.progress}}
+                        <div class="course-progress-card glass">
+                            <div class="course-header">
+                                <div class="course-icon-small">
+                                    {{{getCourseIcon this.course.category this.course.slug this.course.title}}}
+                                </div>
+                                <div class="course-badge {{status}}">
+                                    {{#ifCond status '===' 'completed'}}Завершено{{else}}В процесі{{/ifCond}}
+                                </div>
                             </div>
-                            <div class="course-badge {{status}}">
-                                {{#ifCond status '===' 'completed'}}Завершено{{else}}В процесі{{/ifCond}}
+
+                            <h3 class="course-name">{{this.course.title}}</h3>
+                            <p class="course-progress-text">{{this.completedCount}} з {{this.totalLessons}} уроків завершено</p>
+
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill {{#if isFinished}}completed{{/if}}" style="width: {{percent}}%"></div>
+                            </div>
+
+                            <div class="course-meta-small">
+                                <span>📖 {{totalLessons}} уроків</span>
+                                <span class="progress-percent">{{percent}}%</span>
                             </div>
                         </div>
-
-                        <h3 class="course-name">{{this.course.title}}</h3>
-                        <p class="course-progress-text">{{this.completedCount}} з {{this.totalLessons}} уроків завершено</p>
-
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill {{#if isFinished}}completed{{/if}}" style="width: {{percent}}%"></div>
-                        </div>
-
-                        <div class="course-meta-small">
-                            <span>📖 {{totalLessons}} уроків</span>
-                            <span class="progress-percent">{{percent}}%</span>
-                        </div>
+                    {{/each}}
+                {{else}}
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+                        <h3>Користувач ще не розпочав жодного курсу</h3>
                     </div>
-                {{/each}}
-            {{else}}
-                <div class="empty-state">
-                    <div class="empty-icon">📚</div>
-                    <h3>Користувач ще не розпочав жодного курсу</h3>
-                </div>
-            {{/if}}
-        </div>
+                {{/if}}
+            </div>
+        {{/unless}}
     </div>
 </section>
 

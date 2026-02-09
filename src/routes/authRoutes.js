@@ -58,6 +58,7 @@ router.post('/change-password', auth, userController.changePassword);
 router.post('/upload-avatar', auth, upload.single('avatar'), userController.uploadAvatar);
 router.post('/delete-avatar', auth, userController.deleteAvatar);
 router.post('/delete-account', auth, authController.deleteAccount);
+router.post('/update-preferences', auth, userController.updatePreferences);
 
 router.post('/request-reset', passwordResetLimiter, authController.requestPasswordReset);
 router.post('/verify-reset-code', passwordResetLimiter, authController.verifyResetCode);
