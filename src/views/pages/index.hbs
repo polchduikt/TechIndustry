@@ -12,6 +12,7 @@
 <body>
 
 {{> nav}}
+{{> badge}}
 
 <main>
     <section>
@@ -72,6 +73,38 @@
                                 <div class="course-title">React & Next.js</div>
                                 <div class="course-desc">Створення сучасних веб-додатків з React та Hooks</div>
                                 <div class="course-meta"><span>🎓 10 модулів</span><span>⏱️ 20 годин</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(16, 185, 129, 0.2);">
+                                    {{{getCourseIcon 'backend' 'nodejs-express' 'Node.js & Express'}}}
+                                </div>
+                                <div class="course-title">Node.js & Express</div>
+                                <div class="course-desc">Бекенд розробка з Node.js, Express та MongoDB</div>
+                                <div class="course-meta"><span>🎓 14 модулів</span><span>⏱️ 28 годин</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(245, 158, 11, 0.2);">
+                                    {{{getCourseIcon 'design' 'ui-ux-design' 'UI/UX Design'}}}
+                                </div>
+                                <div class="course-title">UI/UX Design</div>
+                                <div class="course-desc">Дизайн інтерфейсів, Figma та принципи UX</div>
+                                <div class="course-meta"><span>🎓 8 модулів</span><span>⏱️ 16 годин</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(59, 130, 246, 0.2);">
+                                    {{{getCourseIcon 'devops' 'docker-kubernetes' 'Docker & Kubernetes'}}}
+                                </div>
+                                <div class="course-title">Docker & Kubernetes</div>
+                                <div class="course-desc">Контейнеризація та оркестрація додатків</div>
+                                <div class="course-meta"><span>🎓 11 модулів</span><span>⏱️ 22 години</span></div>
+                            </div>
+                            <div class="course-card glass" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), transparent);">
+                                <div class="course-icon" style="background: rgba(239, 68, 68, 0.2);">
+                                    {{{getCourseIcon 'mobile' 'react-native' 'React Native'}}}
+                                </div>
+                                <div class="course-title">React Native</div>
+                                <div class="course-desc">Мобільна розробка для iOS та Android</div>
+                                <div class="course-meta"><span>🎓 13 модулів</span><span>⏱️ 26 годин</span></div>
                             </div>
                         </div>
                     </div>
@@ -155,7 +188,158 @@
                 <h2 class="section-title" style="text-align: left;">Офіційне <br><span class="gradient-text">підтвердження</span></h2>
                 <p class="hero-description" style="text-align: left; margin-bottom: 24px;">Після успішного завершення курсу ви отримуєте іменний сертифікат для LinkedIn.</p>
                 <div class="stat-card glass" style="display: inline-block; padding: 16px 32px;">
-                    <div class="stat-number" style="font-size: 24px;">Verified by TechIndustry</div>
+                    <div class="stat-number" style="font-size: 24px; width: 100%; text-align: center; display: block;">Verified by TechIndustry</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gamification-section">
+        <div class="container gamification-grid">
+            <div class="gamification-visual">
+                <div class="gamification-showcase glass">
+                    <div class="xp-display">
+                        <div class="xp-label-row">
+                            <span class="level-badge">LVL 12</span>
+                            <span class="xp-text">2,450 / 3,000 XP</span>
+                        </div>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar-fill" style="width: 82%;"></div>
+                            <div class="xp-sparkle"></div>
+                        </div>
+                    </div>
+
+                    <div class="badges-preview">
+                        <div class="badge-orb badge-1 glass">
+                            <svg class="badge-svg"><use href="#badge-perfect"></use></svg>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="badge-orb badge-2 glass">
+                            <svg class="badge-svg"><use href="#badge-level-20"></use></svg>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="badge-orb badge-3 glass">
+                            <svg class="badge-svg"><use href="#badge-level-100"></use></svg>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="badge-orb badge-4 glass">
+                            <svg class="badge-svg"><use href="#badge-first-course"></use></svg>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="badge-orb badge-5 glass">
+                            <svg class="badge-svg"><use href="#badge-level-80"></use></svg>
+                            <div class="badge-glow"></div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-popup glass">
+                        <div class="achievement-icon">🎉</div>
+                        <div class="achievement-text">
+                            <div class="achievement-title">Нова відзнака!</div>
+                            <div class="achievement-desc">Перфекціоніст</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gamification-content">
+                <h2 class="section-title" style="text-align: left;">Геймифікована <br><span class="gradient-text">система навчання</span></h2>
+                <p class="hero-description" style="text-align: left; margin-bottom: 32px;">
+                    Кожна ваша дія приносить досвід та відкриває нові можливості. Піднімайтесь рівнями, заробляйте унікальні бейджі та змагайтесь з іншими студентами.
+                </p>
+
+                <div class="gamification-features">
+                    <div class="gamification-feature">
+                        <div class="feature-icon-mini">⚡</div>
+                        <div>
+                            <div class="feature-mini-title">Система досвіду (XP)</div>
+                            <div class="feature-mini-desc">Отримуйте бали за проходження уроків та складання тестів</div>
+                        </div>
+                    </div>
+                    <div class="gamification-feature">
+                        <div class="feature-icon-mini">🏅</div>
+                        <div>
+                            <div class="feature-mini-title">Колекція досягнень</div>
+                            <div class="feature-mini-desc">Збирайте унікальні бейджі за особливі успіхи</div>
+                        </div>
+                    </div>
+                    <div class="gamification-feature">
+                        <div class="feature-icon-mini">📈</div>
+                        <div>
+                            <div class="feature-mini-title">1000 рівнів майстерності</div>
+                            <div class="feature-mini-desc">Від новачка до абсолютного розуму</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="location.href='/gamification-info'">Дізнатися про систему XP</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="sandbox-preview-section">
+        <div class="container sandbox-grid">
+            <div class="sandbox-content">
+                <h2 class="section-title" style="text-align: left;">Code Sandbox <br><span class="gradient-text">твоя лабораторія</span></h2>
+                <p class="hero-description" style="text-align: left; margin-bottom: 32px;">
+                    Більше ніяких перемикань між вікнами. Пишіть HTML, CSS та JS код і миттєво бачте результат. Ідеально для експериментів та виконання домашніх завдань.
+                </p>
+                <ul class="sandbox-features-list">
+                    <li>
+                        <span class="check-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span>Підсвітка синтаксису (CodeMirror)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span>Живе прев'ю (Live Preview)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span>Вбудована JS консоль</span>
+                    </li>
+                </ul>
+                <button class="btn btn-primary" onclick="location.href='/sandbox'">
+                    <span style="margin-right: 8px;"></span> Відкрити Sandbox
+                </button>
+            </div>
+
+            <div class="sandbox-visual">
+                <div class="editor-mockup glass">
+                    <div class="editor-header">
+                        <div class="window-controls">
+                            <div class="dot red"></div>
+                            <div class="dot yellow"></div>
+                            <div class="dot green"></div>
+                        </div>
+                        <div class="tab active">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path></svg>
+                            script.js
+                        </div>
+                    </div>
+                    <div class="editor-body">
+                        <div class="line"><span class="kwd">const</span> <span class="var">button</span> <span class="op">=</span> <span class="obj">document</span>.<span class="func">querySelector</span>(<span class="str">'.btn'</span>);</div>
+                        <div class="line empty"></div>
+                        <div class="line"><span class="var">button</span>.<span class="func">addEventListener</span>(<span class="str">'click'</span>, () <span class="op">=></span> {</div>
+                        <div class="line indent">  <span class="obj">console</span>.<span class="func">log</span>(<span class="str">'Hello World! 🚀'</span>);</div>
+                        <div class="line indent">  <span class="func">alert</span>(<span class="str">'Code works!'</span>);</div>
+                        <div class="line">});</div>
+                        <div class="line empty"></div>
+                        <div class="line cmt">// Спробуйте самі прямо зараз!</div>
+                    </div>
+
+                    <div class="floating-badge glass">
+                        <div class="badge-icon">⚡</div>
+                        <div class="badge-text">
+                            <strong>Real-time</strong>
+                            <span>Compilation</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

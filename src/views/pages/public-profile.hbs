@@ -37,7 +37,6 @@
 
                 <div class="profile-details">
                     <h1>{{profileData.username}}</h1>
-                    <p class="profile-email">{{profileData.fullName}}</p>
                     <div class="level-progress-container">
                         <div class="level-bar-row">
                             <div class="level-content-wrapper">
@@ -53,7 +52,7 @@
                                     </span>
                                 </div>
                                 <div class="level-progress-bar">
-                                    <div class="level-progress-fill" style="width: {{gamification.progressPercent}}%"></div>
+                                    <div class="level-progress-fill" style="width: {{profileData.progressPercent}}%"></div>
                                 </div>
                             </div>
                             <a href="/gamification-info" class="xp-info-link" title="Дізнатися більше">
@@ -81,6 +80,13 @@
                                 <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span><strong>{{profileData.stats.completedCourses}}</strong> завершено</span>
+                        </div>
+                        <div class="stat-item">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 12h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span><strong>{{profileData.quizzesPassed}}</strong> тестів пройдено</span>
                         </div>
 
                         <div class="stat-item">
@@ -120,41 +126,42 @@
             {{/if}}
         </div>
 
-        <h2 class="section-title" style="text-align: center; margin: 40px 0;">Курси користувача</h2>
-
-        <div class="courses-grid">
-            {{#if profileData.progress}}
-                {{#each profileData.progress}}
-                    <div class="course-progress-card glass">
-                        <div class="course-header">
-                            <div class="course-icon-small" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
-                                {{{getCourseIcon this.course.category this.course.slug this.course.title}}}
+        {{#unless profileData.hideCourses}}
+            <h2 class="section-title" style="text-align: center; margin: 40px 0;">Курси користувача</h2>
+            <div class="courses-grid">
+                {{#if profileData.progress}}
+                    {{#each profileData.progress}}
+                        <div class="course-progress-card glass">
+                            <div class="course-header">
+                                <div class="course-icon-small">
+                                    {{{getCourseIcon this.course.category this.course.slug this.course.title}}}
+                                </div>
+                                <div class="course-badge {{status}}">
+                                    {{#ifCond status '===' 'completed'}}Завершено{{else}}В процесі{{/ifCond}}
+                                </div>
                             </div>
-                            <div class="course-badge {{status}}">
-                                {{#ifCond status '===' 'completed'}}Завершено{{else}}В процесі{{/ifCond}}
+
+                            <h3 class="course-name">{{this.course.title}}</h3>
+                            <p class="course-progress-text">{{this.completedCount}} з {{this.totalLessons}} уроків завершено</p>
+
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill {{#if isFinished}}completed{{/if}}" style="width: {{percent}}%"></div>
+                            </div>
+
+                            <div class="course-meta-small">
+                                <span>📖 {{totalLessons}} уроків</span>
+                                <span class="progress-percent">{{percent}}%</span>
                             </div>
                         </div>
-
-                        <h3 class="course-name">{{this.course.title}}</h3>
-                        <p class="course-progress-text">{{this.completedCount}} з {{this.totalLessons}} уроків завершено</p>
-
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill {{#if isFinished}}completed{{/if}}" style="width: {{percent}}%"></div>
-                        </div>
-
-                        <div class="course-meta-small">
-                            <span>📖 {{totalLessons}} уроків</span>
-                            <span class="progress-percent">{{percent}}%</span>
-                        </div>
+                    {{/each}}
+                {{else}}
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+                        <h3>Користувач ще не розпочав жодного курсу</h3>
                     </div>
-                {{/each}}
-            {{else}}
-                <div class="empty-state">
-                    <div class="empty-icon">📚</div>
-                    <h3>Користувач ще не розпочав жодного курсу</h3>
-                </div>
-            {{/if}}
-        </div>
+                {{/if}}
+            </div>
+        {{/unless}}
     </div>
 </section>
 

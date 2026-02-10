@@ -25,6 +25,7 @@
             {{#if topUsers}}
                 {{#each topUsers}}
                     <div class="leaderboard-item {{#ifCond rank '===' 1}}rank-1{{/ifCond}}{{#ifCond rank '===' 2}}rank-2{{/ifCond}}{{#ifCond rank '===' 3}}rank-3{{/ifCond}}">
+
                         <div class="rank">
                             {{#ifCond rank '===' 1}}
                                 <span class="rank-medal">🥇</span>
@@ -40,6 +41,7 @@
                                 {{/ifCond}}
                             {{/ifCond}}
                         </div>
+
                         <div class="user-info">
                             <a href="/user/{{username}}" class="user-avatar-link">
                                 <div class="user-avatar">
@@ -48,18 +50,18 @@
                                     {{else}}
                                         <span>{{substring username 0 2}}</span>
                                     {{/if}}
-                                    <div class="level-badge-small">{{level}}</div>
                                 </div>
                             </a>
                             <div class="user-details">
                                 <a href="/user/{{username}}" class="username">{{username}}</a>
-                                <p class="full-name">{{fullName}}</p>
                             </div>
                         </div>
+
                         <div class="level-info-compact">
                             <span class="level-label">Рівень {{level}}</span>
                             <span class="xp-label">{{experience}} XP</span>
                         </div>
+
                         <div class="recent-badges">
                             {{#if recentBadges}}
                                 {{#each recentBadges}}
@@ -73,9 +75,19 @@
                                 <span class="no-badges">Немає бейджів</span>
                             {{/if}}
                         </div>
+
                         <div class="badge-count">
-                            <span>🏆 {{badgeCount}}</span>
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; stroke: var(--primary); margin-right: 6px; vertical-align: middle;">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 22h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>{{badgeCount}}</span>
                         </div>
+
                         <div class="view-profile-btn">
                             <a href="/user/{{username}}" class="btn btn-sm btn-secondary">
                                 Профіль

@@ -17,7 +17,7 @@
     <div class="container">
         <div class="quiz-header-top">
             <a href="/quiz" class="back-link-modern">
-                <span class="icon">←</span> Назад до курсів
+                <span class="icon">←</span> Назад до тестів
             </a>
             <h1 class="section-title">Тести за курсом: <span class="gradient-text">{{courseTitle}}</span></h1>
             <p class="quiz-intro">
@@ -27,7 +27,15 @@
 
         <div class="quiz-grid">
             {{#each quizzes}}
-                <div class="quiz-card glass animate-fade-in">
+                <div class="quiz-card glass animate-fade-in {{#if this.isCompleted}}quiz-completed{{/if}}">
+                    <div class="quiz-xp-badge">
+                        {{#if this.isCompleted}}
+                            <span class="xp-value-zero">0 XP</span>
+                        {{else}}
+                            <span class="xp-value">✨ {{this.xpReward}} XP</span>
+                        {{/if}}
+                    </div>
+
                     <div class="quiz-card-content">
                         <div class="quiz-icon-small">📖</div>
                         <h3>{{this.title}}</h3>
@@ -40,7 +48,11 @@
                             <span class="value">{{this.passingScore}}%</span>
                         </div>
                         <button class="btn btn-primary btn-full" onclick="location.href='/quiz/{{../courseSlug}}/{{this.moduleId}}'">
-                            Відкрити тест
+                            {{#if this.isCompleted}}
+                                Пройти ще раз
+                            {{else}}
+                                Відкрити тест
+                            {{/if}}
                         </button>
                     </div>
                 </div>

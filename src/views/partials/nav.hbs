@@ -4,14 +4,22 @@
             <a href="/" class="logo-link">
                 <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
             </a>
+
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'" class="{{#ifCond currentPath '==' '/'}}nav-active{{/ifCond}}">Головна</button>
                 <button onclick="location.href='/leaderboard'" class="{{#ifCond currentPath '==' '/leaderboard'}}nav-active{{/ifCond}}">Лідерборд</button>
-                <button onclick="location.href='/roadmap'" class="{{#ifCond currentPath '==' '/roadmap'}}nav-active{{/ifCond}}">Роадмапи</button>
+                <button onclick="location.href='/sandbox'" class="{{#ifCond currentPath '==' '/sandbox'}}nav-active{{/ifCond}}">Sandbox</button>
                 <button onclick="location.href='/courses'" class="{{#ifCond currentPath '==' '/courses'}}nav-active{{/ifCond}}">Курси</button>
                 <button onclick="location.href='/quiz'" class="{{#ifCond currentPath '==' '/quiz'}}nav-active{{/ifCond}}">Тестування</button>
+                <button onclick="location.href='/roadmap'" class="{{#ifCond currentPath '==' '/roadmap'}}nav-active{{/ifCond}}">Роадмапи</button>
                 <button onclick="location.href='/about'" class="{{#ifCond currentPath '==' '/about'}}nav-active{{/ifCond}}">Про нас</button>
-                <button onclick="location.href='/faq'" class="{{#ifCond currentPath '==' '/faq'}}nav-active{{/ifCond}}">FAQ</button>
+<!--                <button onclick="location.href='/faq'" class="{{#ifCond currentPath '==' '/faq'}}nav-active{{/ifCond}}">FAQ</button>-->
 
                 {{#if user}}
                     <button onclick="location.href='/profile'" class="{{#ifCond currentPath '==' '/profile'}}nav-active{{/ifCond}}">Моє навчання</button>
@@ -41,6 +49,13 @@
 </header>
 
 <script>
+    function toggleMobileMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const btn = document.querySelector('.mobile-menu-btn');
+        navLinks.classList.toggle('active');
+        btn.classList.toggle('open');
+    }
+
     async function logout(event) {
         event.preventDefault();
         try {
@@ -53,7 +68,6 @@
             });
             window.location.replace('/');
         } catch (e) {
-            //console.error('Logout error:', e);
             window.location.replace('/');
         }
     }

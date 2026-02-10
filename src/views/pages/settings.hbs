@@ -31,12 +31,11 @@
                     <button type="button" class="btn btn-secondary delete-avatar-btn {{#unless user.Customer.avatar_data}}hidden{{/unless}}" id="deleteAvatarBtn">
                         Видалити аватар
                     </button>
-                    <h3>{{user.username}}</h3>
-                    <p>{{user.Customer.email}}</p>
                 </div>
                 <div class="settings-nav">
                     <button class="nav-btn active" data-tab="profile">Профіль</button>
                     <button class="nav-btn" data-tab="security">Безпека</button>
+                    <button class="nav-btn" data-tab="preferences">Налаштування</button>
                 </div>
             </div>
 
@@ -145,6 +144,32 @@
                         <button type="button" class="btn btn-danger" id="deleteAccountBtn">
                             Видалити акаунт
                         </button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="preferencesTab">
+                    <h2 class="section-title">Налаштування приватності</h2>
+                    <div class="security-card glass-card">
+                        <h3 class="card-title">Видимість профілю</h3>
+                        <p class="card-description">
+                            Керуйте тим, яка інформація буде видима іншим користувачам у вашому публічному профілі.
+                        </p>
+                        <form id="preferencesForm" class="settings-form" method="POST" action="/api/auth/update-preferences">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="hide_courses" id="hideCourses"
+                                           {{#if user.Customer.hide_courses}}checked{{/if}}
+                                           class="glass-checkbox">
+                                    <span class="checkbox-text">
+                                        <strong>Приховати мої курси</strong>
+                                        <small>Інші користувачі не зможуть бачити курси, які ви проходите або завершили</small>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Зберегти налаштування</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

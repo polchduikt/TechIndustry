@@ -23,20 +23,57 @@
             </p>
         </div>
 
-        <div class="quiz-grid">
+        <div class="category-tabs">
+            <button class="category-tab active-tab" onclick="filterQuizzes('all', this)">Всі</button>
+            <button class="category-tab" onclick="filterQuizzes('frontend', this)">Frontend</button>
+            <button class="category-tab" onclick="filterQuizzes('backend', this)">Backend</button>
+            <button class="category-tab" onclick="filterQuizzes('data', this)">Data Science</button>
+            <button class="category-tab" onclick="filterQuizzes('mobile', this)">Mobile</button>
+            <button class="category-tab" onclick="filterQuizzes('devops', this)">DevOps</button>
+            <button class="category-tab" onclick="filterQuizzes('qa', this)">QA / Testing</button>
+            <button class="category-tab" onclick="filterQuizzes('gamedev', this)">GameDev</button>
+            <button class="category-tab" onclick="filterQuizzes('design', this)">Design</button>
+            <button class="category-tab" onclick="filterQuizzes('security', this)">Cybersecurity</button>
+        </div>
+
+        <div class="quiz-grid" id="quizGrid">
             {{#each courses}}
-                <div class="quiz-card glass animate-fade-in">
+                <div class="quiz-card glass animate-fade-in" data-category="{{this.category}}">
                     <div class="quiz-card-icon">
                         {{{getCourseIcon this.category this.slug this.title}}}
                     </div>
                     <h3>{{this.title}}</h3>
-                    <p class="quiz-card-level">Рівень: <span>{{this.level}}</span></p>
+
+                    <div class="quiz-info-list">
+                        <p class="quiz-text-row">Рівень: <span>{{this.level}}</span></p>
+
+                        {{#if this.totalQuizzes}}
+                            <p class="quiz-text-row">
+                                Кількість тестів: <span>{{this.totalQuizzes}}</span>
+                            </p>
+                        {{/if}}
+
+                        {{#unless this.isGuest}}
+                            {{#if this.isInProgress}}
+                                {{#if this.totalQuizzes}}
+                                    <p class="quiz-text-row">
+                                        Пройдено: <span class="{{#ifCond this.completedQuizzes '===' this.totalQuizzes}}text-success{{/ifCond}}">
+                                            {{this.completedQuizzes}} з {{this.totalQuizzes}}
+                                        </span>
+                                    </p>
+                                {{/if}}
+                            {{/if}}
+                        {{/unless}}
+                    </div>
+
                     <button class="btn btn-primary" onclick="location.href='/quiz/{{this.slug}}'">Відкрити тести</button>
                 </div>
             {{/each}}
         </div>
     </div>
 </main>
+
 {{> footer}}
+<script src="/js/quiz-courses.js"></script>
 </body>
 </html>

@@ -34,18 +34,31 @@ exports.renderProfile = async (req, res) => {
                 isFinished
             };
         }));
+
+        let totalQuizzesPassed = 0;
+        for (const progress of progressRaw) {
+            const data = progress.get({ plain: true });
+            if (Array.isArray(data.completed_quizzes)) {
+                totalQuizzesPassed += data.completed_quizzes.length;
+            }
+        }
+
         const gamificationStats = await gamificationService.getUserStats(req.userId);
+        const user = await userService.getProfile(req.userId);
+
         res.render('profile', {
             title: 'Профіль | TechIndustry',
             progress: progressFormatted,
             stats: {
                 total: progressFormatted.length,
                 completed: progressFormatted.filter(p => p.isFinished).length,
+                quizzesPassed: totalQuizzesPassed,
                 streak: 1
             },
             gamification: gamificationStats,
             isOwnProfile: true,
             user: res.locals.user,
+            hideCourses: user.Customer.hide_courses || false,
             csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
     } catch (e) {
@@ -149,5 +162,16 @@ exports.deleteAvatar = async (req, res) => {
         req.session.flashMessage = { type: 'error', text: e.message };
         req.session.flashUserId = req.userId;
         res.redirect('/settings');
+    }
+};
+
+exports.updatePreferences = async (req, res) => {
+    try {
+        await userService.updatePreferences(req.userId, {
+            hide_courses: req.body.hide_courses || false
+        });
+        res.json({ success: true, message: 'Налаштування оновлено!' });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
     }
 };

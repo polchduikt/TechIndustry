@@ -13,11 +13,8 @@ class UserService {
 
     async updateProfile(userId, profileData) {
         const user = await User.findByPk(userId, {include: [Customer]});
-
         if (!user) throw new Error('Користувача не знайдено');
-
         let requiresReauth = false;
-
         if (profileData.username && profileData.username !== user.username) {
             const exists = await User.findOne({where: {username: profileData.username}});
             if (exists) throw new Error('Username зайнятий');
@@ -49,9 +46,7 @@ class UserService {
         if (updateData.birth_date === '' || updateData.birth_date === null || updateData.birth_date === undefined) {
             updateData.birth_date = null;
         }
-
         await user.Customer.update(updateData);
-
         return {user, requiresReauth};
     }
 
@@ -81,6 +76,15 @@ class UserService {
         const user = await User.findByPk(userId, {include: [Customer]});
         if (!user) throw new Error('Користувача не знайдено');
         await user.Customer.update({avatar_data: null, avatar_url: null});
+        return true;
+    }
+
+    async updatePreferences(userId, preferences) {
+        const user = await User.findByPk(userId, {include: [Customer]});
+        if (!user) throw new Error('Користувача не знайдено');
+        await user.Customer.update({
+            hide_courses: preferences.hide_courses
+        });
         return true;
     }
 }

@@ -498,3 +498,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const preferencesForm = document.getElementById('preferencesForm');
+    if (preferencesForm) {
+        preferencesForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(preferencesForm);
+            const data = {
+                hide_courses: formData.get('hide_courses') === 'on'
+            };
+            try {
+                const response = await fetch('/api/auth/update-preferences', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'CSRF-Token': getCsrfToken()
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    showNotification('Налаштування збережено', 'success');
+                } else {
+                    showNotification(result.message || 'Помилка збереження', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating preferences:', error);
+                showNotification('Помилка з\'єднання', 'error');
+            }
+        });
+    }
+});
