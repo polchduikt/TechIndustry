@@ -4,6 +4,13 @@
             <a href="/" class="logo-link">
                 <img src="/assets/img/logo.png" alt="TechIndustry Logo" class="logo-img">
             </a>
+
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'" class="{{#ifCond currentPath '==' '/'}}nav-active{{/ifCond}}">Головна</button>
                 <button onclick="location.href='/leaderboard'" class="{{#ifCond currentPath '==' '/leaderboard'}}nav-active{{/ifCond}}">Лідерборд</button>
@@ -41,6 +48,13 @@
 </header>
 
 <script>
+    function toggleMobileMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const btn = document.querySelector('.mobile-menu-btn');
+        navLinks.classList.toggle('active');
+        btn.classList.toggle('open');
+    }
+
     async function logout(event) {
         event.preventDefault();
         try {
@@ -53,7 +67,6 @@
             });
             window.location.replace('/');
         } catch (e) {
-            //console.error('Logout error:', e);
             window.location.replace('/');
         }
     }

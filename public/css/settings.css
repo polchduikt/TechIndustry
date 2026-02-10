@@ -642,3 +642,74 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: var(--text-muted);
     line-height: 1.5;
 }
+
+@media (max-width: 768px) {
+    section {
+        padding: 40px 0;
+    }
+
+    .settings-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .settings-sidebar {
+        position: relative;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .avatar-preview {
+        width: 180px;
+        height: 180px;
+    }
+
+    .settings-content {
+        padding: 20px;
+    }
+
+    .settings-content h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .glass-input {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions button {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .nav-btn {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .security-card {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 22px;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+}

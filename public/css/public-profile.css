@@ -436,36 +436,106 @@
 }
 
 @media (max-width: 768px) {
+    .profile-section {
+        padding: 30px 0;
+    }
+
     .profile-header {
         flex-direction: column;
-        gap: 24px;
+        gap: 30px;
         text-align: center;
+        padding: 30px 20px;
     }
 
     .profile-info {
         flex-direction: column;
+        gap: 20px;
+        width: 100%;
         text-align: center;
+    }
+
+    .profile-details {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-details h1 {
+        font-size: 28px;
     }
 
     .level-progress-container {
         max-width: 100%;
+        width: 100%;
     }
 
     .profile-stats-inline {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        width: 100%;
+        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .stat-item {
         flex-direction: column;
-        gap: 12px;
+        text-align: center;
+        gap: 8px;
+        padding: 5px;
+    }
+
+    .stat-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .badges-section {
+        padding: 25px 20px;
     }
 
     .badges-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 15px;
+    }
+
+    .badge-icon {
+        width: 60px;
+        height: 60px;
     }
 
     .filter-tabs {
         overflow-x: auto;
         flex-wrap: nowrap;
+        padding-bottom: 5px;
+        margin-top: 15px;
+        scrollbar-width: none;
+    }
+
+    .filter-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-tab {
+        white-space: nowrap;
+        padding: 10px 20px;
+        flex-shrink: 0;
     }
 
     .courses-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .course-progress-card {
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        margin: 30px 0;
     }
 }
