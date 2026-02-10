@@ -34,6 +34,15 @@ exports.renderProfile = async (req, res) => {
                 isFinished
             };
         }));
+
+        let totalQuizzesPassed = 0;
+        for (const progress of progressRaw) {
+            const data = progress.get({ plain: true });
+            if (Array.isArray(data.completed_quizzes)) {
+                totalQuizzesPassed += data.completed_quizzes.length;
+            }
+        }
+
         const gamificationStats = await gamificationService.getUserStats(req.userId);
         const user = await userService.getProfile(req.userId);
 
@@ -43,6 +52,7 @@ exports.renderProfile = async (req, res) => {
             stats: {
                 total: progressFormatted.length,
                 completed: progressFormatted.filter(p => p.isFinished).length,
+                quizzesPassed: totalQuizzesPassed,
                 streak: 1
             },
             gamification: gamificationStats,

@@ -13,10 +13,17 @@ class LeaderboardService {
                 model: db.User,
                 as: 'user',
                 attributes: ['id', 'username'],
-                include: [{
-                    model: db.Customer,
-                    attributes: ['first_name', 'last_name', 'avatar_data']
-                }]
+                include: [
+                    {
+                        model: db.Customer,
+                        attributes: ['first_name', 'last_name', 'avatar_data']
+                    },
+                    {
+                        model: db.UserProgress,
+                        as: 'progress',
+                        attributes: ['completed_quizzes']
+                    }
+                ]
             }]
         });
 
@@ -28,6 +35,16 @@ class LeaderboardService {
                 return badge;
             }).filter(Boolean);
 
+            let quizzesPassed = 0;
+            const progressList = data.user.progress || data.user.UserProgresses || data.user.user_progresses || [];
+            if (Array.isArray(progressList)) {
+                progressList.forEach(p => {
+                    if (Array.isArray(p.completed_quizzes)) {
+                        quizzesPassed += p.completed_quizzes.length;
+                    }
+                });
+            }
+
             return {
                 rank: index + 1,
                 username: data.user.username,
@@ -36,7 +53,8 @@ class LeaderboardService {
                 level: data.level,
                 experience: data.experience,
                 badgeCount: allBadges.length,
-                recentBadges
+                recentBadges,
+                quizzesPassed
             };
         });
         return formattedUsers;
@@ -56,6 +74,7 @@ class LeaderboardService {
         });
 
         if (!user) throw new Error('Користувача не знайдено');
+
         const progressStats = await db.UserProgress.findAll({
             where: { user_id: user.id },
             include: [{
@@ -71,6 +90,14 @@ class LeaderboardService {
                     }]
                 }]
             }]
+        });
+
+        let quizzesPassed = 0;
+        progressStats.forEach(p => {
+            const pData = p.get({ plain: true });
+            if (Array.isArray(pData.completed_quizzes)) {
+                quizzesPassed += pData.completed_quizzes.length;
+            }
         });
 
         const progressFormatted = progressStats.map(p => {
@@ -140,6 +167,7 @@ class LeaderboardService {
             progressPercent,
             badges,
             badgeCount: badges.length,
+            quizzesPassed,
             stats: {
                 totalCourses: progressStats.length,
                 completedCourses,

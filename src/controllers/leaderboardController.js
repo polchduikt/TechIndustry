@@ -3,17 +3,16 @@ const leaderboardService = require('../services/leaderboardService');
 exports.renderLeaderboard = async (req, res) => {
     try {
         const rawUsers = await leaderboardService.getTopUsers(100);
-
-        // Фільтруємо дані для приватності (прибираємо first_name, last_name, email тощо)
         const topUsers = rawUsers.map(user => ({
             rank: user.rank,
-            username: user.username, // Тільки юзернейм
+            username: user.username,
             avatar: user.avatar,
             level: user.level,
-            points: user.points, // Або experience, залежно від вашої моделі
+            points: user.points,
             experience: user.experience,
             badgeCount: user.badgeCount,
-            recentBadges: user.recentBadges
+            recentBadges: user.recentBadges,
+            quizzesPassed: user.quizzesPassed
         }));
 
         res.render('leaderboard', {

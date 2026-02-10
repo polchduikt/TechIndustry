@@ -32,12 +32,48 @@ exports.renderCourseSelection = async (req, res) => {
             return res.redirect(`/quiz/${courseSlug}`);
         }
         const courses = await db.Course.findAll();
+        const userId = req.userId;
+        const coursesWithStats = await Promise.all(courses.map(async (course) => {
+            const plainCourse = course.get({ plain: true });
+            const quizzes = readQuizFile(plainCourse.slug);
+            const totalQuizzes = quizzes ? quizzes.length : 0;
+
+            let completedQuizzes = 0;
+            let isInProgress = false;
+            if (userId) {
+                const progress = await db.UserProgress.findOne({
+                    where: {
+                        user_id: userId,
+                        course_id: plainCourse.id
+                    }
+                });
+
+                if (progress) {
+                    isInProgress = true;
+                    if (Array.isArray(progress.completed_quizzes)) {
+                        completedQuizzes = progress.completed_quizzes.filter(id =>
+                            id.startsWith(`${plainCourse.slug}:`)
+                        ).length;
+                    }
+                }
+            }
+
+            return {
+                ...plainCourse,
+                totalQuizzes,
+                completedQuizzes,
+                isGuest: !userId,
+                isInProgress
+            };
+        }));
+
         res.render('quiz-courses', {
             title: 'Центр тестування | TechIndustry',
-            courses,
+            courses: coursesWithStats,
             user: res.locals.user,
             csrfToken: req.csrfToken ? req.csrfToken() : ''
         });
+
     } catch (e) {
         console.error('renderCourseSelection error:', e);
         res.status(500).send('Помилка завантаження курсів');
@@ -47,12 +83,35 @@ exports.renderCourseSelection = async (req, res) => {
 exports.renderQuizList = async (req, res) => {
     try {
         const { slug } = req.params;
+        const userId = req.userId;
         const course = await db.Course.findOne({ where: { slug } });
         if (!course) return res.redirect('/quiz');
         const quizzes = readQuizFile(slug);
+
+        let completedQuizIds = [];
+        if (userId) {
+            const progress = await db.UserProgress.findOne({
+                where: {
+                    user_id: userId,
+                    course_id: course.id
+                }
+            });
+            if (progress && Array.isArray(progress.completed_quizzes)) {
+                completedQuizIds = progress.completed_quizzes
+                    .filter(id => id.startsWith(`${slug}:`))
+                    .map(id => id.split(':')[1]);
+            }
+        }
+
+        const quizzesWithStatus = (quizzes || []).map(quiz => ({
+            ...quiz,
+            isCompleted: completedQuizIds.includes(quiz.moduleId),
+            xpReward: completedQuizIds.includes(quiz.moduleId) ? 0 : 150
+        }));
+
         res.render('quiz-list', {
             title: `Тести: ${course.title}`,
-            quizzes: quizzes || [],
+            quizzes: quizzesWithStatus,
             courseSlug: slug,
             courseTitle: course.title,
             user: res.locals.user,
