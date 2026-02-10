@@ -1751,3 +1751,218 @@ footer {
         font-size: 16px;
     }
 }
+
+.sandbox-preview-section {
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.sandbox-preview-section::before {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: 20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.sandbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.sandbox-features-list {
+    list-style: none;
+    margin: 32px 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sandbox-features-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.check-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.sandbox-visual {
+    position: relative;
+    perspective: 1000px;
+}
+
+.editor-mockup {
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.05);
+    transform: rotateY(-5deg) rotateX(2deg);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.editor-mockup:hover {
+    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+    box-shadow:
+            0 30px 60px rgba(0, 0, 0, 0.6),
+            0 0 30px rgba(99, 102, 241, 0.2);
+}
+
+.editor-header {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+    margin-right: 20px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.tab {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.tab.active {
+    background: rgba(99, 102, 241, 0.2);
+    color: #fff;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.editor-body {
+    padding: 24px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e2e8f0;
+}
+
+.line { position: relative; }
+.line.indent { padding-left: 20px; }
+.line.empty { height: 1.6em; }
+
+.kwd { color: #c678dd; }
+.var { color: #e5c07b; }
+.op { color: #56b6c2; }
+.obj { color: #e06c75; }
+.func { color: #61afef; }
+.str { color: #98c379; }
+.cmt { color: #5c6370; font-style: italic; }
+
+.floating-badge {
+    position: absolute;
+    bottom: 20px;
+    right: -20px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: floatBadge 4s ease-in-out infinite;
+}
+
+.badge-icon {
+    font-size: 24px;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+}
+
+.badge-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.badge-text strong {
+    color: #fff;
+    font-size: 14px;
+}
+
+.badge-text span {
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 968px) {
+    .sandbox-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+        text-align: center;
+    }
+
+    .sandbox-content h2,
+    .sandbox-content p {
+        text-align: center !important;
+    }
+
+    .sandbox-features-list {
+        align-items: center;
+    }
+
+    .editor-mockup {
+        max-width: 600px;
+        margin: 0 auto;
+        transform: none;
+    }
+
+    .editor-mockup:hover {
+        transform: scale(1.02);
+    }
+
+    .floating-badge {
+        right: 10px;
+    }
+}

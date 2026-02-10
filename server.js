@@ -40,13 +40,14 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
             scriptSrcAttr: ["'unsafe-inline'"],
             workerSrc: ["'self'", "blob:", "https://cdnjs.cloudflare.com"],
             imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'"]
+            connectSrc: ["'self'"],
+            frameSrc: ["'self'"]
         }
     },
     hsts: {
@@ -154,6 +155,9 @@ app.get('/user/:username', leaderboardController.renderPublicProfile);
 app.get('/gamification-info', userController.renderGamificationInfo);
 app.get('/login', (req, res) => {
     res.render('login', { title: 'Вхід | TechIndustry' });
+});
+app.get('/sandbox', (req, res) => {
+    res.render('sandbox', { title: 'Sandbox | TechIndustry' });
 });
 
 // Protected pages
