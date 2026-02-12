@@ -2,6 +2,7 @@ const userService = require('../services/userService');
 const progressService = require('../services/progressService');
 const gamificationService = require('../services/gamificationService');
 const db = require('../models');
+const shopService = require('../services/shopService');
 
 exports.renderProfile = async (req, res) => {
     try {
@@ -45,6 +46,9 @@ exports.renderProfile = async (req, res) => {
 
         const gamificationStats = await gamificationService.getUserStats(req.userId);
         const user = await userService.getProfile(req.userId);
+        const shopService = require('../services/shopService');
+        const userCoins = await shopService.getUserCoins(req.userId);
+        const inventory = await shopService.getUserPurchases(req.userId);
 
         res.render('profile', {
             title: 'Профіль | TechIndustry',
@@ -58,6 +62,8 @@ exports.renderProfile = async (req, res) => {
             gamification: gamificationStats,
             isOwnProfile: true,
             user: res.locals.user,
+            userCoins: userCoins,
+            inventory: inventory,
             hideCourses: user.Customer.hide_courses || false,
             csrfToken: req.csrfToken ? req.csrfToken() : ''
         });

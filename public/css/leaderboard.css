@@ -5,314 +5,248 @@
 
 .leaderboard-section .leaderboard-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .leaderboard-section .leaderboard-header h1 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 48px;
-    margin-bottom: 16px;
-    line-height: 1.2;
+    font-size: 46px;
+    margin-bottom: 12px;
 }
 
-.leaderboard-section .subtitle {
-    font-size: 18px;
-    color: var(--text-muted);
-}
-
-.leaderboard-section .leaderboard-container {
+.leaderboard-container {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 32px;
+    border-radius: 28px;
+    padding: 24px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.leaderboard-section .leaderboard-item {
+.leaderboard-item {
     display: grid;
-    grid-template-columns: 60px 2fr 120px 1.5fr 80px 100px;
-    gap: 24px;
+    grid-template-columns: 60px 1fr 300px 130px;
+    gap: 20px;
     align-items: center;
-    padding: 20px 24px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    margin-bottom: 16px;
-    transition: all 0.3s;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.01);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.leaderboard-section .leaderboard-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateX(4px);
+.leaderboard-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateX(6px);
 }
 
-.leaderboard-section .leaderboard-item.rank-1 {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 193, 7, 0.05));
-    border: 1px solid rgba(255, 215, 0, 0.3);
+.rank-1 {
+    border-left: 5px solid #fbbf24;
+    background: rgba(251, 191, 36, 0.05);
 }
 
-.leaderboard-section .leaderboard-item.rank-2 {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(169, 169, 169, 0.05));
-    border: 1px solid rgba(192, 192, 192, 0.3);
+.rank-2 {
+    border-left: 5px solid #94a3b8;
+    background: rgba(148, 163, 184, 0.05);
 }
 
-.leaderboard-section .leaderboard-item.rank-3 {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15), rgba(184, 115, 51, 0.05));
-    border: 1px solid rgba(205, 127, 50, 0.3);
+.rank-3 {
+    border-left: 5px solid #b45309;
+    background: rgba(180, 83, 9, 0.05);
 }
 
-.leaderboard-section .rank {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
-
-.leaderboard-section .rank-medal {
-    font-size: 32px;
-}
-
-.leaderboard-section .rank-number {
-    font-size: 20px;
-    color: var(--text-muted);
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.leaderboard-section .user-info {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    overflow: hidden;
-}
-
-.leaderboard-section .user-avatar-link {
-    text-decoration: none;
-    display: block;
-    flex-shrink: 0;
-}
-
-.leaderboard-section .user-avatar {
+.player-info-card {
     position: relative;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 80px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 700;
-    color: white;
-    overflow: hidden;
-    transition: transform 0.3s;
-    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.leaderboard-section .user-avatar:hover {
-    transform: scale(1.05);
-    border-color: var(--primary);
+.player-info-card.theme-active {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
-.leaderboard-section .user-avatar img {
+.player-info-card.theme-cyberpunk {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e) !important;
+}
+
+.player-info-card.theme-nature {
+    background: linear-gradient(135deg, #134e5e, #71b280) !important;
+}
+
+.player-info-card.theme-royal {
+    background: linear-gradient(135deg, #4b0d0d, #2a0808) !important;
+}
+
+.card-theme-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
+    opacity: 0.9;
+}
+
+.player-card-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 25px;
+}
+
+.player-main-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.leaderboard-item .user-avatar {
+    width: 54px;
+    height: 54px;
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leaderboard-item .user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
     object-fit: cover;
 }
 
-.leaderboard-section .user-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    overflow: hidden;
-}
-
-.leaderboard-section .username {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.3s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.leaderboard-section .username:hover {
-    color: var(--primary);
-}
-
-.leaderboard-section .level-info-compact {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.leaderboard-section .level-label {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.leaderboard-section .xp-label {
-    font-size: 13px;
-    color: var(--text-muted);
-}
-
-.leaderboard-section .recent-badges {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    overflow: hidden;
-}
-
-.leaderboard-section .badge-mini {
-    width: 32px;
-    height: 32px;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.leaderboard-section .badge-mini:hover {
-    transform: scale(1.2);
-    z-index: 2;
-}
-
-.leaderboard-section .no-badges {
-    font-size: 13px;
-    color: var(--text-muted);
-    font-style: italic;
-    opacity: 0.5;
-}
-
-.leaderboard-section .badge-count {
+.leaderboard-item .avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    font-weight: 600;
-    color: var(--text);
+    font-weight: bold;
+    color: white;
 }
 
-.leaderboard-section .badge-count svg {
-    flex-shrink: 0;
-    transition: all 0.3s ease;
+.leaderboard-item .user-avatar .frame-overlay-small {
+    width: 115% !important;
+    height: 115% !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
-.leaderboard-section .leaderboard-item:hover .badge-count svg {
-    stroke: var(--secondary);
-    transform: scale(1.1);
+.player-info-card .username {
+    font-weight: 700;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
-.leaderboard-section .view-profile-btn {
+.player-stats-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 100px;
+}
+
+.level-badge-mini {
+    font-size: 13px;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 3px 12px;
+    border-radius: 10px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+}
+
+.xp-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #a5b4fc;
+}
+
+.badges-mini-list {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge-mini-wrapper {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+}
+
+.badge-mini-icon {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+}
+
+.badge-mini-wrapper:hover {
+    transform: scale(1.25);
+}
+
+.view-profile-btn {
     display: flex;
     justify-content: flex-end;
 }
 
-.leaderboard-section .view-profile-btn .btn {
-    white-space: nowrap;
-    text-decoration: none;
+.rank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
 }
 
-.leaderboard-section .btn-sm {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 10px;
+.rank-medal {
+    font-size: 32px;
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
 }
 
-.leaderboard-section .empty-state {
-    text-align: center;
-    padding: 60px 20px;
+.rank-number {
+    font-size: 20px;
     color: var(--text-muted);
-    font-size: 18px;
 }
 
-@media (max-width: 1024px) {
-    .leaderboard-section .leaderboard-item {
-        grid-template-columns: 50px 1fr 100px 70px auto;
-        gap: 16px;
-        padding: 16px;
-    }
-
-    .leaderboard-section .recent-badges {
-        display: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .leaderboard-section {
-        padding: 30px 0;
-    }
-
-    .leaderboard-section .leaderboard-header h1 {
-        font-size: 32px;
-        margin-bottom: 12px;
-    }
-
-    .leaderboard-section .leaderboard-header {
-        margin-bottom: 30px;
-    }
-
-    .leaderboard-section .leaderboard-container {
-        padding: 16px;
-        border-radius: 16px;
-    }
-
-    .leaderboard-section .leaderboard-item {
-        grid-template-columns: 40px 1fr auto;
-        gap: 12px;
-        padding: 16px 12px;
-        border-radius: 12px;
-    }
-
-    .leaderboard-section .rank-medal {
-        font-size: 24px;
-    }
-
-    .leaderboard-section .rank-number {
-        font-size: 16px;
-    }
-
-    .leaderboard-section .user-avatar {
-        width: 42px;
-        height: 42px;
-        font-size: 16px;
-        border-width: 1px;
-    }
-
-    .leaderboard-section .username {
-        font-size: 16px;
-    }
-
-    .leaderboard-section .level-info-compact,
-    .leaderboard-section .recent-badges,
-    .leaderboard-section .badge-count {
+@media (max-width: 850px) {
+    .badges-mini-list {
         display: none;
     }
 
-    .leaderboard-section .view-profile-btn .btn {
-        padding: 6px 12px;
-        font-size: 13px;
-        height: 36px;
-        display: flex;
-        align-items: center;
+    .leaderboard-item {
+        grid-template-columns: 50px 1fr 120px;
     }
 }
 
-@media (max-width: 380px) {
-    .leaderboard-section .leaderboard-item {
-        gap: 10px;
+@media (max-width: 600px) {
+    .leaderboard-item {
+        grid-template-columns: 40px 1fr;
     }
 
-    .leaderboard-section .user-info {
-        gap: 10px;
-    }
-
-    .leaderboard-section .username {
-        font-size: 15px;
+    .view-profile-btn {
+        display: none;
     }
 }

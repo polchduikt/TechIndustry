@@ -75,24 +75,24 @@ class ProgressService {
         }
         let completedLessons = [...(progress.completed_lessons || [])];
         const wasCompleted = completedLessons.includes(lessonId);
-
+        let gamificationResult = null;
         if (completed && !wasCompleted) {
             completedLessons.push(lessonId);
-            await gamificationService.onLessonComplete(userId);
+            gamificationResult = await gamificationService.onLessonComplete(userId, lessonId);
         } else if (!completed) {
             completedLessons = completedLessons.filter(id => id !== lessonId);
         }
-
         let totalLessonsInCourse = 0;
         course.modules.forEach(m => {
             totalLessonsInCourse += (m.lessons?.length || 0);
         });
         const wasCompletedBefore = progress.status === 'completed';
         let newStatus = 'in_progress';
+        let courseCompletionResult = null;
         if (totalLessonsInCourse > 0 && completedLessons.length >= totalLessonsInCourse) {
             newStatus = 'completed';
             if (!wasCompletedBefore) {
-                await gamificationService.onCourseComplete(userId);
+                courseCompletionResult = await gamificationService.onCourseComplete(userId, course.id);
             }
         }
         await progress.update({
@@ -100,7 +100,12 @@ class ProgressService {
             status: newStatus,
             last_accessed: new Date()
         });
-        return progress;
+        return {
+            progress,
+            gamificationResult,
+            courseCompletionResult,
+            isFirstCompletion: completed && !wasCompleted
+        };
     }
 }
 

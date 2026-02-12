@@ -56,6 +56,21 @@ module.exports = (sequelize) => {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+        },
+        avatar_frame: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+            defaultValue: null
+        },
+        title_badge: {
+            type: DataTypes.STRING(100),
+            allowNull: true,
+            defaultValue: null
+        },
+        profile_theme: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            defaultValue: 'default'
         }
     }, {
         tableName: 'customers',

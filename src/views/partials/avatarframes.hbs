@@ -1,0 +1,306 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+
+    <symbol id="frame-silver" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="silver-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#bdc3c7;stop-opacity:1" />
+                <stop offset="25%" style="stop-color:#eff0f1;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#bdc3c7;stop-opacity:1" />
+                <stop offset="75%" style="stop-color:#7f8c8d;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#bdc3c7;stop-opacity:1" />
+            </linearGradient>
+            <filter id="silver-shadow">
+                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/>
+            </filter>
+        </defs>
+        <circle cx="70" cy="70" r="66" fill="none" stroke="#555" stroke-width="1" opacity="0.5"/>
+        <circle cx="70" cy="70" r="63" fill="none" stroke="url(#silver-metal)" stroke-width="6" filter="url(#silver-shadow)"/>
+        <g transform-origin="70 70">
+            <circle cx="70" cy="70" r="58" fill="none" stroke="#ecf0f1" stroke-width="2" stroke-dasharray="10 25" opacity="0.8"/>
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="20s" repeatCount="indefinite"/>
+        </g>
+        <circle cx="70" cy="5" r="2" fill="#333" />
+        <circle cx="70" cy="135" r="2" fill="#333" />
+        <circle cx="5" cy="70" r="2" fill="#333" />
+        <circle cx="135" cy="70" r="2" fill="#333" />
+    </symbol>
+
+    <symbol id="frame-gold" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="gold-luxury" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#bf953f" />
+                <stop offset="25%" stop-color="#fcf6ba" /> <stop offset="50%" stop-color="#b38728" />
+                <stop offset="75%" stop-color="#fbf5b7" />
+                <stop offset="100%" stop-color="#aa771c" />
+            </linearGradient>
+            <filter id="gold-shine" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+        </defs>
+
+        <circle cx="70" cy="70" r="65" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.4">
+            <animate attributeName="r" values="65;67;65" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="3s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="url(#gold-luxury)" stroke-width="5" />
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="1 15" stroke-linecap="round" opacity="0.8">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="60s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="70" r="59" fill="none" stroke="#b38728" stroke-width="2" />
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="white" stroke-width="3" stroke-dasharray="40 360" opacity="0.6" filter="url(#gold-shine)">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="4s" repeatCount="indefinite"/>
+        </circle>
+    </symbol>
+
+    <symbol id="frame-neon" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="neon-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0ff" />
+                <stop offset="100%" stop-color="#f0f" />
+            </linearGradient>
+            <filter id="neon-bloom" height="300%" width="300%" x="-75%" y="-75%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="url(#neon-cyber)" stroke-width="2" opacity="0.3" filter="url(#neon-bloom)"/>
+
+        <path d="M70,6 A64,64 0 0,1 134,70" fill="none" stroke="#0ff" stroke-width="4" stroke-linecap="square" filter="url(#neon-bloom)" opacity="0.9">
+            <animate attributeName="opacity" values="0.9;0.4;0.9" dur="0.1s" repeatCount="indefinite" begin="0s; 2s; 4s"/>
+        </path>
+        <path d="M70,134 A64,64 0 0,1 6,70" fill="none" stroke="#f0f" stroke-width="4" stroke-linecap="square" filter="url(#neon-bloom)" opacity="0.9"/>
+
+        <circle cx="70" cy="70" r="58" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="20 40 10 50">
+            <animateTransform attributeName="transform" type="rotate" from="360 70 70" to="0 70 70" dur="10s" repeatCount="indefinite"/>
+        </circle>
+
+        <rect x="68" y="2" width="4" height="8" fill="#0ff">
+            <animate attributeName="opacity" values="1;0;1" dur="0.5s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="68" y="130" width="4" height="8" fill="#f0f">
+            <animate attributeName="opacity" values="1;0;1" dur="0.7s" repeatCount="indefinite"/>
+        </rect>
+    </symbol>
+
+    <symbol id="frame-fire" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="fire-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#8B0000" /> <stop offset="50%" stop-color="#FF4500" /> <stop offset="100%" stop-color="#FFD700" /> </linearGradient>
+            <filter id="fire-blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+            </filter>
+        </defs>
+
+        <circle cx="70" cy="70" r="63" fill="none" stroke="#FF4500" stroke-width="4" opacity="0.6">
+            <animate attributeName="stroke-width" values="4;6;4" dur="1s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="70" r="65" fill="none" stroke="url(#fire-gradient)" stroke-width="6" stroke-dasharray="20 10" stroke-linecap="round" filter="url(#fire-blur)">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="20s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="70" r="65" fill="none" stroke="url(#fire-gradient)" stroke-width="3" stroke-dasharray="20 10" stroke-linecap="round">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="20s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="135" r="3" fill="#FFD700" opacity="0">
+
+            <animate attributeName="cy" values="135; 10" dur="2s" repeatCount="indefinite" begin="0s"/>
+            <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0s"/>
+            <animate attributeName="cx" values="70; 60; 80; 70" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="40" cy="120" r="2" fill="#FF4500" opacity="0">
+            <animate attributeName="cy" values="120; 20" dur="3s" repeatCount="indefinite" begin="1s"/>
+            <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+        </circle>
+        <circle cx="100" cy="120" r="2.5" fill="#FFA500" opacity="0">
+            <animate attributeName="cy" values="120; 30" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+            <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+        </circle>
+    </symbol>
+
+    <symbol id="frame-diamond" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="diamond-prism" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#e0f7fa" />
+                <stop offset="50%" stop-color="#00bcd4" />
+                <stop offset="100%" stop-color="#e0f7fa" />
+            </linearGradient>
+            <filter id="diamond-sparkle">
+                <feGaussianBlur stdDeviation="1.5" result="glow"/>
+                <feMerge>
+                    <feMergeNode in="glow"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+
+        <polygon points="70,5 135,70 70,135 5,70" fill="none" stroke="#4dd0e1" stroke-width="1" opacity="0.5">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="40s" repeatCount="indefinite"/>
+        </polygon>
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="url(#diamond-prism)" stroke-width="8" stroke-opacity="0.8" />
+
+        <circle cx="70" cy="70" r="60" fill="none" stroke="#fff" stroke-width="1" opacity="0.9" />
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="white" stroke-width="6" stroke-dasharray="50 350" opacity="0.8" filter="url(#diamond-sparkle)">
+            <animateTransform attributeName="transform" type="rotate" from="360 70 70" to="0 70 70" dur="5s" repeatCount="indefinite"/>
+        </circle>
+
+        <g transform="translate(100, 30)">
+            <path d="M0,-5 L1,0 L6,0 L2,3 L3,8 L0,5 L-3,8 L-2,3 L-6,0 L-1,0 Z" fill="white">
+                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+                <animateTransform attributeName="transform" type="scale" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+            </path>
+        </g>
+        <g transform="translate(30, 110)">
+            <path d="M0,-4 L1,0 L5,0 L2,2 L3,6 L0,4 L-3,6 L-2,2 L-5,0 L-1,0 Z" fill="white">
+                <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" delay="1s"/>
+                <animateTransform attributeName="transform" type="scale" values="0;1;0" dur="3s" repeatCount="indefinite" delay="1s"/>
+            </path>
+        </g>
+    </symbol>
+
+
+    <symbol id="frame-druid" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="druid-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4ade80" /> <stop offset="50%" stop-color="#166534" /> <stop offset="100%" stop-color="#84cc16" /> </linearGradient>
+            <filter id="druid-glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <circle cx="70" cy="70" r="64" fill="none" stroke="url(#druid-grad)" stroke-width="5" stroke-linecap="round" filter="url(#druid-glow)">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="30s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="70" cy="70" r="60" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="10 15" opacity="0.7">
+            <animateTransform attributeName="transform" type="rotate" from="360 70 70" to="0 70 70" dur="40s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="70" cy="5" r="3" fill="#bef264" filter="url(#druid-glow)">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="70" cy="135" r="3" fill="#bef264" filter="url(#druid-glow)">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" delay="1.5s"/>
+        </circle>
+    </symbol>
+
+    <symbol id="frame-arcane" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="arcane-grad" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#8b5cf6" /> <stop offset="100%" stop-color="#3b82f6" /> </linearGradient>
+            <filter id="arcane-bloom">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+        </defs>
+        <circle cx="70" cy="70" r="65" fill="none" stroke="url(#arcane-grad)" stroke-width="2" opacity="0.4"/>
+
+        <circle cx="70" cy="70" r="63" fill="none" stroke="url(#arcane-grad)" stroke-width="4" stroke-dasharray="5 10 15 5" stroke-linecap="square" filter="url(#arcane-bloom)">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="15s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="70" r="60" fill="none" stroke="#a855f7" stroke-width="1" opacity="0.3">
+            <animate attributeName="r" values="60;64;60" dur="4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.3;0.1;0.3" dur="4s" repeatCount="indefinite"/>
+        </circle>
+    </symbol>
+
+    <symbol id="frame-stardust" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="space-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0f172a" /> <stop offset="50%" stop-color="#312e81" /> <stop offset="100%" stop-color="#1e3a8a" /> </linearGradient>
+            <filter id="star-glint">
+                <feGaussianBlur stdDeviation="1.5" result="glow"/>
+                <feMerge>
+                    <feMergeNode in="glow"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <circle cx="70" cy="70" r="65" fill="none" stroke="url(#space-grad)" stroke-width="6" opacity="0.8" />
+        <circle cx="70" cy="70" r="62" fill="none" stroke="#6366f1" stroke-width="1" opacity="0.5" />
+
+        <g filter="url(#star-glint)">
+            <circle cx="90" cy="20" r="2" fill="white">
+                <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="30" cy="110" r="1.5" fill="white">
+                <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" delay="1s"/>
+            </circle>
+            <circle cx="120" cy="80" r="2" fill="#a5b4fc">
+                <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="70" cy="135" r="2.5" fill="white">
+                <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="25s" repeatCount="indefinite"/>
+            </circle>
+        </g>
+    </symbol>
+
+    <symbol id="frame-circuit" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="circuit-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06b6d4" /> <stop offset="100%" stop-color="#3b82f6" /> </linearGradient>
+        </defs>
+        <circle cx="70" cy="70" r="65" fill="none" stroke="#334155" stroke-width="4" opacity="0.5"/>
+
+        <circle cx="70" cy="70" r="65" fill="none" stroke="url(#circuit-grad)" stroke-width="3" stroke-dasharray="10 30 5 20 15 40" stroke-linecap="square">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="40s" repeatCount="indefinite"/>
+        </circle>
+
+        <rect x="67" y="2" width="6" height="6" fill="#06b6d4" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="67" y="132" width="6" height="6" fill="#06b6d4" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1s" repeatCount="indefinite" delay="0.5s"/>
+        </rect>
+    </symbol>
+
+    <symbol id="frame-frozen" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="ice-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#cffafe" /> <stop offset="100%" stop-color="#22d3ee" /> </linearGradient>
+            <filter id="ice-blur">
+                <feGaussianBlur stdDeviation="2"/>
+            </filter>
+        </defs>
+        <circle cx="70" cy="70" r="63" fill="none" stroke="#a5f3fc" stroke-width="6" opacity="0.4" filter="url(#ice-blur)">
+            <animate attributeName="r" values="63;65;63" dur="5s" repeatCount="indefinite"/>
+        </circle>
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="url(#ice-grad)" stroke-width="4" stroke-dasharray="15 5 2 5 10 2" stroke-linecap="butt">
+            <animateTransform attributeName="transform" type="rotate" from="360 70 70" to="0 70 70" dur="60s" repeatCount="indefinite"/>
+        </circle>
+    </symbol>
+
+    <symbol id="frame-eclipse" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="eclipse-light" x1="0%" y1="50%" x2="100%" y2="50%">
+                <stop offset="0%" stop-color="#fbbf24" stop-opacity="0"/> <stop offset="50%" stop-color="#f59e0b" stop-opacity="1"/> <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/> </linearGradient>
+            <filter id="eclipse-glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <circle cx="70" cy="70" r="64" fill="none" stroke="#1c1917" stroke-width="6" opacity="0.8"/>
+
+        <circle cx="70" cy="70" r="64" fill="none" stroke="url(#eclipse-light)" stroke-width="8" stroke-dasharray="100 300" filter="url(#eclipse-glow)">
+            <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="8s" repeatCount="indefinite"/>
+        </circle>
+    </symbol>
+</svg>

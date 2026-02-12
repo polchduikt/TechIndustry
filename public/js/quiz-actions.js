@@ -32,9 +32,7 @@ function renderQuestion() {
                 <h2 class="gradient-text">${currentQuizData.title}</h2>
                 <button class="quiz-header-back" onclick="location.href='/quiz'">До списку тестів</button>
             </div>
-            
             ${renderProgress()}
-            
             <div class="question-section">
                 <p class="question-text">${q.question} ${q.type === 'multiple' ? '<br><small style="color:var(--text-muted); font-size: 0.8em;">(можна обрати кілька варіантів)</small>' : ''}</p>
                 <div id="optionsContainer" class="options-grid"></div>
@@ -113,7 +111,6 @@ async function submitQuiz() {
             <div class="loading-spinner"></div>
             <p style="color: var(--text-muted); margin-top: 20px;">Перевірка результатів...</p>
         </div>`;
-
     try {
         const res = await fetch(`/quiz/${currentCourseSlug}/${currentModuleId}/submit`, {
             method: 'POST',
@@ -140,17 +137,48 @@ function showResult(result) {
     if (gamification) {
         rewardsHTML = `
             <div class="rewards-section">
-                <div class="xp-reward">
-                    <span class="reward-icon">✨</span>
-                    <span class="reward-text">+${gamification.xpGained} XP</span>
+                <div class="rewards-grid">
+                    <div class="reward-card xp-reward">
+                        <span class="reward-icon">✨</span>
+                        <div class="reward-info">
+                            <span class="reward-label">Досвід</span>
+                            <span class="reward-value">+${gamification.xpGained} XP</span>
+                        </div>
+                    </div>
+                    <div class="reward-mini-card coin-card">
+                        <div class="mini-icon">🪙</div>
+                        <div class="mini-info">
+                            <span class="mini-value">+${result.gamification.coinsGained}</span>
+                            <span class="mini-label">Монети</span>
+                        </div>
+                    </div>
                 </div>
+                </div>
+                ${gamification.leveledUp ? `
+                    <div class="level-up-banner">
+                        <span class="level-up-icon">🎊</span>
+                        <span class="level-up-text">Новий рівень: ${gamification.newLevel}!</span>
+                    </div>
+                ` : ''}
+                ${gamification.newBadges && gamification.newBadges.length > 0 ? `
+                    <div class="badges-earned">
+                        <h4>Отримані значки:</h4>
+                        ${gamification.newBadges.map(badge => `
+                            <div class="badge-item">
+                                <span class="badge-icon">🏆</span>
+                                <span class="badge-name">${badge.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
             </div>
         `;
     } else if (result.isRepeat) {
         rewardsHTML = `
             <div class="rewards-section">
                 <div class="repeat-notice">
-                    ℹ️ Тест вже був пройдений раніше. XP не нараховується.
+                    <span class="repeat-icon">ℹ️</span>
+                    <span class="repeat-text">Тест вже був пройдений раніше. Нагороди не нараховуються.</span>
                 </div>
             </div>
         `;
@@ -170,6 +198,10 @@ function showResult(result) {
                 <div class="stat-item">
                     <span class="label">Мінімальний бал</span>
                     <span class="value">${currentQuizData.passingScore}%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="label">Правильних відповідей</span>
+                    <span class="value">${result.correctCount} / ${result.totalQuestions}</span>
                 </div>
             </div>
             ${rewardsHTML}

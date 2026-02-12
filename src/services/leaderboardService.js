@@ -16,7 +16,7 @@ class LeaderboardService {
                 include: [
                     {
                         model: db.Customer,
-                        attributes: ['first_name', 'last_name', 'avatar_data']
+                        attributes: ['first_name', 'last_name', 'avatar_data', 'avatar_frame', 'title_badge', 'profile_theme']
                     },
                     {
                         model: db.UserProgress,
@@ -29,12 +29,12 @@ class LeaderboardService {
 
         const formattedUsers = topUsers.map((userLevel, index) => {
             const data = userLevel.get({ plain: true });
+            const customer = data.user.Customer || {};
             const allBadges = data.badges || [];
             const recentBadges = allBadges.slice(-5).reverse().map(badgeId => {
                 const badge = this.getBadgeDetails(badgeId);
                 return badge;
             }).filter(Boolean);
-
             let quizzesPassed = 0;
             const progressList = data.user.progress || data.user.UserProgresses || data.user.user_progresses || [];
             if (Array.isArray(progressList)) {
@@ -48,11 +48,15 @@ class LeaderboardService {
             return {
                 rank: index + 1,
                 username: data.user.username,
-                fullName: `${data.user.Customer.first_name} ${data.user.Customer.last_name}`,
-                avatar: data.user.Customer.avatar_data,
+                fullName: `${customer.first_name || ''} ${customer.last_name || ''}`.trim(),
+                avatar: customer.avatar_data || null,
+                avatarFrame: customer.avatar_frame || null,
+                profileTheme: customer.profile_theme || 'default',
                 level: data.level,
                 experience: data.experience,
                 badgeCount: allBadges.length,
+                avatar_frame: customer.avatar_frame,
+                title_badge: customer.title_badge,
                 recentBadges,
                 quizzesPassed
             };
@@ -66,7 +70,7 @@ class LeaderboardService {
             attributes: ['id', 'username', 'createdAt'],
             include: [{
                 model: db.Customer,
-                attributes: ['first_name', 'last_name', 'avatar_data', 'hide_courses']
+                attributes: ['first_name', 'last_name', 'avatar_data', 'hide_courses', 'profile_theme', 'avatar_frame', 'title_badge']
             }, {
                 model: db.UserLevel,
                 as: 'levelData'
@@ -130,6 +134,9 @@ class LeaderboardService {
             return this.getBadgeDetails(badgeId);
         }).filter(Boolean);
 
+        const shopService = require('./shopService');
+        const publicInventory = await shopService.getUserPurchases(user.id);
+
         const LEVEL_THRESHOLDS = [
             0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200,
             4000, 5000, 6200, 7600, 9200, 11000, 13000, 15500, 18500, 22000,
@@ -160,14 +167,18 @@ class LeaderboardService {
             username: user.username,
             fullName: `${user.Customer.first_name} ${user.Customer.last_name}`,
             avatar: user.Customer.avatar_data,
+            avatarFrame: user.Customer.avatar_frame,
+            titleBadge: user.Customer.title_badge,
             joinedAt: user.createdAt,
             level: userLevel.level,
             experience: userLevel.experience,
             nextLevelXp,
             progressPercent,
+            profileTheme: user.Customer.profile_theme || 'default',
             badges,
             badgeCount: badges.length,
             quizzesPassed,
+            publicInventory,
             stats: {
                 totalCourses: progressStats.length,
                 completedCourses,

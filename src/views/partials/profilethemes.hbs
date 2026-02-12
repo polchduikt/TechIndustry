@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+
+    <symbol id="theme-cyberpunk" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="cyber-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0f0c29" />
+                <stop offset="50%" stop-color="#302b63" />
+                <stop offset="100%" stop-color="#24243e" />
+            </linearGradient>
+            <pattern id="cyber-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0, 243, 255, 0.3)" stroke-width="1"/>
+            </pattern>
+        </defs>
+
+        <rect x="10" y="30" width="120" height="80" rx="10" fill="url(#cyber-bg)" stroke="#00f3ff" stroke-width="2" />
+        <rect x="10" y="30" width="120" height="80" rx="10" fill="url(#cyber-grid)" />
+
+        <circle cx="40" cy="70" r="20" fill="#24243e" stroke="#ff00ff" stroke-width="2" />
+
+        <rect x="70" y="55" width="50" height="8" rx="2" fill="#00f3ff" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="70" y="70" width="30" height="6" rx="2" fill="#ff00ff" opacity="0.6" />
+    </symbol>
+
+    <symbol id="theme-nature" viewBox="0 0 140 140">
+        <defs>
+            <linearGradient id="nature-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#134e5e" />
+                <stop offset="100%" stop-color="#71b280" />
+            </linearGradient>
+        </defs>
+
+        <rect x="10" y="30" width="120" height="80" rx="10" fill="url(#nature-bg)" stroke="#a8e063" stroke-width="2" />
+
+        <path d="M110 40 Q 120 40 120 50 Q 120 60 110 60 Q 100 60 100 50 Q 100 40 110 40" fill="#a8e063" opacity="0.5" />
+        <path d="M20 100 Q 30 100 30 90 Q 30 80 20 80 Q 10 80 10 90 Q 10 100 20 100" fill="#a8e063" opacity="0.5" />
+
+        <circle cx="40" cy="70" r="20" fill="#134e5e" stroke="#a8e063" stroke-width="2" />
+
+        <rect x="70" y="55" width="50" height="8" rx="2" fill="#f0fff4" />
+        <rect x="70" y="70" width="30" height="6" rx="2" fill="#a8e063" opacity="0.7" />
+
+        <circle cx="90" cy="90" r="2" fill="#fff" opacity="0.6">
+            <animate attributeName="cy" values="90;80;90" dur="4s" repeatCount="indefinite"/>
+        </circle>
+    </symbol>
+
+    <symbol id="theme-royal" viewBox="0 0 140 140">
+        <defs>
+            <radialGradient id="royal-bg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#4b0d0d" />
+                <stop offset="100%" stop-color="#2a0808" />
+            </radialGradient>
+            <filter id="gold-glow-theme">
+                <feGaussianBlur stdDeviation="1" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+        </defs>
+
+        <rect x="10" y="30" width="120" height="80" rx="10" fill="url(#royal-bg)" stroke="#FFD700" stroke-width="3" />
+
+        <path d="M15 35 L 35 35 M 15 35 L 15 55" stroke="#FFD700" stroke-width="2" fill="none" />
+        <path d="M125 35 L 105 35 M 125 35 L 125 55" stroke="#FFD700" stroke-width="2" fill="none" />
+        <path d="M15 105 L 35 105 M 15 105 L 15 85" stroke="#FFD700" stroke-width="2" fill="none" />
+        <path d="M125 105 L 105 105 M 125 105 L 125 85" stroke="#FFD700" stroke-width="2" fill="none" />
+
+        <circle cx="40" cy="70" r="20" fill="#2a0808" stroke="#FFD700" stroke-width="2" />
+
+        <rect x="70" y="55" width="50" height="8" rx="2" fill="#FFD700" filter="url(#gold-glow-theme)" />
+        <rect x="70" y="70" width="30" height="6" rx="2" fill="#e5e7eb" opacity="0.5" />
+    </symbol>
+
+</svg>

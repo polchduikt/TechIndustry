@@ -8,30 +8,33 @@
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/inventory-styles.css">
+    <link rel="stylesheet" href="/css/avatar-frames-styles.css">
     <meta name="csrf-token" content="{{csrfToken}}">
 </head>
 <body>
 
 {{> badge}}
 {{> nav}}
+{{> avatarframes}}
+{{> profilethemes}}
 
 <section class="profile-section">
     <div class="container">
-        <div class="profile-header">
+        <div class="profile-header theme-{{#if user.Customer.profile_theme}}{{user.Customer.profile_theme}}{{else}}default{{/if}}">
             <div class="profile-info">
                 <div class="profile-avatar-large">
+                    {{#if user.Customer.avatar_frame}}
+                        <svg class="frame-overlay" viewBox="0 0 140 140">
+                            <use href="#frame-{{user.Customer.avatar_frame}}"></use>
+                        </svg>
+                    {{/if}}
+
                     {{#if user.Customer.avatar_data}}
-                        <img src="{{user.Customer.avatar_data}}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        <img src="{{user.Customer.avatar_data}}" alt="{{user.username}}">
                     {{else}}
                         <span id="profileInitials">{{substring user.username 0 2}}</span>
                     {{/if}}
-
-                    <div class="level-badge">
-                        <svg class="level-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
-                        </svg>
-                        <span class="level-number">{{gamification.level}}</span>
-                    </div>
                 </div>
                 <div class="profile-details">
                     <h1 id="profileUsername">{{user.username}}</h1>
@@ -98,6 +101,13 @@
                             </svg>
                             <span><strong>{{gamification.badgeCount}}</strong> бейджів</span>
                         </div>
+                        <div class="stat-item">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span><strong>{{userCoins}}</strong> монет 🪙</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,7 +115,10 @@
         </div>
 
         <div class="badges-section glass">
-            <h3 class="badges-title">Мої досягнення</h3>
+            <div class="badges-header">
+                <h3 class="section-title">Досягнення</h3>
+            </div>
+
             {{#if gamification.badges.length}}
                 <div class="badges-grid">
                     {{#each gamification.badges}}
@@ -118,17 +131,98 @@
                     {{/each}}
                 </div>
             {{else}}
-                <div class="empty-state" style="padding: 40px 20px;">
-                    <div class="empty-icon" style="font-size: 48px;">🏅</div>
-                    <p style="color: var(--text-muted); margin: 0;">Поки що досягнень немає. Завершуйте уроки та курси, щоб отримати бейджі!</p>
+                <div class="empty-state" style="padding: 20px;">
+                    <p style="color: var(--text-muted); margin: 0;">Поки що досягнень немає.</p>
                 </div>
             {{/if}}
         </div>
 
-        <h2 class="section-title" style="text-align: center; margin: 40px 0;">Мої курси</h2>
+        <div class="inventory-section glass" style="margin-top: 30px;">
+            <div class="inventory-header">
+                <h3 class="section-title">Мої предмети</h3>
+                <a href="/shop" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Магазин
+                </a>
+            </div>
+            {{#if inventory.length}}
+                <div class="inventory-grid">
+                    {{#each inventory}}
+                        <div class="inventory-item {{#if this.is_equipped}}equipped{{/if}}" data-item-id="{{this.item_id}}" data-type="{{this.item.item_type}}">                            <div class="item-preview">
+                                {{#ifCond this.item.item_type '==' 'avatar_frame'}}
+                                    <div class="item-preview-container">
+                                        <div class="preview-avatar-box">
+                                            <div class="dummy-avatar">
+                                                {{#if ../user.Customer.avatar_data}}
+                                                    <img src="{{../user.Customer.avatar_data}}" class="dummy-img">
+                                                {{else}}
+                                                    <div class="dummy-placeholder"></div>
+                                                {{/if}}
+                                            </div>
+                                            <svg class="inventory-frame-overlay" viewBox="0 0 140 140">
+                                                <use href="#frame-{{this.item.item_value}}"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                {{/ifCond}}
+                                {{#ifCond this.item.item_type '==' 'profile_theme'}}
+                                    <div class="item-preview-container">
+                                        <svg class="inventory-theme-preview" viewBox="0 0 140 140">
+                                            <use href="#theme-{{this.item.item_value}}"></use>
+                                        </svg>
+                                    </div>
+                                {{/ifCond}}
 
-        <div class="courses-grid" id="coursesGrid">
-            {{#if progress}}
+                                {{#ifCond this.item.item_type '==' 'title_badge'}}
+                                    <div class="item-placeholder">🏷️</div>
+                                {{/ifCond}}
+                                {{#ifCond this.item.item_type '==' 'course_unlock'}}
+                                    <div class="item-placeholder">📚</div>
+                                {{/ifCond}}
+
+                                {{#if this.is_equipped}}
+                                    <div class="equipped-badge">Надягнуто</div>
+                                {{/if}}
+                            </div>
+                            <div class="item-info">
+                                <h4 class="item-name">{{this.item.name}}</h4>
+                                <p class="item-description">{{this.item.description}}</p> <span class="item-rarity rarity-{{this.item.rarity}}">{{this.item.rarity}}</span>
+                            </div>
+
+                            <div class="item-actions">
+                                {{#if this.is_equipped}}
+                                    <button class="btn-item-action btn-unequip" onclick="unequipItem({{this.item_id}})">
+                                        Зняти
+                                    </button>
+                                {{else}}
+                                    <button class="btn-item-action btn-equip" onclick="equipItem({{this.item_id}})">
+                                        Надягти
+                                    </button>
+                                {{/if}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="empty-state">
+                    <div class="empty-icon">📦</div>
+                    <h3>Інвентар порожній</h3>
+                    <p>Відвідайте магазин, щоб придбати косметичні предмети!</p>
+                    <a href="/shop" class="btn btn-primary" style="margin-top: 20px;">Перейти до магазину</a>
+                </div>
+            {{/if}}
+        </div>
+
+        <div class="courses-section glass" style="margin-top: 30px;">
+            <div class="courses-header">
+                <h3 class="section-title">Мої курси</h3>
+            </div>
+
+            <div class="courses-grid" id="coursesGrid">
                 {{#each progress}}
                     <div class="course-progress-card glass">
                         <div class="course-header">
@@ -165,14 +259,14 @@
                             </button>
                         </div>
                     </div>
+                {{else}}
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
+                        <h3>Ви ще не розпочали жодного курсу</h3>
+                        <button class="btn btn-primary" onclick="location.href='/courses'">Перейти до каталогу</button>
+                    </div>
                 {{/each}}
-            {{else}}
-                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-                    <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
-                    <h3>Ви ще не розпочали жодного курсу</h3>
-                    <button class="btn btn-primary" onclick="location.href='/courses'">Перейти до каталогу</button>
-                </div>
-            {{/if}}
+            </div>
         </div>
     </div>
 </section>
