@@ -25,48 +25,47 @@ class CourseService {
 
     async getCourseBySlug(slug) {
         const course = await db.Course.findOne({
-            where: { slug },
-            include: [{ model: db.Module, as: 'modules', include: [{ model: db.Lesson, as: 'lessons' }] }]
+            where: {slug},
+            include: [{model: db.Module, as: 'modules', include: [{model: db.Lesson, as: 'lessons'}]}]
         });
         return course;
     }
 
     async getLessonContent(lessonId) {
         const lesson = await db.Lesson.findByPk(lessonId);
-        console.log("СПРОБА ВІДКРИТИ ФАЙЛ ЗА ШЛЯХОМ:", filePath);
         if (!lesson) throw new Error('Lesson not found');
+
         const normalizedPath = lesson.content_path.replace(/\\/g, '/');
+
         const possiblePaths = [
-            path.join(__dirname, '../../', normalizedPath),
-            path.join(__dirname, '../..', normalizedPath),
             path.join(process.cwd(), normalizedPath),
+            path.join(__dirname, '../../', normalizedPath),
             path.join('/home/site/wwwroot', normalizedPath)
         ];
 
-        let fullPath = null;
         let rawMarkdown = null;
+        let finalPath = null;
 
         for (const testPath of possiblePaths) {
+            console.log(`Checking path: ${testPath}`);
             if (fs.existsSync(testPath)) {
-                fullPath = testPath;
-                console.log(`Found file at: ${fullPath}`);
-                rawMarkdown = fs.readFileSync(fullPath, 'utf-8');
+                finalPath = testPath;
+                rawMarkdown = fs.readFileSync(finalPath, 'utf-8');
+                console.log(`Success: File found at ${finalPath}`);
                 break;
             }
         }
 
         if (!rawMarkdown) {
-            console.error('File not found. Tried paths:', possiblePaths);
-            console.error('Lesson content_path:', lesson.content_path);
-            console.error('__dirname:', __dirname);
-            console.error('process.cwd():', process.cwd());
-            throw new Error(`File not found: ${lesson.content_path}`);
+            console.error('Error: File not found. Tried paths:', possiblePaths);
+            throw new Error(`File not found: ${normalizedPath}`);
         }
 
         const lessons = await db.Lesson.findAll({
-            where: { module_id: lesson.module_id },
+            where: {module_id: lesson.module_id},
             order: [['order', 'ASC']]
         });
+
         const index = lessons.findIndex(l => l.id === lesson.id);
 
         return {
