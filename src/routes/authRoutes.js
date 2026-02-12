@@ -63,5 +63,6 @@ router.post('/update-preferences', auth, userController.updatePreferences);
 router.post('/request-reset', passwordResetLimiter, authController.requestPasswordReset);
 router.post('/verify-reset-code', passwordResetLimiter, authController.verifyResetCode);
 router.post('/reset-password', passwordResetLimiter, resetPasswordValidation, authController.resetPassword);
+router.post('/check-availability', authController.checkAvailability);
 
 module.exports = router;

@@ -5,6 +5,65 @@ let registrationState = {
     formData: null
 };
 
+let checkTimeout = null;
+
+async function checkAvailability(field, value) {
+    if (!value || value.trim() === '') return;
+
+    clearTimeout(checkTimeout);
+    checkTimeout = setTimeout(async () => {
+        try {
+            const body = {};
+            body[field] = value;
+
+            const res = await fetch('/api/auth/check-availability', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'CSRF-Token': getCsrfToken()
+                },
+                body: JSON.stringify(body)
+            });
+
+            const result = await res.json();
+            const input = document.querySelector(`[name="${field}"]`);
+
+            if (!res.ok && result.errors) {
+                const error = result.errors.find(e => e.field === field);
+                if (error) {
+                    input.classList.add('input-error');
+                    showFieldError(field, error.message);
+                }
+            } else {
+                input.classList.remove('input-error');
+                clearFieldError(field);
+            }
+        } catch (error) {
+            console.error('Помилка перевірки:', error);
+        }
+    }, 500);
+}
+
+function showFieldError(field, message) {
+    let errorDiv = document.getElementById(`${field}-error`);
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.id = `${field}-error`;
+        errorDiv.className = 'field-error';
+        errorDiv.style.cssText = 'color: #ef4444; font-size: 12px; margin-top: 4px;';
+        const input = document.querySelector(`[name="${field}"]`);
+        input.parentElement.appendChild(errorDiv);
+    }
+    errorDiv.textContent = message;
+}
+
+function clearFieldError(field) {
+    const errorDiv = document.getElementById(`${field}-error`);
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+}
+
 function getCsrfToken() {
     const meta = document.querySelector('meta[name="csrf-token"]');
     return meta ? meta.getAttribute('content') : '';
@@ -183,12 +242,64 @@ async function handleRegisterStep1(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
-    const email = formData.get('email');
-    const firstName = formData.get('first_name');
+    const msg = document.getElementById('registerMessage');
+
+    const firstName = formData.get('first_name').trim();
+    const lastName = formData.get('last_name').trim();
+    const email = formData.get('email').trim();
+    const phone = formData.get('phone').trim();
+    const username = formData.get('username').trim();
+    const password = formData.get('password');
+
+    if (!firstName || !lastName || !email || !phone || !username || !password) {
+        msg.textContent = 'Заповніть всі обов\'язкові поля';
+        msg.className = 'message error';
+        return;
+    }
+
+    if (firstName.length < 2 || lastName.length < 2) {
+        msg.textContent = 'Ім\'я та прізвище мають бути мінімум 2 символи';
+        msg.className = 'message error';
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        msg.textContent = 'Невалідна email адреса';
+        msg.className = 'message error';
+        return;
+    }
+
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (!phoneDigits.startsWith('380') || phoneDigits.length !== 12) {
+        msg.textContent = 'Невалідний номер телефону. Формат: +380XX-XXX-XX-XX';
+        msg.className = 'message error';
+        return;
+    }
+
+    const usernameRegex = /^[a-zA-Z0-9._-]{3,50}$/;
+    if (!usernameRegex.test(username)) {
+        msg.textContent = 'Username має містити тільки літери, цифри, крапку, підкреслення або дефіс (3-50 символів)';
+        msg.className = 'message error';
+        return;
+    }
+
+    if (password.length < 8) {
+        msg.textContent = 'Пароль має бути мінімум 8 символів';
+        msg.className = 'message error';
+        return;
+    }
+
+    const blockedUsernames = ['admin', 'root', 'superuser', 'moderator', 'administrator'];
+    if (blockedUsernames.includes(username.toLowerCase())) {
+        msg.textContent = 'Цей username заборонений';
+        msg.className = 'message error';
+        return;
+    }
+
     registrationState.email = email;
     registrationState.firstName = firstName;
     registrationState.formData = formData;
-    const msg = document.getElementById('registerMessage');
 
     try {
         const res = await fetch('/api/auth/request-email-verification', {
@@ -322,6 +433,32 @@ function renderRegistrationForm() {
         const phoneInput = document.getElementById('phoneInput');
         if (phoneInput) {
             phoneInput.addEventListener('input', (e) => formatPhoneNumber(e.target));
+            phoneInput.addEventListener('blur', (e) => {
+                const phone = e.target.value.trim();
+                if (phone && phone !== '+380') {
+                    checkAvailability('phone', phone);
+                }
+            });
+        }
+
+        const emailInput = document.querySelector('[name="email"]');
+        if (emailInput) {
+            emailInput.addEventListener('blur', (e) => {
+                const email = e.target.value.trim();
+                if (email) {
+                    checkAvailability('email', email);
+                }
+            });
+        }
+
+        const usernameInput = document.querySelector('[name="username"]');
+        if (usernameInput) {
+            usernameInput.addEventListener('blur', (e) => {
+                const username = e.target.value.trim();
+                if (username) {
+                    checkAvailability('username', username);
+                }
+            });
         }
     } else if (registrationState.step === 2) {
         formContainer.innerHTML = `

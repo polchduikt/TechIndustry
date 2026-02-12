@@ -41,7 +41,7 @@
                             {{#if user.Customer.avatar_data}}
                                 <img src="{{user.Customer.avatar_data}}" alt="Avatar">
                             {{else}}
-                                <span>{{substring user.username 0 2}}</span>
+                                <span class="avatar-placeholder">{{substring user.username 0 2}}</span>
                             {{/if}}
                         </div>
                         <div class="dropdown-menu" id="dropdownMenu">

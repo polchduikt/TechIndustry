@@ -137,3 +137,42 @@ exports.deleteAccount = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+exports.checkAvailability = async (req, res) => {
+    try {
+        const { username, email, phone } = req.body;
+        const errors = [];
+
+        if (username) {
+            const { User } = require('../models');
+            const existingUser = await User.findOne({ where: { username } });
+            if (existingUser) {
+                errors.push({ field: 'username', message: 'Username вже зайнятий' });
+            }
+        }
+
+        if (email) {
+            const { Customer } = require('../models');
+            const existingCustomer = await Customer.findOne({ where: { email } });
+            if (existingCustomer) {
+                errors.push({ field: 'email', message: 'Користувач з такою поштою вже існує' });
+            }
+        }
+
+        if (phone) {
+            const { Customer } = require('../models');
+            const existingCustomer = await Customer.findOne({ where: { phone } });
+            if (existingCustomer) {
+                errors.push({ field: 'phone', message: 'Телефон вже зареєстрований' });
+            }
+        }
+
+        if (errors.length > 0) {
+            return res.status(400).json({ available: false, errors });
+        }
+
+        res.json({ available: true });
+    } catch (error) {
+        res.status(500).json({ message: 'Помилка перевірки' });
+    }
+};

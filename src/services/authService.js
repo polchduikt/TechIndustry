@@ -49,6 +49,11 @@ class AuthService {
     }
 
     async sendVerificationCode(email, firstName) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            throw new Error('Невалідна електронна адреса');
+        }
+
         const isValidEmail = await emailService.verifyEmailExists(email);
         if (!isValidEmail) {
             throw new Error('Невалідна електронна адреса');
@@ -56,7 +61,7 @@ class AuthService {
 
         const existingCustomer = await Customer.findOne({ where: { email } });
         if (existingCustomer) {
-            throw new Error('Невалідна електронна адреса');
+            throw new Error('Користувач з такою поштою вже існує');
         }
 
         const code = this.generateSecureCode();
