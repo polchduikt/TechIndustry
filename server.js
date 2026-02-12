@@ -50,8 +50,15 @@ app.use(helmet({
             scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
             scriptSrcAttr: ["'unsafe-inline'"],
             workerSrc: ["'self'", "blob:", "https://cdnjs.cloudflare.com"],
-            imgSrc: ["'self'", "data:", "https:", "https://ui-avatars.com", "https://www.google-analytics.com", "https://www.google-analytics.com"],
-            connectSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+            imgSrc: ["'self'", "data:", "https:", "https://ui-avatars.com", "https://www.google-analytics.com", "https://www.googletagmanager.com"],
+            connectSrc: [
+                "'self'",
+                "https://cdn.jsdelivr.net",
+                "https://cdnjs.cloudflare.com",
+                "https://www.google-analytics.com",
+                "https://analytics.google.com",
+                "https://stats.g.doubleclick.net"
+            ],
             frameSrc: ["'self'"]
         }
     },
