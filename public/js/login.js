@@ -257,6 +257,20 @@ async function handleRegisterStep1(event) {
         return;
     }
 
+    const errorFields = document.querySelectorAll('.field-error');
+    if (errorFields.length > 0) {
+        msg.textContent = 'Виправте помилки у формі перед продовженням';
+        msg.className = 'message error';
+        return;
+    }
+
+    const inputErrors = document.querySelectorAll('.input-error');
+    if (inputErrors.length > 0) {
+        msg.textContent = 'Деякі поля містять помилки. Перевірте і спробуйте знову';
+        msg.className = 'message error';
+        return;
+    }
+
     if (firstName.length < 2 || lastName.length < 2) {
         msg.textContent = 'Ім\'я та прізвище мають бути мінімум 2 символи';
         msg.className = 'message error';
@@ -297,11 +311,40 @@ async function handleRegisterStep1(event) {
         return;
     }
 
-    registrationState.email = email;
-    registrationState.firstName = firstName;
-    registrationState.formData = formData;
+    msg.textContent = 'Перевірка даних...';
+    msg.className = 'message';
+    msg.style.display = 'block';
+    msg.style.background = 'rgba(99, 102, 241, 0.1)';
+    msg.style.color = 'var(--primary)';
 
     try {
+        const checkRes = await fetch('/api/auth/check-availability', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': getCsrfToken()
+            },
+            body: JSON.stringify({ username, email, phone })
+        });
+
+        const checkResult = await checkRes.json();
+
+        if (!checkRes.ok && checkResult.errors) {
+            const firstError = checkResult.errors[0];
+            msg.textContent = firstError.message;
+            msg.className = 'message error';
+            const errorInput = document.querySelector(`[name="${firstError.field}"]`);
+            if (errorInput) {
+                errorInput.classList.add('input-error');
+                showFieldError(firstError.field, firstError.message);
+            }
+            return;
+        }
+
+        registrationState.email = email;
+        registrationState.firstName = firstName;
+        registrationState.formData = formData;
+
         const res = await fetch('/api/auth/request-email-verification', {
             method: 'POST',
             headers: {
@@ -311,11 +354,14 @@ async function handleRegisterStep1(event) {
             body: JSON.stringify({ email, first_name: firstName })
         });
         const result = await res.json();
+
         if (res.ok) {
             msg.textContent = 'Код підтвердження надіслано на вашу пошту!';
             msg.className = 'message success';
-            registrationState.step = 2;
-            renderRegistrationForm();
+            setTimeout(() => {
+                registrationState.step = 2;
+                renderRegistrationForm();
+            }, 1000);
         } else {
             msg.textContent = result.message;
             msg.className = 'message error';
