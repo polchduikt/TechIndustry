@@ -900,25 +900,59 @@ pre {
     position: absolute;
     top: 16px;
     right: 16px;
-    font-size: 13px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.quiz-xp-badge .xp-value,
+.quiz-xp-badge .xp-value-zero {
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 12px;
     font-weight: 700;
     font-family: 'Inter', sans-serif;
-    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
 }
 
 .quiz-xp-badge .xp-value {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+    border: 1px solid rgba(168, 85, 247, 0.3);
     color: #a5b4fc;
-    padding: 6px 14px;
-    border-radius: 12px;
-    display: inline-block;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .quiz-xp-badge .xp-value-zero {
     color: var(--text-muted);
     padding: 6px 14px;
     display: inline-block;
+}
+
+.quiz-xp-badge .coin-value {
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.quiz-xp-badge .xp-value-zero {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
 }
 
 .quiz-card {

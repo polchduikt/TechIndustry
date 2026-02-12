@@ -13,22 +13,28 @@
 
             <div class="nav-links" id="navLinks">
                 <button onclick="location.href='/'" class="{{#ifCond currentPath '==' '/'}}nav-active{{/ifCond}}">Головна</button>
-                <button onclick="location.href='/leaderboard'" class="{{#ifCond currentPath '==' '/leaderboard'}}nav-active{{/ifCond}}">Лідерборд</button>
-                <button onclick="location.href='/sandbox'" class="{{#ifCond currentPath '==' '/sandbox'}}nav-active{{/ifCond}}">Sandbox</button>
                 <button onclick="location.href='/courses'" class="{{#ifCond currentPath '==' '/courses'}}nav-active{{/ifCond}}">Курси</button>
                 <button onclick="location.href='/quiz'" class="{{#ifCond currentPath '==' '/quiz'}}nav-active{{/ifCond}}">Тестування</button>
+                <button onclick="location.href='/leaderboard'" class="{{#ifCond currentPath '==' '/leaderboard'}}nav-active{{/ifCond}}">Лідерборд</button>
+                <button onclick="location.href='/sandbox'" class="{{#ifCond currentPath '==' '/sandbox'}}nav-active{{/ifCond}}">Sandbox</button>
+                <button onclick="location.href='/shop'" class="{{#ifCond currentPath '==' '/shop'}}nav-active{{/ifCond}}">Магазин</button>
                 <button onclick="location.href='/roadmap'" class="{{#ifCond currentPath '==' '/roadmap'}}nav-active{{/ifCond}}">Роадмапи</button>
-                <button onclick="location.href='/about'" class="{{#ifCond currentPath '==' '/about'}}nav-active{{/ifCond}}">Про нас</button>
+<!--                <button onclick="location.href='/about'" class="{{#ifCond currentPath '==' '/about'}}nav-active{{/ifCond}}">Про нас</button>-->
 <!--                <button onclick="location.href='/faq'" class="{{#ifCond currentPath '==' '/faq'}}nav-active{{/ifCond}}">FAQ</button>-->
 
                 {{#if user}}
                     <button onclick="location.href='/profile'" class="{{#ifCond currentPath '==' '/profile'}}nav-active{{/ifCond}}">Моє навчання</button>
                     <div class="user-menu">
                         <div class="user-avatar" onclick="document.getElementById('dropdownMenu').classList.toggle('show')">
+                            {{#if user.Customer.avatar_frame}}
+                                <svg class="nav-frame-overlay" viewBox="0 0 140 140">
+                                    <use href="#frame-{{user.Customer.avatar_frame}}"></use>
+                                </svg>
+                            {{/if}}
                             {{#if user.Customer.avatar_data}}
-                                <img src="{{user.Customer.avatar_data}}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                                <img src="{{user.Customer.avatar_data}}" alt="Avatar">
                             {{else}}
-                                <span>{{substring user.username 0 1}}</span>
+                                <span>{{substring user.username 0 2}}</span>
                             {{/if}}
                         </div>
                         <div class="dropdown-menu" id="dropdownMenu">
@@ -47,6 +53,8 @@
         </nav>
     </div>
 </header>
+
+{{> avatarframes}}
 
 <script>
     function toggleMobileMenu() {

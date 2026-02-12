@@ -23,6 +23,11 @@ module.exports = (sequelize) => {
         badges: {
             type: DataTypes.JSON,
             defaultValue: []
+        },
+        coins: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+            allowNull: false
         }
     }, {
         tableName: 'user_levels',

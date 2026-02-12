@@ -3,6 +3,77 @@ function getCsrfToken() {
   return token ? token.getAttribute('content') : '';
 }
 
+function showRewardNotification(rewards) {
+  if (!rewards) return;
+
+  const notification = document.createElement('div');
+  notification.className = 'reward-notification animate-slide-in';
+
+  let content = '<div class="reward-content">';
+  content += '<h3>🎉 Нагорода!</h3>';
+
+  if (rewards.xpGained) {
+    content += `<div class="reward-item"><span class="reward-icon">✨</span> +${rewards.xpGained} XP</div>`;
+  }
+
+  if (rewards.coinsGained) {
+    content += `<div class="reward-item"><span class="reward-icon">🪙</span> +${rewards.coinsGained} монет</div>`;
+  }
+
+  if (rewards.leveledUp) {
+    content += `<div class="reward-item level-up"><span class="reward-icon">🎊</span> Новий рівень: ${rewards.newLevel}!</div>`;
+  }
+
+  if (rewards.newBadges && rewards.newBadges.length > 0) {
+    rewards.newBadges.forEach(badge => {
+      content += `<div class="reward-item badge"><span class="reward-icon">🏆</span> ${badge.name}</div>`;
+    });
+  }
+
+  content += '</div>';
+  notification.innerHTML = content;
+
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.classList.add('fade-out');
+    setTimeout(() => notification.remove(), 500);
+  }, 5000);
+}
+
+function showCourseCompletionNotification(courseCompletion) {
+  if (!courseCompletion) return;
+  const notification = document.createElement('div');
+  notification.className = 'reward-notification course-completion animate-slide-in';
+
+  let content = '<div class="reward-content">';
+  content += '<h3>🎓 Курс завершено!</h3>';
+
+  if (courseCompletion.xpGained) {
+    content += `<div class="reward-item"><span class="reward-icon">✨</span> +${courseCompletion.xpGained} XP</div>`;
+  }
+
+  if (courseCompletion.coinsGained) {
+    content += `<div class="reward-item"><span class="reward-icon">🪙</span> +${courseCompletion.coinsGained} монет</div>`;
+  }
+
+  if (courseCompletion.leveledUp) {
+    content += `<div class="reward-item level-up"><span class="reward-icon">🎊</span> Новий рівень: ${courseCompletion.newLevel}!</div>`;
+  }
+
+  if (courseCompletion.newBadges && courseCompletion.newBadges.length > 0) {
+    courseCompletion.newBadges.forEach(badge => {
+      content += `<div class="reward-item badge"><span class="reward-icon">🏆</span> ${badge.name}</div>`;
+    });
+  }
+  content += '</div>';
+  notification.innerHTML = content;
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.classList.add('fade-out');
+    setTimeout(() => notification.remove(), 500);
+  }, 7000);
+}
+
 async function loadLessonSSR(lessonId, clickedEl) {
   const preview = document.getElementById('lessonPreview');
   preview.innerHTML = `
@@ -17,8 +88,9 @@ async function loadLessonSSR(lessonId, clickedEl) {
     });
     if (!res.ok) throw new Error('Не вдалося завантажити урок');
     const data = await res.json();
+
     if (isLoggedInUser) {
-      await fetch('/api/progress/lesson', {
+      const progressRes = await fetch('/api/progress/lesson', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,12 +102,23 @@ async function loadLessonSSR(lessonId, clickedEl) {
           completed: true
         })
       });
+
+      if (progressRes.ok) {
+        const progressData = await progressRes.json();
+        if (progressData.rewards) {
+          showRewardNotification(progressData.rewards);
+        }
+        if (progressData.courseCompletion) {
+          setTimeout(() => {
+            showCourseCompletionNotification(progressData.courseCompletion);
+          }, 500);
+        }
+      }
       const sidebarLink = document.getElementById(`sidebar-lesson-${lessonId}`);
       if (sidebarLink) {
         sidebarLink.classList.add('completed');
       }
     }
-
     preview.innerHTML = `
       <div class="lesson-content animate-fade-in">
         <div class="lesson-header">

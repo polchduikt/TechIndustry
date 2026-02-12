@@ -19,23 +19,23 @@
             <a href="/quiz" class="back-link-modern">
                 <span class="icon">←</span> Назад до тестів
             </a>
-            <h1 class="section-title">Тести за курсом: <span class="gradient-text">{{courseTitle}}</span></h1>
+            <h1 class="section-title">Тести до курсу: <span class="gradient-text">{{courseTitle}}</span></h1>
             <p class="quiz-intro">
                 Оберіть модуль, щоб підтвердити свої знання. Кожен тест містить запитання різної складності: від теорії до практичних завдань на логіку та код.
             </p>
         </div>
-
         <div class="quiz-grid">
             {{#each quizzes}}
                 <div class="quiz-card glass animate-fade-in {{#if this.isCompleted}}quiz-completed{{/if}}">
                     <div class="quiz-xp-badge">
                         {{#if this.isCompleted}}
-                            <span class="xp-value-zero">0 XP</span>
+                            <span class="xp-value-zero">✨ 0 XP</span>
+                            <span class="xp-value-zero">🪙 0</span>
                         {{else}}
                             <span class="xp-value">✨ {{this.xpReward}} XP</span>
+                            <span class="coin-value">🪙 {{this.coinsReward}}</span>
                         {{/if}}
                     </div>
-
                     <div class="quiz-card-content">
                         <div class="quiz-icon-small">📖</div>
                         <h3>{{this.title}}</h3>

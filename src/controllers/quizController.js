@@ -87,7 +87,6 @@ exports.renderQuizList = async (req, res) => {
         const course = await db.Course.findOne({ where: { slug } });
         if (!course) return res.redirect('/quiz');
         const quizzes = readQuizFile(slug);
-
         let completedQuizIds = [];
         if (userId) {
             const progress = await db.UserProgress.findOne({
@@ -102,13 +101,12 @@ exports.renderQuizList = async (req, res) => {
                     .map(id => id.split(':')[1]);
             }
         }
-
         const quizzesWithStatus = (quizzes || []).map(quiz => ({
             ...quiz,
             isCompleted: completedQuizIds.includes(quiz.moduleId),
-            xpReward: completedQuizIds.includes(quiz.moduleId) ? 0 : 150
+            xpReward: completedQuizIds.includes(quiz.moduleId) ? 0 : 100,
+            coinsReward: completedQuizIds.includes(quiz.moduleId) ? 0 : 30
         }));
-
         res.render('quiz-list', {
             title: `Тести: ${course.title}`,
             quizzes: quizzesWithStatus,
@@ -180,7 +178,6 @@ exports.submitQuiz = async (req, res) => {
                 }
             }
         });
-
         const percent = Math.round((correctCount / totalQuestions) * 100);
         const passed = percent >= quiz.passingScore;
         let gamificationResult = null;
@@ -191,6 +188,7 @@ exports.submitQuiz = async (req, res) => {
                 let progress = await db.UserProgress.findOne({
                     where: { user_id: userId, course_id: course.id }
                 });
+
                 if (!progress) {
                     progress = await db.UserProgress.create({
                         user_id: userId,
@@ -222,7 +220,11 @@ exports.submitQuiz = async (req, res) => {
                             }
                         }
                     );
-                    gamificationResult = await gamificationService.onQuizComplete(userId, percent);
+                    gamificationResult = await gamificationService.onQuizComplete(
+                        userId,
+                        percent,
+                        quizIdentifier
+                    );
                 }
             }
         }

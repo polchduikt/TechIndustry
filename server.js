@@ -19,6 +19,9 @@ const certificateController = require('./src/controllers/certificateController')
 const leaderboardController = require('./src/controllers/leaderboardController');
 const roadmapController = require('./src/controllers/roadmapController');
 const { protectPage } = require('./src/middleware/pageAuth');
+const shopRoutes = require('./src/routes/shopRoutes');
+const shopController = require('./src/controllers/shopController'); // Переконайтеся, що це тут
+const shopService = require('./src/services/shopService'); // Додано для нарахування монет
 
 // Routes
 const authRoutes = require('./src/routes/authRoutes');
@@ -35,6 +38,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+require('./src/helpers/avatarFrameHelper'); // Хелпер для рамок
+
 // Helmet
 app.use(helmet({
     contentSecurityPolicy: {
@@ -45,8 +50,8 @@ app.use(helmet({
             scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
             scriptSrcAttr: ["'unsafe-inline'"],
             workerSrc: ["'self'", "blob:", "https://cdnjs.cloudflare.com"],
-            imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'"],
+            imgSrc: ["'self'", "data:", "https:", "https://ui-avatars.com"],
+            connectSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
             frameSrc: ["'self'"]
         }
     },
@@ -160,6 +165,9 @@ app.get('/sandbox', (req, res) => {
     res.render('sandbox', { title: 'Sandbox | TechIndustry' });
 });
 
+app.get('/shop', protectPage, shopController.renderShop);
+app.get('/inventory', protectPage, shopController.renderInventory);
+
 // Protected pages
 app.get('/profile', protectPage, userController.renderProfile);
 app.get('/settings', protectPage, userController.renderSettings);
@@ -174,6 +182,8 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/quiz', quizRoutes);
+app.use('/shop', shopRoutes);
+app.use('/api/shop', shopRoutes);
 
 // CSRF Error Handler
 app.use((err, req, res, next) => {

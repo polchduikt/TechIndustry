@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/shop.css">
+    <meta name="csrf-token" content="{{csrfToken}}">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+{{> nav}}
+{{> avatarframes}}
+{{> profilethemes}}
+
+<section class="shop-section">
+    <div class="shop-bg-glow"></div>
+    <div class="container">
+        <div class="shop-header">
+            <div class="header-text">
+                <h1 class="shop-title">МАГАЗИН</h1>
+                <p class="shop-subtitle">Оновіть свій профіль унікальними предметами</p>
+            </div>
+            <div class="balance-wrapper">
+                <div class="balance-card">
+                    <div class="coin-icon-wrapper">
+                        <span class="coin-emoji">🪙</span>
+                    </div>
+                    <div class="balance-details">
+                        <span class="balance-label">Баланс</span>
+                        <span class="balance-amount" id="userBalance">{{userCoins}}</span>
+                    </div>
+                    <button class="add-coins-btn" onclick="location.href='/tasks'">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="shop-tabs">
+            <button class="shop-tab active" data-category="all" onclick="filterCategory('all')">Всі товари</button>
+            {{#each categories}}
+                <button class="shop-tab" data-category="{{this.slug}}" onclick="filterCategory('{{this.slug}}')">
+                    <span class="tab-icon">{{this.icon}}</span> {{this.name}}
+                </button>
+            {{/each}}
+        </div>
+        <div class="shop-grid">
+            {{#each items}}
+                <div class="shop-card rarity-{{this.rarity}}" data-category="{{this.category.slug}}" data-id="{{this.id}}">
+                    <div class="card-glow"></div>
+                    <div class="shop-item-preview">
+                        {{#ifCond this.item_type '==' 'profile_theme'}}
+                            <div class="preview-theme-box">
+                                <svg class="theme-preview-svg" viewBox="0 0 140 140">
+                                    <use href="#theme-{{this.item_value}}"></use>
+                                </svg>
+                            </div>
+                        {{else}}
+                            <div class="preview-avatar-container">
+                                <div class="base-avatar">
+                                    <img src="/assets/img/default-avatar.png" onerror="this.src='https://ui-avatars.com/api/?name=User&background=1e293b&color=fff&size=128'" alt="Preview">
+                                </div>
+                                {{#ifCond this.item_type '===' 'avatar_frame'}}
+                                    <svg class="preview-frame-overlay" viewBox="0 0 140 140">
+                                        <use href="#frame-{{this.item_value}}"></use>
+                                    </svg>
+                                {{/ifCond}}
+                            </div>
+                        {{/ifCond}}
+
+                        <span class="rarity-badge">{{this.rarity}}</span>
+                    </div>
+                    <div class="shop-item-info">
+                        <h3 class="item-name">{{this.name}}</h3>
+                        <p class="item-desc">{{this.description}}</p>
+                        <div class="item-footer">
+                            <div class="price-tag">
+                                <span class="coin-mini">🪙</span>
+                                <span class="price-val">{{this.price}}</span>
+                            </div>
+                            {{#if this.isPurchased}}
+                                <button class="btn-buy purchased" disabled>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Куплено
+                                </button>
+                            {{else}}
+                                {{#if this.isLocked}}
+                                    <button class="btn-buy locked" disabled title="Потрібен {{this.level_required}} рівень">
+                                        🔒 Lvl {{this.level_required}}
+                                    </button>
+                                {{else}}
+                                    <button class="btn-buy" onclick="purchaseItem({{this.id}}, {{this.price}}, this)">
+                                        Придбати
+                                    </button>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        {{#unless items}}
+            <div class="empty-shop">
+                <div class="empty-icon">🛸</div>
+                <h3>Магазин порожній</h3>
+                <p>Завітайте пізніше, ми завозимо нові товари.</p>
+            </div>
+        {{/unless}}
+    </div>
+</section>
+
+{{> footer}}
+<script src="/js/shop.js"></script>
+</body>
+</html>

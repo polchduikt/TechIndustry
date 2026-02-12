@@ -8,13 +8,14 @@ exports.renderLeaderboard = async (req, res) => {
             username: user.username,
             avatar: user.avatar,
             level: user.level,
+            avatarFrame: user.avatarFrame,
+            profileTheme: user.profileTheme,
             points: user.points,
             experience: user.experience,
             badgeCount: user.badgeCount,
             recentBadges: user.recentBadges,
             quizzesPassed: user.quizzesPassed
         }));
-
         res.render('leaderboard', {
             title: 'Таблиця лідерів | TechIndustry',
             topUsers,
@@ -31,7 +32,6 @@ exports.renderPublicProfile = async (req, res) => {
         const { username } = req.params;
         const profileData = await leaderboardService.getPublicProfile(username);
         const isOwnProfile = res.locals.user && res.locals.user.username === username;
-
         res.render('public-profile', {
             title: `${profileData.username} | TechIndustry`,
             profileData,

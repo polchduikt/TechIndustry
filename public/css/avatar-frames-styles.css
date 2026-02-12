@@ -1,0 +1,221 @@
+.profile-avatar-large,
+.user-avatar {
+    position: relative !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible !important;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.leaderboard-item .user-avatar {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    margin-right: 15px;
+}
+
+.profile-avatar-large img,
+.user-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    display: block;
+}
+
+.avatar-placeholder,
+#profileInitials {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.frame-overlay,
+.frame-overlay-small {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    display: block !important;
+}
+
+.frame-overlay {
+    width: 135% !important;
+    height: 135% !important;
+}
+
+.frame-overlay-small {
+    width: 160% !important;
+    height: 160% !important;
+}
+
+.profile-avatar-large,
+.user-avatar {
+    position: relative !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible !important;
+}
+
+.profile-avatar-large img,
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    display: block;
+}
+
+.frame-overlay,
+.frame-overlay-small {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.frame-overlay {
+    width: 135% !important;
+    height: 135% !important;
+}
+
+.frame-overlay-small {
+    width: 145% !important;
+    height: 145% !important;
+}
+
+.avatar-placeholder,
+#profileInitials {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #334155;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.frame-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    width: 120% !important;
+    height: 120% !important;
+}
+
+.profile-avatar-large {
+    position: relative;
+    overflow: visible !important;
+    z-index: 1;
+}
+
+.user-avatar {
+    position: relative;
+    overflow: visible !important;
+}
+
+.profile-avatar-large img,
+.profile-avatar-large span {
+    position: relative;
+    z-index: 1;
+}
+
+.user-title-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.coin-stat .coin-amount {
+    color: #fbbf24;
+    font-size: 18px;
+}
+
+.coin-stat .stat-icon {
+    stroke: #fbbf24;
+}
+
+.user-avatar {
+    position: relative;
+}
+
+.frame-overlay-small {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    width: 130% !important;
+    height: 130% !important;
+}
+
+.user-avatar .frame-overlay-small {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 2;
+    width: 66px;
+    height: 66px;
+}
+
+.user-avatar img,
+.user-avatar span {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes frameGlow {
+    0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+    50% { filter: drop-shadow(0 0 10px currentColor); }
+}
+
+.frame-overlay,
+.frame-overlay-small {
+    animation: frameGlow 3s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+    .frame-overlay {
+        width: 120px;
+        height: 120px;
+    }
+
+    .user-title-badge {
+        font-size: 13px;
+        padding: 4px 12px;
+    }
+}
