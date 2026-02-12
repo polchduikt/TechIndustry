@@ -76,6 +76,9 @@ const globalLimiter = rateLimit({
     message: 'Забагато запитів з цього IP',
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => {
+        return req.ip.replace(/:\d+$/, '');
+    },
     handler: (req, res) => {
         res.status(429).json({ error: 'Забагато запитів. Спробуйте пізніше.' });
     }
