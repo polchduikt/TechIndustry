@@ -33,12 +33,14 @@ class CourseService {
 
     async getLessonContent(lessonId) {
         const lesson = await db.Lesson.findByPk(lessonId);
+        console.log("СПРОБА ВІДКРИТИ ФАЙЛ ЗА ШЛЯХОМ:", filePath);
         if (!lesson) throw new Error('Lesson not found');
+        const normalizedPath = lesson.content_path.replace(/\\/g, '/');
         const possiblePaths = [
-            path.join(__dirname, '../../', lesson.content_path),
-            path.join(__dirname, '../..', lesson.content_path),
-            path.join(process.cwd(), lesson.content_path),
-            path.join('/home/site/wwwroot', lesson.content_path)
+            path.join(__dirname, '../../', normalizedPath),
+            path.join(__dirname, '../..', normalizedPath),
+            path.join(process.cwd(), normalizedPath),
+            path.join('/home/site/wwwroot', normalizedPath)
         ];
 
         let fullPath = null;
