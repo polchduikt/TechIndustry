@@ -13,12 +13,20 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-const keyGenerator = (req) => req.ip.replace(/:\d+$/, '');
+const keyGenerator = (req) => {
+    return req.ip ? req.ip.replace(/:\d+$/, '') : 'unknown';
+};
 
-const loginLimiter = rateLimit({ ...RATE_LIMITS.LOGIN, keyGenerator });
-const registerLimiter = rateLimit({ ...RATE_LIMITS.REGISTER, keyGenerator });
-const emailVerifyLimiter = rateLimit({ ...RATE_LIMITS.EMAIL_VERIFICATION, keyGenerator });
-const passwordResetLimiter = rateLimit({ ...RATE_LIMITS.PASSWORD_RESET, keyGenerator });
+const limiterOptions = (options) => ({
+    ...options,
+    keyGenerator,
+    validate: { default: false }
+});
+
+const loginLimiter = rateLimit(limiterOptions(RATE_LIMITS.LOGIN));
+const registerLimiter = rateLimit(limiterOptions(RATE_LIMITS.REGISTER));
+const emailVerifyLimiter = rateLimit(limiterOptions(RATE_LIMITS.EMAIL_VERIFICATION));
+const passwordResetLimiter = rateLimit(limiterOptions(RATE_LIMITS.PASSWORD_RESET));
 
 
 const registerValidation = [
