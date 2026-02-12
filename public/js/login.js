@@ -243,7 +243,6 @@ async function handleRegisterStep1(event) {
     const form = event.target;
     const formData = new FormData(form);
     const msg = document.getElementById('registerMessage');
-
     const firstName = formData.get('first_name').trim();
     const lastName = formData.get('last_name').trim();
     const email = formData.get('email').trim();
@@ -251,70 +250,62 @@ async function handleRegisterStep1(event) {
     const username = formData.get('username').trim();
     const password = formData.get('password');
 
+    msg.textContent = '';
+    msg.className = 'message';
+    msg.style.display = 'none';
+
     if (!firstName || !lastName || !email || !phone || !username || !password) {
-        msg.textContent = 'Заповніть всі обов\'язкові поля';
+        msg.textContent = 'Будь ласка, заповніть усі обов’язкові поля (відмічені *)';
         msg.className = 'message error';
-        return;
-    }
-
-    const errorFields = document.querySelectorAll('.field-error');
-    if (errorFields.length > 0) {
-        msg.textContent = 'Виправте помилки у формі перед продовженням';
-        msg.className = 'message error';
-        return;
-    }
-
-    const inputErrors = document.querySelectorAll('.input-error');
-    if (inputErrors.length > 0) {
-        msg.textContent = 'Деякі поля містять помилки. Перевірте і спробуйте знову';
-        msg.className = 'message error';
-        return;
-    }
-
-    if (firstName.length < 2 || lastName.length < 2) {
-        msg.textContent = 'Ім\'я та прізвище мають бути мінімум 2 символи';
-        msg.className = 'message error';
+        msg.style.display = 'block';
         return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        msg.textContent = 'Невалідна email адреса';
+        showFieldError('email', 'Некоректний формат пошти');
+        msg.textContent = 'Виправте помилки у полях, виділених червоним';
         msg.className = 'message error';
+        msg.style.display = 'block';
         return;
     }
 
     const phoneDigits = phone.replace(/\D/g, '');
     if (!phoneDigits.startsWith('380') || phoneDigits.length !== 12) {
-        msg.textContent = 'Невалідний номер телефону. Формат: +380XX-XXX-XX-XX';
+        showFieldError('phone', 'Формат: +380 (XX) XXX-XX-XX');
+        msg.textContent = 'Невірний номер телефону';
         msg.className = 'message error';
+        msg.style.display = 'block';
         return;
     }
 
     const usernameRegex = /^[a-zA-Z0-9._-]{3,50}$/;
     if (!usernameRegex.test(username)) {
-        msg.textContent = 'Username має містити тільки літери, цифри, крапку, підкреслення або дефіс (3-50 символів)';
+        showFieldError('username', 'Тільки латиниця, цифри та . _ - (3-50 симв.)');
+        msg.textContent = 'Невірний формат імені користувача';
         msg.className = 'message error';
+        msg.style.display = 'block';
         return;
     }
 
     if (password.length < 8) {
-        msg.textContent = 'Пароль має бути мінімум 8 символів';
+        showFieldError('password', 'Мінімум 8 символів');
+        msg.textContent = 'Пароль занадто короткий';
         msg.className = 'message error';
+        msg.style.display = 'block';
         return;
     }
 
-    const blockedUsernames = ['admin', 'root', 'superuser', 'moderator', 'administrator'];
-    if (blockedUsernames.includes(username.toLowerCase())) {
-        msg.textContent = 'Цей username заборонений';
+    const existingErrors = document.querySelectorAll('.field-error');
+    if (existingErrors.length > 0) {
+        msg.textContent = 'Ці дані вже використовуються іншим акаунтом. Змініть їх.';
         msg.className = 'message error';
+        msg.style.display = 'block';
         return;
     }
 
     msg.textContent = 'Перевірка даних...';
-    msg.className = 'message';
     msg.style.display = 'block';
-    msg.style.background = 'rgba(99, 102, 241, 0.1)';
     msg.style.color = 'var(--primary)';
 
     try {
@@ -329,15 +320,18 @@ async function handleRegisterStep1(event) {
 
         const checkResult = await checkRes.json();
 
-        if (!checkRes.ok && checkResult.errors) {
-            const firstError = checkResult.errors[0];
-            msg.textContent = firstError.message;
-            msg.className = 'message error';
-            const errorInput = document.querySelector(`[name="${firstError.field}"]`);
-            if (errorInput) {
-                errorInput.classList.add('input-error');
-                showFieldError(firstError.field, firstError.message);
+        if (!checkRes.ok) {
+            if (checkResult.errors) {
+                checkResult.errors.forEach(err => {
+                    showFieldError(err.field, err.message);
+                    const input = document.querySelector(`[name="${err.field}"]`);
+                    if (input) input.classList.add('input-error');
+                });
+                msg.textContent = checkResult.errors[0].message;
+            } else {
+                msg.textContent = checkResult.message || 'Помилка валідації';
             }
+            msg.className = 'message error';
             return;
         }
 
@@ -353,6 +347,7 @@ async function handleRegisterStep1(event) {
             },
             body: JSON.stringify({ email, first_name: firstName })
         });
+
         const result = await res.json();
 
         if (res.ok) {
@@ -367,7 +362,8 @@ async function handleRegisterStep1(event) {
             msg.className = 'message error';
         }
     } catch (error) {
-        msg.textContent = 'Помилка з\'єднання. Спробуйте пізніше';
+        console.error('Registration error:', error);
+        msg.textContent = 'Помилка сервера. Спробуйте пізніше';
         msg.className = 'message error';
     }
 }

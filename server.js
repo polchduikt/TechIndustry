@@ -76,8 +76,9 @@ const globalLimiter = rateLimit({
     message: 'Забагато запитів з цього IP',
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { xForwardedForHeader: false, default: false },
     keyGenerator: (req) => {
-        return req.ip.replace(/:\d+$/, '');
+        return req.ip ? req.ip.replace(/:\d+$/, '') : req.headers['x-forwarded-for'] || 'unknown';
     },
     handler: (req, res) => {
         res.status(429).json({ error: 'Забагато запитів. Спробуйте пізніше.' });
