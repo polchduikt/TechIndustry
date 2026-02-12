@@ -49,17 +49,19 @@ class AuthService {
     }
 
     async sendVerificationCode(email, firstName) {
+        const normalizedEmail = email.toLowerCase().trim(); // ДОДАНО
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+
+        if (!emailRegex.test(normalizedEmail)) {
             throw new Error('Невалідна електронна адреса');
         }
 
-        const isValidEmail = await emailService.verifyEmailExists(email);
+        const isValidEmail = await emailService.verifyEmailExists(normalizedEmail);
         if (!isValidEmail) {
             throw new Error('Невалідна електронна адреса');
         }
 
-        const existingCustomer = await Customer.findOne({ where: { email } });
+        const existingCustomer = await Customer.findOne({ where: { email: normalizedEmail } });
         if (existingCustomer) {
             throw new Error('Користувач з такою поштою вже існує');
         }
@@ -67,18 +69,20 @@ class AuthService {
         const code = this.generateSecureCode();
         const hashedCode = this.hashCode(code);
         const expiresAt = new Date(Date.now() + AUTH.VERIFICATION_CODE_EXPIRY);
-        this.verificationCodes.set(email, {
+
+        this.verificationCodes.set(normalizedEmail, {
             hashedCode,
             expiresAt,
             attempts: 0
         });
 
-        await emailService.sendVerificationCode(email, code, firstName);
+        await emailService.sendVerificationCode(normalizedEmail, code, firstName);
         return { codeSent: true, expiresIn: 600 };
     }
 
     async verifyEmailCode(email, code) {
-        const storedData = this.verificationCodes.get(email);
+        const normalizedEmail = email.toLowerCase().trim();
+        const storedData = this.verificationCodes.get(normalizedEmail);
 
         if (!storedData) {
             throw new Error('Код не знайдено. Запросіть новий код');
@@ -101,7 +105,7 @@ class AuthService {
             throw new Error(`Невірний код. Залишилось спроб: ${AUTH.MAX_VERIFICATION_ATTEMPTS - storedData.attempts}`);
         }
 
-        this.verificationCodes.delete(email);
+        this.verificationCodes.delete(normalizedEmail);
         return { verified: true };
     }
 

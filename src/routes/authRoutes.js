@@ -30,7 +30,7 @@ const passwordResetLimiter = rateLimit(limiterOptions(RATE_LIMITS.PASSWORD_RESET
 
 
 const registerValidation = [
-    body('email').isEmail().normalizeEmail().withMessage('Некоректний email'),
+    body('email').isEmail().withMessage('Некоректний email'),
     body('username').trim().isLength({ min: 3 }).escape().withMessage('Логін мінімум 3 символи'),
     body('password').isLength({ min: 8 }).withMessage('Пароль мінімум 8 символів'),
     body('first_name').trim().escape().notEmpty().withMessage("Ім'я обов'язкове"),
@@ -44,7 +44,7 @@ const loginValidation = [
 ];
 
 const emailValidation = [
-    body('email').isEmail().normalizeEmail().withMessage('Некоректний email')
+    body('email').isEmail().withMessage('Некоректний email')
 ];
 
 const resetPasswordValidation = [
