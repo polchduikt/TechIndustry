@@ -33,12 +33,12 @@ const roadmapRoutes = require('./src/routes/roadmapRoutes');
 const aiRoutes = require('./src/routes/aiRoutes');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-require('./src/helpers/avatarFrameHelper'); // Хелпер для рамок
+require('./src/helpers/avatarFrameHelper');
 
 // Helmet
 app.use(helmet({
