@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>https://techindustry.app/sitemap-static.xml</loc>
+        <lastmod>2026-02-13T12:08:29.509Z</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://techindustry.app/sitemap-courses.xml</loc>
+        <lastmod>2026-02-13T12:08:29.509Z</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://techindustry.app/sitemap-users.xml</loc>
+        <lastmod>2026-02-13T12:08:29.509Z</lastmod>
+    </sitemap>
+</sitemapindex>

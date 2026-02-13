@@ -5,6 +5,7 @@ class LeaderboardService {
     async getTopUsers(limit = 100) {
         const topUsers = await db.UserLevel.findAll({
             limit,
+            attributes: ['level', 'experience', 'coins', 'badges'],
             order: [
                 ['level', 'DESC'],
                 ['experience', 'DESC']
@@ -31,10 +32,12 @@ class LeaderboardService {
             const data = userLevel.get({ plain: true });
             const customer = data.user.Customer || {};
             const allBadges = data.badges || [];
+
             const recentBadges = allBadges.slice(-5).reverse().map(badgeId => {
                 const badge = this.getBadgeDetails(badgeId);
                 return badge;
             }).filter(Boolean);
+
             let quizzesPassed = 0;
             const progressList = data.user.progress || data.user.UserProgresses || data.user.user_progresses || [];
             if (Array.isArray(progressList)) {
@@ -61,6 +64,7 @@ class LeaderboardService {
                 quizzesPassed
             };
         });
+
         return formattedUsers;
     }
 
@@ -68,33 +72,42 @@ class LeaderboardService {
         const user = await db.User.findOne({
             where: { username },
             attributes: ['id', 'username', 'createdAt'],
-            include: [{
-                model: db.Customer,
-                attributes: ['first_name', 'last_name', 'avatar_data', 'hide_courses', 'profile_theme', 'avatar_frame', 'title_badge']
-            }, {
-                model: db.UserLevel,
-                as: 'levelData'
-            }]
+            include: [
+                {
+                    model: db.Customer,
+                    attributes: ['first_name', 'last_name', 'avatar_data', 'hide_courses', 'profile_theme', 'avatar_frame', 'title_badge']
+                },
+                {
+                    model: db.UserLevel,
+                    as: 'levelData',
+                    attributes: ['level', 'experience', 'coins', 'badges']
+                },
+                {
+                    model: db.UserProgress,
+                    as: 'progress',
+                    attributes: ['id', 'status', 'completed_lessons', 'completed_quizzes'],
+                    include: [{
+                        model: db.Course,
+                        as: 'course',
+                        attributes: ['id', 'title', 'slug', 'thumbnail'],
+                        include: [{
+                            model: db.Module,
+                            as: 'modules',
+                            attributes: ['id'],
+                            include: [{
+                                model: db.Lesson,
+                                as: 'lessons',
+                                attributes: ['id']
+                            }]
+                        }]
+                    }]
+                }
+            ]
         });
 
         if (!user) throw new Error('Користувача не знайдено');
 
-        const progressStats = await db.UserProgress.findAll({
-            where: { user_id: user.id },
-            include: [{
-                model: db.Course,
-                as: 'course',
-                include: [{
-                    model: db.Module,
-                    as: 'modules',
-                    include: [{
-                        model: db.Lesson,
-                        as: 'lessons',
-                        attributes: ['id']
-                    }]
-                }]
-            }]
-        });
+        const progressStats = user.progress || [];
 
         let quizzesPassed = 0;
         progressStats.forEach(p => {

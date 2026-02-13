@@ -14,32 +14,16 @@ const COINS_CONFIG = {
 };
 
 const LEVEL_THRESHOLDS = [
-    0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, // 0-9
-    4000, 5000, 6200, 7600, 9200, 11000, 13000, 15500, 18500, 22000, // 10-19
-    26000, // Level 20
-
-    // 21 - 30
+    0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200,
+    4000, 5000, 6200, 7600, 9200, 11000, 13000, 15500, 18500, 22000,
+    26000,
     30500, 35500, 41000, 47000, 53500, 60500, 68000, 76000, 84500, 93500,
-
-    // 31 - 40
     100000, 107000, 114500, 122500, 131000, 140000, 149500, 159500, 170000, 181000,
-
-    // 41 - 50
     192500, 204500, 217000, 230000, 243500, 257500, 272000, 287000, 302500, 318500,
-
-    // 51 - 60
     335500, 353500, 372500, 392500, 413500, 435500, 458500, 482500, 507500, 533500,
-
-    // 61 - 70
     560500, 588500, 617500, 647500, 678500, 710500, 743500, 777500, 812500, 848500,
-
-    // 71 - 80
     885500, 923500, 962500, 1002500, 1043500, 1085500, 1128500, 1172500, 1217500, 1263500,
-
-    // 81 - 90
     1310500, 1358500, 1407500, 1457500, 1508500, 1560500, 1613500, 1667500, 1722500, 1778500,
-
-    // 91 - 100
     1836500, 1895500, 1955500, 2016500, 2078500, 2141500, 2205500, 2270500, 2336500, 2403500
 ];
 
@@ -117,14 +101,23 @@ class GamificationService {
         });
         const levelUpBadges = [];
         if (newLevel > oldLevel) {
+            const currentBadges = [...(userLevel.badges || [])];
+            let badgesUpdated = false;
+
             for (let lvl = oldLevel + 1; lvl <= newLevel; lvl++) {
                 const badgeKey = `LEVEL_${lvl}`;
-                if (BADGES[badgeKey]) {
-                    await this.awardBadge(userId, BADGES[badgeKey].id);
+                if (BADGES[badgeKey] && !currentBadges.includes(BADGES[badgeKey].id)) {
+                    currentBadges.push(BADGES[badgeKey].id);
                     levelUpBadges.push(BADGES[badgeKey]);
+                    badgesUpdated = true;
                 }
             }
+
+            if (badgesUpdated) {
+                await userLevel.update({ badges: currentBadges });
+            }
         }
+
         return {
             oldLevel,
             newLevel,
@@ -141,23 +134,26 @@ class GamificationService {
             const userLevel = await db.UserLevel.findOne({
                 where: { user_id: userId },
                 lock: transaction.LOCK.UPDATE,
-                transaction
+                transaction,
+                attributes: ['id', 'user_id', 'coins']
             });
 
             if (!userLevel) {
                 throw new Error('Користувача не знайдено');
             }
             const newBalance = userLevel.coins + amount;
-            await userLevel.update({ coins: newBalance }, { transaction });
+            await Promise.all([
+                userLevel.update({ coins: newBalance }, { transaction }),
+                db.CoinTransaction.create({
+                    user_id: userId,
+                    amount,
+                    transaction_type: transactionType,
+                    reference_id: referenceId,
+                    description,
+                    balance_after: newBalance
+                }, { transaction })
+            ]);
 
-            await db.CoinTransaction.create({
-                user_id: userId,
-                amount,
-                transaction_type: transactionType,
-                reference_id: referenceId,
-                description,
-                balance_after: newBalance
-            }, { transaction });
             await transaction.commit();
             return {
                 success: true,
@@ -191,14 +187,17 @@ class GamificationService {
     }
 
     async onLessonComplete(userId, lessonId) {
-        const xpResult = await this.addExperience(userId, XP_CONFIG.LESSON_COMPLETE, 'lesson_complete');
-        const coinsResult = await this.awardCoins(
-            userId,
-            COINS_CONFIG.LESSON_COMPLETE,
-            'lesson_complete',
-            `Завершено урок #${lessonId}`,
-            lessonId
-        );
+        const [xpResult, coinsResult] = await Promise.all([
+            this.addExperience(userId, XP_CONFIG.LESSON_COMPLETE, 'lesson_complete'),
+            this.awardCoins(
+                userId,
+                COINS_CONFIG.LESSON_COMPLETE,
+                'lesson_complete',
+                `Завершено урок #${lessonId}`,
+                lessonId
+            )
+        ]);
+
         return {
             ...xpResult,
             coinsGained: coinsResult.coinsGained,
@@ -209,6 +208,7 @@ class GamificationService {
     async onQuizComplete(userId, percent, quizIdentifier) {
         let xp = XP_CONFIG.QUIZ_PASS;
         const badges = [];
+
         if (percent === 100) {
             xp = XP_CONFIG.QUIZ_PERFECT;
             const awarded = await this.awardBadge(userId, BADGES.PERFECT_QUIZ.id);
@@ -216,14 +216,16 @@ class GamificationService {
                 badges.push(BADGES.PERFECT_QUIZ);
             }
         }
-        const xpResult = await this.addExperience(userId, xp, 'quiz_complete');
-        const coinsResult = await this.awardCoins(
-            userId,
-            COINS_CONFIG.QUIZ_PASS,
-            'quiz_complete',
-            `Пройдено тест: ${quizIdentifier}`,
-            quizIdentifier
-        );
+        const [xpResult, coinsResult] = await Promise.all([
+            this.addExperience(userId, xp, 'quiz_complete'),
+            this.awardCoins(
+                userId,
+                COINS_CONFIG.QUIZ_PASS,
+                'quiz_complete',
+                `Пройдено тест: ${quizIdentifier}`,
+                quizIdentifier
+            )
+        ]);
 
         xpResult.newBadges = [...xpResult.newBadges, ...badges];
         xpResult.coinsGained = coinsResult.coinsGained;
@@ -239,33 +241,37 @@ class GamificationService {
                 status: 'completed'
             }
         });
+
         let xp = XP_CONFIG.COURSE_COMPLETE;
         const badges = [];
-
+        const badgesToAward = [];
         if (completedCourses === 1) {
             xp += XP_CONFIG.FIRST_COURSE;
-            const awarded = await this.awardBadge(userId, BADGES.FIRST_COURSE.id);
-            if (awarded) {
-                badges.push(BADGES.FIRST_COURSE);
-            }
+            badgesToAward.push(BADGES.FIRST_COURSE);
         }
         if (completedCourses === 3) {
-            const awarded = await this.awardBadge(userId, BADGES.COURSE_3.id);
-            if (awarded) badges.push(BADGES.COURSE_3);
+            badgesToAward.push(BADGES.COURSE_3);
         }
         if (completedCourses === 5) {
-            const awarded = await this.awardBadge(userId, BADGES.COURSE_5.id);
-            if (awarded) badges.push(BADGES.COURSE_5);
+            badgesToAward.push(BADGES.COURSE_5);
         }
 
-        const xpResult = await this.addExperience(userId, xp, 'course_complete');
-        const coinsResult = await this.awardCoins(
-            userId,
-            COINS_CONFIG.COURSE_COMPLETE,
-            'course_complete',
-            `Завершено курс #${courseId}`,
-            courseId
-        );
+        for (const badge of badgesToAward) {
+            const awarded = await this.awardBadge(userId, badge.id);
+            if (awarded) badges.push(badge);
+        }
+
+        const [xpResult, coinsResult] = await Promise.all([
+            this.addExperience(userId, xp, 'course_complete'),
+            this.awardCoins(
+                userId,
+                COINS_CONFIG.COURSE_COMPLETE,
+                'course_complete',
+                `Завершено курс #${courseId}`,
+                courseId
+            )
+        ]);
+
         xpResult.newBadges = [...xpResult.newBadges, ...badges];
         xpResult.coinsGained = coinsResult.coinsGained;
         xpResult.newCoinsBalance = coinsResult.newBalance;
@@ -278,6 +284,7 @@ class GamificationService {
         const currentLevel = userLevel.level;
         let badges = [...(userLevel.badges || [])];
         let hasChanges = false;
+
         for (let lvl = 1; lvl <= currentLevel; lvl++) {
             const badgeKey = `LEVEL_${lvl}`;
             if (BADGES[badgeKey]) {
@@ -288,6 +295,7 @@ class GamificationService {
                 }
             }
         }
+
         if (hasChanges) {
             await userLevel.update({ badges });
         }
@@ -301,9 +309,11 @@ class GamificationService {
                 status: 'completed'
             }
         });
+
         const userLevel = await this.getUserLevel(userId);
         let badges = [...(userLevel.badges || [])];
         let hasChanges = false;
+
         if (completedCourses >= 1 && !badges.includes(BADGES.FIRST_COURSE.id)) {
             badges.push(BADGES.FIRST_COURSE.id);
             hasChanges = true;
@@ -316,6 +326,7 @@ class GamificationService {
             badges.push(BADGES.COURSE_5.id);
             hasChanges = true;
         }
+
         if (hasChanges) {
             await userLevel.update({ badges });
         }
@@ -323,12 +334,16 @@ class GamificationService {
     }
 
     async getUserStats(userId) {
-        const userLevel = await this.getUserLevel(userId);
-        await this.syncLevelBadges(userId);
-        await this.syncCourseBadges(userId);
+        const [userLevel] = await Promise.all([
+            this.getUserLevel(userId),
+            this.syncLevelBadges(userId),
+            this.syncCourseBadges(userId)
+        ]);
+
         const currentLevelXp = LEVEL_THRESHOLDS[userLevel.level];
         const nextLevelXp = this.getXpForNextLevel(userLevel.level);
         let progressPercent = 0;
+
         if (nextLevelXp) {
             const xpInCurrentLevel = userLevel.experience - currentLevelXp;
             const xpNeededForLevel = nextLevelXp - currentLevelXp;
@@ -336,7 +351,9 @@ class GamificationService {
         } else {
             progressPercent = 100;
         }
+
         const badges = await this.getUserBadges(userId);
+
         return {
             level: userLevel.level,
             experience: userLevel.experience,

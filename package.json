@@ -20,6 +20,7 @@
     "axios": "^1.13.5",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "csurf": "^1.11.0",
@@ -41,6 +42,7 @@
     "pg": "^8.17.2",
     "sequelize": "^6.37.7",
     "sharp": "^0.34.5",
+    "sitemap": "^9.0.0",
     "xss": "^1.0.15"
   },
   "devDependencies": {

@@ -32,7 +32,26 @@ module.exports = (sequelize) => {
     }, {
         tableName: 'user_levels',
         timestamps: true,
-        underscored: true
+        underscored: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ['user_id']
+            },
+            {
+                fields: ['level']
+            },
+            {
+                fields: ['experience']
+            },
+            {
+                fields: ['coins']
+            },
+            {
+                fields: ['level', 'experience']
+            }
+        ]
     });
+
     return UserLevel;
 };

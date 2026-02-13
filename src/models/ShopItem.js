@@ -72,6 +72,27 @@ module.exports = (sequelize) => {
             {
                 unique: true,
                 fields: ['item_type', 'item_value']
+            },
+            {
+                fields: ['category_id']
+            },
+            {
+                fields: ['is_available']
+            },
+            {
+                fields: ['level_required']
+            },
+            {
+                fields: ['display_order']
+            },
+            {
+                fields: ['rarity']
+            },
+            {
+                fields: ['category_id', 'is_available']
+            },
+            {
+                fields: ['is_available', 'level_required']
             }
         ]
     });

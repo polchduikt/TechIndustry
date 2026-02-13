@@ -1,0 +1,46 @@
+User-agent: *
+Allow: /
+Allow: /courses
+Allow: /course/
+Allow: /about
+Allow: /faq
+Allow: /leaderboard
+Allow: /roadmap
+Allow: /gamification-info
+Allow: /sandbox
+Allow: /user/
+
+Disallow: /api/
+Disallow: /profile
+Disallow: /settings
+Disallow: /quiz/
+Disallow: /certificate
+Disallow: /inventory
+Disallow: /login
+Disallow: /*.json$
+Disallow: /admin/
+
+Crawl-delay: 1
+
+Sitemap: https://techindustry.com/sitemap.xml
+Sitemap: https://techindustry.com/sitemap-courses.xml
+Sitemap: https://techindustry.com/sitemap-static.xml
+
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Crawl-delay: 0.5
+
+User-agent: AhrefsBot
+Crawl-delay: 5
+
+User-agent: SemrushBot
+Crawl-delay: 5
+
+User-agent: CCBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: anthropic-ai
+User-agent: Claude-Web
+Disallow: /

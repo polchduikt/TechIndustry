@@ -32,7 +32,21 @@ module.exports = (sequelize) => {
     }, {
         tableName: 'shop_categories',
         timestamps: true,
-        underscored: true
+        underscored: true,
+        indexes: [
+            {
+                fields: ['slug']
+            },
+            {
+                fields: ['is_active']
+            },
+            {
+                fields: ['display_order']
+            },
+            {
+                fields: ['is_active', 'display_order']
+            }
+        ]
     });
 
     return ShopCategory;

@@ -43,6 +43,21 @@ module.exports = (sequelize) => {
             {
                 unique: true,
                 fields: ['user_id', 'item_id']
+            },
+            {
+                fields: ['user_id']
+            },
+            {
+                fields: ['item_id']
+            },
+            {
+                fields: ['purchased_at']
+            },
+            {
+                fields: ['is_equipped']
+            },
+            {
+                fields: ['user_id', 'is_equipped']
             }
         ]
     });

@@ -44,7 +44,24 @@ module.exports = (sequelize) => {
     }, {
         tableName: 'coin_transactions',
         timestamps: false,
-        underscored: true
+        underscored: true,
+        indexes: [
+            {
+                fields: ['user_id']
+            },
+            {
+                fields: ['created_at']
+            },
+            {
+                fields: ['transaction_type']
+            },
+            {
+                fields: ['user_id', 'created_at']
+            },
+            {
+                fields: ['user_id', 'transaction_type']
+            }
+        ]
     });
 
     return CoinTransaction;

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const hbs = require('hbs');
 const jwt = require('jsonwebtoken');
@@ -20,8 +21,8 @@ const leaderboardController = require('./src/controllers/leaderboardController')
 const roadmapController = require('./src/controllers/roadmapController');
 const { protectPage } = require('./src/middleware/pageAuth');
 const shopRoutes = require('./src/routes/shopRoutes');
-const shopController = require('./src/controllers/shopController'); // Переконайтеся, що це тут
-const shopService = require('./src/services/shopService'); // Додано для нарахування монет
+const shopController = require('./src/controllers/shopController');
+const shopService = require('./src/services/shopService');
 
 // Routes
 const authRoutes = require('./src/routes/authRoutes');
@@ -36,8 +37,24 @@ const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(compression({
+    level: 6,
+    threshold: 10 * 1024,
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) return false;
+        return compression.filter(req, res);
+    }
+}));
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1y',
+    etag: true,
+    lastModified: true
+}));
+app.use('/assets', express.static(path.join(__dirname, 'assets'), {
+    maxAge: '1y',
+    etag: true
+}));
+
 require('./src/helpers/avatarFrameHelper');
 
 // Helmet
@@ -84,7 +101,6 @@ const globalLimiter = rateLimit({
         res.status(429).json({ error: 'Забагато запитів. Спробуйте пізніше.' });
     }
 });
-
 app.use(globalLimiter);
 
 const getCourseIcon = require('./src/helpers/courseIconHelper');
@@ -116,7 +132,6 @@ app.use((req, res, next) => {
     });
     next();
 });
-
 app.use(mongoSanitize());
 
 // Session configuration
@@ -175,9 +190,14 @@ app.get('/login', (req, res) => {
 app.get('/sandbox', (req, res) => {
     res.render('sandbox', { title: 'Sandbox | TechIndustry' });
 });
-
-app.get('/shop', protectPage, shopController.renderShop);
-app.get('/inventory', protectPage, shopController.renderInventory);
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
+});
+app.get('/sitemap.xml', (req, res) => {
+    res.type('application/xml');
+    res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
+});
 
 // Protected pages
 app.get('/profile', protectPage, userController.renderProfile);
@@ -185,6 +205,8 @@ app.get('/settings', protectPage, userController.renderSettings);
 app.get('/quiz/:slug/:moduleId', protectPage, quizController.renderQuiz);
 app.get('/certificate', protectPage, certificateController.renderCertificate);
 app.get('/certificate/:slug', protectPage, certificateController.renderCertificate);
+app.get('/shop', protectPage, shopController.renderShop);
+app.get('/inventory', protectPage, shopController.renderInventory);
 
 // API Routes
 app.use('/api/auth', authRoutes);

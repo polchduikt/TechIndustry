@@ -71,10 +71,30 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(50),
             allowNull: false,
             defaultValue: 'default'
+        },
+        verification_code: {
+            type: DataTypes.STRING(255),
+            allowNull: true
+        },
+        verification_code_expires: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        verification_attempts: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         }
     }, {
         tableName: 'customers',
-        timestamps: true
+        timestamps: true,
+        indexes: [
+            {
+                fields: ['email']
+            },
+            {
+                fields: ['phone']
+            }
+        ]
     });
 
     return Customer;

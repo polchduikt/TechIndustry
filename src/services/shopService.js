@@ -20,25 +20,28 @@ class ShopService {
     }
 
     async getShopItems(userId) {
-        const userLevel = await db.UserLevel.findOne({
-            where: { user_id: userId }
-        });
+        const [userLevel, items, purchases] = await Promise.all([
+            db.UserLevel.findOne({
+                where: { user_id: userId },
+                attributes: ['level']
+            }),
+            db.ShopItem.findAll({
+                include: [{
+                    model: db.ShopCategory,
+                    as: 'category'
+                }],
+                order: [['category_id', 'ASC'], ['display_order', 'ASC']]
+            }),
+            db.UserPurchase.findAll({
+                where: { user_id: userId },
+                attributes: ['item_id', 'is_equipped']
+            })
+        ]);
+
         const currentLevel = userLevel ? userLevel.level : 0;
-        const items = await db.ShopItem.findAll({
-            where: {
-                is_available: true,
-                level_required: { [Sequelize.Op.lte]: currentLevel }
-            },
-            include: [{
-                model: db.ShopCategory,
-                as: 'category'
-            }],
-            order: [['category_id', 'ASC'], ['display_order', 'ASC']]
-        });
-        const purchases = await db.UserPurchase.findAll({
-            where: { user_id: userId },
-            attributes: ['item_id', 'is_equipped']
-        });
+        const availableItems = items.filter(item =>
+            item.is_available && item.level_required <= currentLevel
+        );
 
         const purchasedMap = {};
         purchases.forEach(p => {
@@ -48,7 +51,7 @@ class ShopService {
             };
         });
 
-        return items.map(item => {
+        return availableItems.map(item => {
             const plain = item.get({ plain: true });
             return {
                 ...plain,
@@ -70,16 +73,27 @@ class ShopService {
         const transaction = await db.sequelize.transaction();
 
         try {
-            const userLevel = await db.UserLevel.findOne({
-                where: { user_id: userId },
-                lock: transaction.LOCK.UPDATE,
-                transaction
-            });
+            const [userLevel, item, existing] = await Promise.all([
+                db.UserLevel.findOne({
+                    where: { user_id: userId },
+                    lock: transaction.LOCK.UPDATE,
+                    transaction,
+                    attributes: ['id', 'user_id', 'level', 'coins']
+                }),
+                db.ShopItem.findByPk(itemId, {
+                    transaction,
+                    attributes: ['id', 'name', 'price', 'level_required', 'is_available']
+                }),
+                db.UserPurchase.findOne({
+                    where: { user_id: userId, item_id: itemId },
+                    transaction,
+                    attributes: ['id']
+                })
+            ]);
+
             if (!userLevel) {
                 throw new Error('Користувача не знайдено');
             }
-
-            const item = await db.ShopItem.findByPk(itemId, { transaction });
 
             if (!item || !item.is_available) {
                 throw new Error('Товар недоступний');
@@ -89,11 +103,6 @@ class ShopService {
                 throw new Error(`Потрібен ${item.level_required} рівень`);
             }
 
-            const existing = await db.UserPurchase.findOne({
-                where: { user_id: userId, item_id: itemId },
-                transaction
-            });
-
             if (existing) {
                 throw new Error('Товар вже придбано');
             }
@@ -101,15 +110,16 @@ class ShopService {
             if (userLevel.coins < item.price) {
                 throw new Error(`Недостатньо монет. Потрібно: ${item.price}, є: ${userLevel.coins}`);
             }
-
             const newBalance = userLevel.coins - item.price;
-            await userLevel.update({ coins: newBalance }, { transaction });
-            const purchase = await db.UserPurchase.create({
-                user_id: userId,
-                item_id: itemId,
-                price_paid: item.price,
-                is_equipped: false
-            }, { transaction });
+            const [, purchase] = await Promise.all([
+                userLevel.update({ coins: newBalance }, { transaction }),
+                db.UserPurchase.create({
+                    user_id: userId,
+                    item_id: itemId,
+                    price_paid: item.price,
+                    is_equipped: false
+                }, { transaction })
+            ]);
 
             await db.CoinTransaction.create({
                 user_id: userId,
@@ -141,7 +151,8 @@ class ShopService {
                 where: { user_id: userId, item_id: itemId },
                 include: [{
                     model: db.ShopItem,
-                    as: 'item'
+                    as: 'item',
+                    attributes: ['id', 'item_type', 'item_value']
                 }],
                 transaction
             });
@@ -157,22 +168,29 @@ class ShopService {
                 transaction
             });
             const sameTypeIds = sameTypeItems.map(i => i.id);
-            await db.UserPurchase.update(
-                { is_equipped: false },
-                {
-                    where: {
-                        user_id: userId,
-                        item_id: sameTypeIds
-                    },
-                    transaction
-                }
-            );
+            await Promise.all([
+                db.UserPurchase.update(
+                    { is_equipped: false },
+                    {
+                        where: {
+                            user_id: userId,
+                            item_id: sameTypeIds
+                        },
+                        transaction
+                    }
+                ),
+                purchase.update({ is_equipped: true }, { transaction })
+            ]);
 
-            await purchase.update({ is_equipped: true }, { transaction });
             const user = await db.User.findByPk(userId, {
-                include: [db.Customer],
-                transaction
+                include: [{
+                    model: db.Customer,
+                    attributes: ['id']
+                }],
+                transaction,
+                attributes: ['id', 'customer_id']
             });
+
             const updateData = {};
 
             if (item.item_type === 'avatar_frame') {
@@ -204,18 +222,23 @@ class ShopService {
                 where: { user_id: userId, item_id: itemId },
                 include: [{
                     model: db.ShopItem,
-                    as: 'item'
+                    as: 'item',
+                    attributes: ['id', 'item_type', 'item_value']
                 }],
                 transaction
             });
+
             if (!purchase) {
                 throw new Error('Товар не придбано');
             }
 
-            await purchase.update({ is_equipped: false }, { transaction });
             const user = await db.User.findByPk(userId, {
-                include: [db.Customer],
-                transaction
+                include: [{
+                    model: db.Customer,
+                    attributes: ['id']
+                }],
+                transaction,
+                attributes: ['id', 'customer_id']
             });
 
             const item = purchase.item;
@@ -228,10 +251,12 @@ class ShopService {
             } else if (item.item_type === 'profile_theme') {
                 updateData.profile_theme = 'default';
             }
-
-            if (Object.keys(updateData).length > 0) {
-                await user.Customer.update(updateData, { transaction });
-            }
+            await Promise.all([
+                purchase.update({ is_equipped: false }, { transaction }),
+                Object.keys(updateData).length > 0
+                    ? user.Customer.update(updateData, { transaction })
+                    : Promise.resolve()
+            ]);
 
             await transaction.commit();
 
@@ -249,7 +274,8 @@ class ShopService {
             const userLevel = await db.UserLevel.findOne({
                 where: { user_id: userId },
                 lock: transaction.LOCK.UPDATE,
-                transaction
+                transaction,
+                attributes: ['id', 'user_id', 'coins']
             });
 
             if (!userLevel) {
@@ -257,16 +283,17 @@ class ShopService {
             }
 
             const newBalance = userLevel.coins + amount;
-            await userLevel.update({ coins: newBalance }, { transaction });
-
-            await db.CoinTransaction.create({
-                user_id: userId,
-                amount,
-                transaction_type: transactionType,
-                reference_id: referenceId,
-                description,
-                balance_after: newBalance
-            }, { transaction });
+            await Promise.all([
+                userLevel.update({ coins: newBalance }, { transaction }),
+                db.CoinTransaction.create({
+                    user_id: userId,
+                    amount,
+                    transaction_type: transactionType,
+                    reference_id: referenceId,
+                    description,
+                    balance_after: newBalance
+                }, { transaction })
+            ]);
 
             await transaction.commit();
 
@@ -294,7 +321,8 @@ class ShopService {
         const transactions = await db.CoinTransaction.findAll({
             where: { user_id: userId },
             order: [['created_at', 'DESC']],
-            limit
+            limit,
+            attributes: ['id', 'amount', 'transaction_type', 'description', 'balance_after', 'created_at']
         });
 
         return transactions;
