@@ -39,25 +39,51 @@ The platform is built using a robust and maintainable technology stack:
 ## Screenshots
 
 ### Home Page
+Main landing page with platform overview and featured courses.
 ![Home Page](assets/screenshots/home.jpg)
 
 ### Course Catalog
+Browse all available courses and learning tracks.
 ![Course Catalog](assets/screenshots/courses.jpg)
 
-### Profile
-![Course Catalog](assets/screenshots/profile.jpg)
+### Course View
+Detailed course structure with modules and lessons.
+![Course View](assets/screenshots/course_view.jpg)
 
-### Achievements
-![Quiz System](assets/screenshots/achievements.jpg)
+### User Profile
+Personal dashboard with progress, statistics, and achievements.
+![User Profile](assets/screenshots/profile.jpg)
 
-### Q&A
-![Course Catalog](assets/screenshots/qa.jpg)
+![User Profile Extended](assets/screenshots/profile_continuation_1.jpg)
 
-### Roadmap
-![Course Catalog](assets/screenshots/roadmap.jpg)
+![User Profile Extended](assets/screenshots/profile_continuation_2.jpg)
 
-### Quiz & Testing
-![User Profile](assets/screenshots/test.jpg)
+### Leaderboard & Achievements
+Top users, ranking system, and gamification stats.
+![Leaderboard](assets/screenshots/leaderboard.jpg)
+
+### Quiz & Testing System
+Interactive quiz center and module tests.
+![Quiz Courses](assets/screenshots/tests.jpg)
+
+![Quiz View](assets/screenshots/tests_view.jpg)
+
+### Q&A / Knowledge Section
+Additional learning and knowledge validation.
+![Q&A](assets/screenshots/qa.jpg)
+
+### Learning Roadmaps
+Structured learning paths and skill progression.
+![Roadmap](assets/screenshots/roadmap.jpg)
+
+### Shop & Profile Customization
+Cosmetics, rewards, and coin-based economy.
+![Shop](assets/screenshots/shop.jpg)
+
+### Code Sandbox
+Built-in coding playground for experimentation.
+![Sandbox](assets/screenshots/sandbox.jpg)
+
 
 ---
 
