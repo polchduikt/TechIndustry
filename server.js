@@ -12,6 +12,9 @@ const mongoSanitize = require('express-mongo-sanitize');
 require('dotenv').config();
 const db = require('./src/models');
 const userService = require('./src/services/userService');
+const seoDefaults = require('./src/middleware/seoDefaults');
+
+// Controllers
 const homeController = require('./src/controllers/homeController');
 const userController = require('./src/controllers/userController');
 const courseController = require('./src/controllers/courseController');
@@ -19,10 +22,11 @@ const quizController = require('./src/controllers/quizController');
 const certificateController = require('./src/controllers/certificateController');
 const leaderboardController = require('./src/controllers/leaderboardController');
 const roadmapController = require('./src/controllers/roadmapController');
-const { protectPage } = require('./src/middleware/pageAuth');
-const shopRoutes = require('./src/routes/shopRoutes');
+const staticPagesController = require('./src/controllers/staticPagesController');
 const shopController = require('./src/controllers/shopController');
-const shopService = require('./src/services/shopService');
+
+// Middleware
+const { protectPage } = require('./src/middleware/pageAuth');
 
 // Routes
 const authRoutes = require('./src/routes/authRoutes');
@@ -32,6 +36,7 @@ const certificateRoutes = require('./src/routes/certificateRoutes');
 const quizRoutes = require('./src/routes/quizRoutes');
 const roadmapRoutes = require('./src/routes/roadmapRoutes');
 const aiRoutes = require('./src/routes/aiRoutes');
+const shopRoutes = require('./src/routes/shopRoutes');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -155,6 +160,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(seoDefaults);
+
 app.use(async (req, res, next) => {
     const token = req.cookies.token;
     res.locals.user = null;
@@ -177,19 +184,16 @@ app.use(async (req, res, next) => {
 app.get('/', homeController.renderIndex);
 app.get('/courses', courseController.renderCourses);
 app.get('/course/:slug', courseController.renderCourseDetail);
-app.get('/about', (req, res) => res.render('about', { title: 'Про нас | TechIndustry' }));
-app.get('/faq', (req, res) => res.render('faq', { title: 'FAQ | TechIndustry' }));
+app.get('/about', staticPagesController.renderAbout);
+app.get('/faq', staticPagesController.renderFAQ);
+app.get('/login', staticPagesController.renderLogin);
+app.get('/sandbox', staticPagesController.renderSandbox);
 app.get('/roadmap', roadmapController.renderRoadmapSelection);
 app.get('/roadmap/:id', roadmapController.renderRoadmapDetail);
 app.get('/leaderboard', leaderboardController.renderLeaderboard);
 app.get('/user/:username', leaderboardController.renderPublicProfile);
 app.get('/gamification-info', userController.renderGamificationInfo);
-app.get('/login', (req, res) => {
-    res.render('login', { title: 'Вхід | TechIndustry' });
-});
-app.get('/sandbox', (req, res) => {
-    res.render('sandbox', { title: 'Sandbox | TechIndustry' });
-});
+
 app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
     res.sendFile(path.join(__dirname, 'public', 'robots.txt'));

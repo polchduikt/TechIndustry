@@ -18,6 +18,11 @@ class ShopController {
             });
             res.render('shop', {
                 title: 'Магазин | TechIndustry',
+                metaDescription: 'Магазин TechIndustry: купуйте рамки для аватарів, значки, теми профілю та інші предмети за зароблені монети.',
+                ogTitle: 'Магазин досягнень | TechIndustry',
+                ogDescription: 'Персоналізуйте свій профіль: рамки, бейджі, теми. Витрачайте монети на унікальні предмети.',
+                extraCss: ['/css/shop.css'],
+                noindex: true,
                 categories,
                 items,
                 itemsByCategory,
@@ -168,6 +173,9 @@ class ShopController {
 
             res.render('inventory', {
                 title: 'Мій інвентар | TechIndustry',
+                metaDescription: 'Ваш інвентар на TechIndustry: куплені предмети, історія транзакцій та баланс монет.',
+                extraCss: ['/css/shop.css'],
+                noindex: true,
                 inventory,
                 userCoins,
                 transactions,

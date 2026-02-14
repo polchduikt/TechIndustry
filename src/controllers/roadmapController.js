@@ -5,6 +5,10 @@ exports.renderRoadmapSelection = async (req, res) => {
         const roadmaps = await roadmapService.listRoadmaps();
         res.render('roadmap-selection', {
             title: 'Роадмапи | TechIndustry',
+            metaDescription: 'Дорожні карти навчання IT: покрокові шляхи для Frontend, Backend, DevOps та інших напрямків програмування.',
+            ogTitle: 'IT Роадмапи — Шляхи навчання програмуванню',
+            ogDescription: 'Структуровані шляхи навчання для різних IT спеціалізацій на TechIndustry.',
+            extraCss: ['/css/roadmap.css'],
             roadmaps
         });
     } catch (e) {
@@ -17,7 +21,13 @@ exports.renderRoadmapDetail = async (req, res) => {
         const { id } = req.params;
         const roadmapData = await roadmapService.getRoadmapData(id);
         res.render('roadmap-view', {
-            title: `Шлях: ${roadmapData.title}`,
+            title: `${roadmapData.title} | TechIndustry`,
+            metaDescription: roadmapData.description
+                ? `${roadmapData.description.substring(0, 150)}...`
+                : `Дорожня карта навчання: ${roadmapData.title}. Покроковий план розвитку на TechIndustry.`,
+            ogTitle: `Роадмап: ${roadmapData.title}`,
+            ogDescription: `Структурований шлях навчання ${roadmapData.title} з детальним планом та ресурсами.`,
+            extraCss: ['/css/roadmap.css'],
             roadmap: roadmapData
         });
     } catch (error) {

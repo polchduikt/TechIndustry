@@ -12,13 +12,20 @@ class CertificateController {
             }
             const progress = await UserProgress.findOne({
                 where: { user_id: userId, course_id: courseId },
+                attributes: ['id', 'status', 'updatedAt'],
                 include: [{
                     model: Course,
                     as: 'course',
+                    attributes: ['id', 'title'],
                     include: [{
                         model: db.Module,
                         as: 'modules',
-                        include: ['lessons']
+                        attributes: ['id'],
+                        include: [{
+                            model: db.Lesson,
+                            as: 'lessons',
+                            attributes: ['id']
+                        }]
                     }]
                 }]
             });
@@ -37,8 +44,15 @@ class CertificateController {
                 month: 'long',
                 year: 'numeric'
             });
+
             res.render('certificate', {
                 title: `Сертифікат | ${progress.course.title}`,
+                metaDescription: `Сертифікат про завершення курсу "${progress.course.title}" на платформі TechIndustry.`,
+                ogTitle: `Сертифікат: ${progress.course.title}`,
+                ogDescription: `Офіційний сертифікат TechIndustry про проходження курсу ${progress.course.title}.`,
+                extraCss: ['/css/certificate.css'],
+                extraScripts: ['https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js'],
+                noindex: true,
                 course: progress.course.get({ plain: true }),
                 courseId: courseId,
                 completionDate: formattedDate,
@@ -77,23 +91,36 @@ class CertificateController {
             }
             const userId = req.user.id;
             const { courseId } = req.params;
-
             const progress = await UserProgress.findOne({
                 where: {
                     user_id: userId,
                     course_id: courseId
                 },
+                attributes: ['id', 'status', 'completed_lessons'],
                 include: [{
                     model: Course,
-                    as: 'course'
+                    as: 'course',
+                    attributes: ['id'],
+                    include: [{
+                        model: db.Module,
+                        as: 'modules',
+                        attributes: ['id'],
+                        include: [{
+                            model: db.Lesson,
+                            as: 'lessons',
+                            attributes: ['id']
+                        }]
+                    }]
                 }]
             });
+
             if (!progress) {
                 return res.json({
                     available: false,
                     reason: 'Course has not been started'
                 });
             }
+
             const isCompleted = await certificateService.verifyCourseCompletion(
                 userId,
                 courseId,

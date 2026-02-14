@@ -1,0 +1,9 @@
+{
+  "title": "Java Core",
+  "description": "Повний курс з основ Java: синтаксис, ООП, колекції, обробка помилок та робота з файлами.",
+  "category": "Backend",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "java-core.png",
+  "slug": "java-core"
+}

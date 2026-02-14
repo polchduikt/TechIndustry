@@ -1,9 +1,9 @@
 {
-  "title": "PostgreSQL & MongoDB",
-  "description": "Курс з реляційних та NoSQL баз даних. PostgreSQL, MongoDB, моделювання даних, запити та індекси.",
-  "category": "Backend",
+  "title": "Python for Data Science",
+  "description": "Курс з Python для аналізу даних. Pandas, NumPy, візуалізація, робота з CSV/JSON та основи обробки даних.",
+  "category": "Data Science",
   "level": "intermediate",
   "price": 0,
-  "thumbnail": "databases.png",
-  "slug": "databases"
+  "thumbnail": "python-data.png",
+  "slug": "python-for-data-science"
 }

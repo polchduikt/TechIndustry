@@ -1,0 +1,51 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{title}}</title>
+<meta name="description" content="{{metaDescription}}">
+<link rel="canonical" href="https://techindustry.app{{currentPath}}">
+
+<meta property="og:site_name" content="TechIndustry">
+<meta property="og:type" content="{{ogType}}">
+<meta property="og:title" content="{{ogTitle}}">
+<meta property="og:description" content="{{ogDescription}}">
+<meta property="og:url" content="https://techindustry.app{{currentPath}}">
+<meta property="og:image" content="{{ogImage}}">
+
+<meta name="twitter:card" content="summary_large_image">
+
+{{#if noindex}}
+    <meta name="robots" content="noindex, nofollow">
+{{else}}
+    <meta name="robots" content="index, follow, max-image-preview:large">
+{{/if}}
+
+<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{#if extraFonts}}
+    <link href="{{extraFonts}}" rel="stylesheet">
+{{else}}
+    <link rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+          onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap">
+    </noscript>
+{{/if}}
+
+{{#each extraLibs}}
+    <link rel="stylesheet" href="{{this}}">
+{{/each}}
+
+<link rel="stylesheet" href="/css/index.css">
+{{#each extraCss}}
+    <link rel="stylesheet" href="{{this}}">
+{{/each}}
+
+{{#each extraScripts}}
+    <script src="{{this}}" defer></script>
+{{/each}}
+
+<meta name="csrf-token" content="{{csrfToken}}">

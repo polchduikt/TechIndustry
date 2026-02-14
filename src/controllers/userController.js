@@ -6,7 +6,14 @@ const shopService = require('../services/shopService');
 
 exports.renderProfile = async (req, res) => {
     try {
-        const progressRaw = await progressService.getUserProgress(req.userId);
+        const [progressRaw, gamificationStats, user, userCoins, inventory] = await Promise.all([
+            progressService.getUserProgress(req.userId),
+            gamificationService.getUserStats(req.userId),
+            userService.getProfile(req.userId),
+            shopService.getUserCoins(req.userId),
+            shopService.getUserPurchases(req.userId)
+        ]);
+
         const progressFormatted = await Promise.all(progressRaw.map(async (p) => {
             const data = p.get({ plain: true });
             let totalLessons = 0;
@@ -17,6 +24,7 @@ exports.renderProfile = async (req, res) => {
             }
             const completedCount = data.completed_lessons?.length || 0;
             const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
             if (percent === 100 && data.status !== 'completed') {
                 await db.UserProgress.update(
                     { status: 'completed' },
@@ -24,6 +32,7 @@ exports.renderProfile = async (req, res) => {
                 );
                 data.status = 'completed';
             }
+
             const isFinished = data.status === 'completed' || percent === 100;
             return {
                 ...data,
@@ -44,14 +53,11 @@ exports.renderProfile = async (req, res) => {
             }
         }
 
-        const gamificationStats = await gamificationService.getUserStats(req.userId);
-        const user = await userService.getProfile(req.userId);
-        const shopService = require('../services/shopService');
-        const userCoins = await shopService.getUserCoins(req.userId);
-        const inventory = await shopService.getUserPurchases(req.userId);
-
         res.render('profile', {
             title: 'Профіль | TechIndustry',
+            metaDescription: 'Ваш особистий профіль на TechIndustry: прогрес навчання, досягнення, рівень та статистика.',
+            extraCss: ['/css/profile.css', "/css/inventory-styles.css", "/avatar-frames-styles.css"],
+            noindex: true,
             progress: progressFormatted,
             stats: {
                 total: progressFormatted.length,
@@ -76,6 +82,10 @@ exports.renderProfile = async (req, res) => {
 exports.renderGamificationInfo = (req, res) => {
     res.render('gamification-info', {
         title: 'Система XP | TechIndustry',
+        metaDescription: 'Як працює система досвіду (XP), рівнів та досягнень на TechIndustry. Заробляйте XP, монети та бейджі за навчання.',
+        ogTitle: 'Система XP та досягнень | TechIndustry',
+        ogDescription: 'Дізнайтеся про гейміфікацію на TechIndustry: рівні, досягнення, монети та нагороди за навчання.',
+        extraCss: ['/css/gamification-info.css'],
         user: res.locals.user,
         csrfToken: req.csrfToken ? req.csrfToken() : ''
     });
@@ -85,6 +95,7 @@ exports.renderSettings = async (req, res) => {
     try {
         const user = await userService.getProfile(req.userId);
         let flashMessage = null;
+
         if (req.session.flashMessage && req.session.flashUserId === req.userId) {
             flashMessage = req.session.flashMessage;
         }
@@ -93,6 +104,9 @@ exports.renderSettings = async (req, res) => {
 
         res.render('settings', {
             title: 'Налаштування | TechIndustry',
+            metaDescription: 'Налаштування вашого акаунту TechIndustry: редагування профілю, зміна пароля, приватність.',
+            extraCss: ['/css/settings.css', "/css/profile.css"],
+            noindex: true,
             user: user,
             flashMessage: flashMessage,
             csrfToken: req.csrfToken ? req.csrfToken() : ''
@@ -123,6 +137,7 @@ exports.updateProfile = async (req, res) => {
             res.clearCookie('token');
             return res.redirect('/login');
         }
+
         req.session.flashMessage = { type: 'success', text: 'Профіль оновлено!' };
         req.session.flashUserId = req.userId;
         res.redirect('/settings');

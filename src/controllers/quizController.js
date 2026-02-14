@@ -69,6 +69,10 @@ exports.renderCourseSelection = async (req, res) => {
 
         res.render('quiz-courses', {
             title: 'Центр тестування | TechIndustry',
+            metaDescription: 'Перевірте свої знання з IT: тести по JavaScript, Python, React. Проходьте квізи та отримуйте XP і монети на TechIndustry.',
+            ogTitle: 'Центр тестування — Квізи по програмуванню',
+            ogDescription: 'Інтерактивні тести для перевірки знань з програмування. Заробляйте XP та досягнення.',
+            extraCss: ['/css/quiz.css'],
             courses: coursesWithStats,
             user: res.locals.user,
             csrfToken: req.csrfToken ? req.csrfToken() : ''
@@ -108,7 +112,12 @@ exports.renderQuizList = async (req, res) => {
             coinsReward: completedQuizIds.includes(quiz.moduleId) ? 0 : 30
         }));
         res.render('quiz-list', {
-            title: `Тести: ${course.title}`,
+            title: `Тести: ${course.title} | TechIndustry`,
+            metaDescription: `Пройдіть тести з курсу "${course.title}". Перевірте знання та заробіть досягнення на TechIndustry.`,
+            ogTitle: `Тести: ${course.title}`,
+            ogDescription: `Інтерактивні тести для закріплення знань з курсу ${course.title}.`,
+            extraCss: ['/css/quiz.css'],
+            noindex: true,
             quizzes: quizzesWithStatus,
             courseSlug: slug,
             courseTitle: course.title,
@@ -135,7 +144,10 @@ exports.renderQuiz = async (req, res) => {
             })
         };
         res.render('quiz-view', {
-            title: quiz.title,
+            title: `${quiz.title} | TechIndustry`,
+            metaDescription: `Тест: ${quiz.title}. Перевірте свої знання та заробіть досягнення.`,
+            noindex: true,
+            extraCss: ['/css/quiz.css'],
             quiz: sanitizedQuiz,
             courseSlug: slug,
             moduleId: moduleId,
