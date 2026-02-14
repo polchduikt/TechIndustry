@@ -18,35 +18,72 @@ The platform is built using a robust and maintainable technology stack:
 * **Database:** PostgreSQL
 * **ORM:** Sequelize
 * **Architecture:** Layered MVC (Routes, Controllers, Services, Models)
-* **Templating:** Handlebars (HBS) for Server-Side Rendering
+* **Templating:** Handlebars (HBS)
 * **Authentication:** JWT-based authentication
+* **Security:** Helmet (CSP, HSTS), CSRF protection, Rate limiting, Input sanitization
+* **Performance:** Compression (gzip), static asset caching, SSR-friendly rendering
 * **UI/UX:** Custom CSS (Glassmorphism), responsive layout, modern typography
 * **Environment Configuration:** Secure `.env` configuration
+
+## Performance & Security
+
+- **Compression enabled** for responses (gzip)  
+- **Static caching** for `public/` and `assets/` with long-lived cache headers  
+- **Helmet with CSP + HSTS** for safer SSR pages and CDN assets  
+- **Global rate limiter** to protect endpoints
+- **CSRF protection** enabled (csrf token exposed to templates)
+- **Mongo sanitize** middleware for payload safety (works as extra hardening)
 
 ---
 
 ## Screenshots
 
 ### Home Page
+Main landing page with platform overview and featured courses.
 ![Home Page](assets/screenshots/home.jpg)
 
 ### Course Catalog
+Browse all available courses and learning tracks.
 ![Course Catalog](assets/screenshots/courses.jpg)
 
-### Profile
-![Course Catalog](assets/screenshots/profile.jpg)
+### Course View
+Detailed course structure with modules and lessons.
+![Course View](assets/screenshots/course_view.jpg)
 
-### Achievements
-![Quiz System](assets/screenshots/achievements.jpg)
+### User Profile
+Personal dashboard with progress, statistics, and achievements.
+![User Profile](assets/screenshots/profile.jpg)
 
-### Q&A
-![Course Catalog](assets/screenshots/qa.jpg)
+![User Profile Extended](assets/screenshots/profile_continuation_1.jpg)
 
-### Roadmap
-![Course Catalog](assets/screenshots/roadmap.jpg)
+![User Profile Extended](assets/screenshots/profile_continuation_2.jpg)
 
-### Quiz & Testing
-![User Profile](assets/screenshots/test.jpg)
+### Leaderboard & Achievements
+Top users, ranking system, and gamification stats.
+![Leaderboard](assets/screenshots/leaderboard.jpg)
+
+### Quiz & Testing System
+Interactive quiz center and module tests.
+![Quiz Courses](assets/screenshots/tests.jpg)
+
+![Quiz View](assets/screenshots/tests_view.jpg)
+
+### Q&A / Knowledge Section
+Additional learning and knowledge validation.
+![Q&A](assets/screenshots/qa.jpg)
+
+### Learning Roadmaps
+Structured learning paths and skill progression.
+![Roadmap](assets/screenshots/roadmap.jpg)
+
+### Shop & Profile Customization
+Cosmetics, rewards, and coin-based economy.
+![Shop](assets/screenshots/shop.jpg)
+
+### Code Sandbox
+Built-in coding playground for experimentation.
+![Sandbox](assets/screenshots/sandbox.jpg)
+
 
 ---
 
@@ -73,6 +110,28 @@ The platform is built using a robust and maintainable technology stack:
 * Detailed feedback for incorrect responses
 * Progress analytics and learning insights
 
+### Gamification & Economy
+
+* XP rewards for lessons/quizzes and course completion
+* Coins economy (earn + spend), balance tracking
+* Levels and badges system (progress-based achievements)
+* Leaderboard with top users and stats
+
+### Profile Customization (Shop / Inventory)
+
+* In-app Shop with categories and purchasable items
+* Inventory page to manage owned cosmetics and upgrades
+* Equip / unequip mechanics for profile customization:
+  * Avatar frames
+  * Title badges
+  * Profile themes
+* Purchase history / transaction history support
+
+### Code Sandbox
+
+* Built-in Sandbox page for experimenting with code and ideas
+* Designed for quick practice without leaving the platform
+
 ### Certification System
 
 * Automatic course completion verification
@@ -91,10 +150,13 @@ The platform is built using a robust and maintainable technology stack:
 
 ## Frontend Behavior
 
-* Guest users can browse all available courses
-* Progress and certificates are visible only to authenticated users
-* Guests attempting to start a course are automatically redirected to the login page
-* UI dynamically adapts based on authentication state
+* Guests can browse public content (courses, roadmaps, leaderboard, info pages).
+* Authenticated users unlock progress tracking, quizzes, certificates, shop, and profile customization.
+* Restricted actions (quizzes, certificates, shop, profile features) require login and automatically redirect guests.
+* UI dynamically changes based on authentication state (navigation, progress indicators, gamification stats, customization features).
+* Private user pages (profile, settings, quizzes, certificates, shop, inventory) are excluded from search indexing.
+* Public pages are optimized for SEO and performance using SSR, dynamic meta tags, canonical URLs, lazy loading, and optimized font loading.
+
 
 ---
 
@@ -104,6 +166,7 @@ The platform is built using a robust and maintainable technology stack:
 * **dev** – Active development branch
 * **feature/** – Feature-specific branches (authentication, quizzes, certificates, etc.)
 * **fix/** – Hotfix branches for critical issues
+* **refactor/** – Code refactoring, performance improvements, and internal optimizations without changing functionality  
 
 ---
 
@@ -137,10 +200,17 @@ Create a `.env` file in the project root and define:
 PORT=3000
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=name
-DB_USER=name
+DB_NAME=your_db
+DB_USER=your_user
 DB_PASSWORD=your_password
 JWT_SECRET=your_secret_key
+EMAIL_USER=your_email
+EMAIL_PASSWORD=your_password
+GROQ_API_KEY=key
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=you_client_secret
+GOOGLE_CALLBACK_URL=callback_url
+NODE_ENV=development
 ```
 
 4. Run database migrations and start the server:
