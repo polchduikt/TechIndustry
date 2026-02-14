@@ -20,7 +20,6 @@ async function loadLessonSSR(lessonId, clickedEl) {
     let shouldAutoComplete = false;
 
     if (isLastLesson && isLoggedInUser) {
-      // Отримуємо всі уроки з сайдбару
       const allLessons = document.querySelectorAll('.lessons-link');
       const currentLessonIndex = Array.from(allLessons).findIndex(
           el => el.id === `sidebar-lesson-${lessonId}`
