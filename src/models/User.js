@@ -17,6 +17,11 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(255),
             allowNull: false
         },
+        auth_provider: {
+            type: DataTypes.ENUM('local', 'google'),
+            allowNull: false,
+            defaultValue: 'local'
+        },
         customer_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -43,6 +48,9 @@ module.exports = (sequelize) => {
             },
             {
                 fields: ['customer_id']
+            },
+            {
+                fields: ['auth_provider']
             }
         ],
         hooks: {

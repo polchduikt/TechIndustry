@@ -51,7 +51,7 @@ exports.renderPublicProfile = async (req, res) => {
         });
     } catch (error) {
         console.error('Public profile error:', error);
-        if (error.message === 'Користувача не знайдено') {
+        if (error.message === 'Користувача не знайдено' || error.message === 'User not found') {
             return res.status(404).send('Користувача не знайдено');
         }
         res.status(500).send('Помилка завантаження профілю');

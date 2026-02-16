@@ -1,8 +1,20 @@
 const db = require('../models');
-const gamificationService = require('./gamificationService');
 
 class LeaderboardService {
+    constructor() {
+        this.topUsersCache = new Map();
+        this.topUsersCacheMs = Number(process.env.LEADERBOARD_CACHE_MS || 60000);
+        this.publicProfileCache = new Map();
+        this.publicProfileCacheMs = Number(process.env.PUBLIC_PROFILE_CACHE_MS || 60000);
+    }
+
     async getTopUsers(limit = 100) {
+        const cacheKey = `top:${limit}`;
+        const cached = this.topUsersCache.get(cacheKey);
+        if (cached && (Date.now() - cached.cachedAt) < this.topUsersCacheMs) {
+            return cached.data;
+        }
+
         const topUsers = await db.UserLevel.findAll({
             limit,
             attributes: ['level', 'experience', 'coins', 'badges'],
@@ -14,39 +26,49 @@ class LeaderboardService {
                 model: db.User,
                 as: 'user',
                 attributes: ['id', 'username'],
-                include: [
-                    {
-                        model: db.Customer,
-                        attributes: ['first_name', 'last_name', 'avatar_data', 'avatar_frame', 'title_badge', 'profile_theme']
-                    },
-                    {
-                        model: db.UserProgress,
-                        as: 'progress',
-                        attributes: ['completed_quizzes']
-                    }
-                ]
+                include: [{
+                    model: db.Customer,
+                    attributes: ['first_name', 'last_name', 'avatar_data', 'avatar_frame', 'title_badge', 'profile_theme']
+                }]
             }]
         });
+
+        const userIds = topUsers.map((entry) => entry.user?.id).filter(Boolean);
+        const quizCounts = new Map();
+
+        if (userIds.length > 0) {
+            const rows = await db.sequelize.query(
+                `
+                SELECT
+                    user_id,
+                    COALESCE(SUM(json_array_length(completed_quizzes)), 0)::int AS quizzes_passed
+                FROM user_progress
+                WHERE user_id IN (:userIds)
+                GROUP BY user_id
+                `,
+                {
+                    replacements: { userIds },
+                    type: db.Sequelize.QueryTypes.SELECT
+                }
+            );
+
+            rows.forEach((row) => {
+                quizCounts.set(Number(row.user_id), Number(row.quizzes_passed) || 0);
+            });
+        }
 
         const formattedUsers = topUsers.map((userLevel, index) => {
             const data = userLevel.get({ plain: true });
             const customer = data.user.Customer || {};
             const allBadges = data.badges || [];
 
-            const recentBadges = allBadges.slice(-5).reverse().map(badgeId => {
-                const badge = this.getBadgeDetails(badgeId);
-                return badge;
-            }).filter(Boolean);
+            const recentBadges = allBadges
+                .slice(-5)
+                .reverse()
+                .map((badgeId) => this.getBadgeDetails(badgeId))
+                .filter(Boolean);
 
-            let quizzesPassed = 0;
-            const progressList = data.user.progress || data.user.UserProgresses || data.user.user_progresses || [];
-            if (Array.isArray(progressList)) {
-                progressList.forEach(p => {
-                    if (Array.isArray(p.completed_quizzes)) {
-                        quizzesPassed += p.completed_quizzes.length;
-                    }
-                });
-            }
+            const quizzesPassed = quizCounts.get(Number(data.user.id)) || 0;
 
             return {
                 rank: index + 1,
@@ -65,10 +87,21 @@ class LeaderboardService {
             };
         });
 
+        this.topUsersCache.set(cacheKey, {
+            cachedAt: Date.now(),
+            data: formattedUsers
+        });
+
         return formattedUsers;
     }
 
     async getPublicProfile(username) {
+        const normalizedUsername = (username || '').toLowerCase();
+        const cached = this.publicProfileCache.get(normalizedUsername);
+        if (cached && (Date.now() - cached.cachedAt) < this.publicProfileCacheMs) {
+            return cached.data;
+        }
+
         const user = await db.User.findOne({
             where: { username },
             attributes: ['id', 'username', 'createdAt'],
@@ -81,51 +114,58 @@ class LeaderboardService {
                     model: db.UserLevel,
                     as: 'levelData',
                     attributes: ['level', 'experience', 'coins', 'badges']
-                },
-                {
-                    model: db.UserProgress,
-                    as: 'progress',
-                    attributes: ['id', 'status', 'completed_lessons', 'completed_quizzes'],
-                    include: [{
-                        model: db.Course,
-                        as: 'course',
-                        attributes: ['id', 'title', 'slug', 'thumbnail'],
-                        include: [{
-                            model: db.Module,
-                            as: 'modules',
-                            attributes: ['id'],
-                            include: [{
-                                model: db.Lesson,
-                                as: 'lessons',
-                                attributes: ['id']
-                            }]
-                        }]
-                    }]
                 }
             ]
         });
 
-        if (!user) throw new Error('Користувача не знайдено');
+        if (!user) throw new Error('User not found');
 
-        const progressStats = user.progress || [];
+        const progressStats = await db.UserProgress.findAll({
+            where: { user_id: user.id },
+            attributes: ['id', 'status', 'completed_lessons', 'completed_quizzes', 'course_id'],
+            include: [{
+                model: db.Course,
+                as: 'course',
+                attributes: ['id', 'title', 'slug', 'thumbnail', 'category']
+            }]
+        });
+
+        const progressPlain = progressStats.map((progress) => progress.get({ plain: true }));
+        const courseIds = [...new Set(progressPlain.map((row) => row.course_id).filter(Boolean))];
+        const lessonCountByCourse = new Map();
+
+        if (courseIds.length > 0) {
+            const lessonRows = await db.sequelize.query(
+                `
+                SELECT
+                    m.course_id,
+                    COUNT(l.id)::int AS total_lessons
+                FROM modules m
+                LEFT JOIN lessons l ON l.module_id = m.id
+                WHERE m.course_id IN (:courseIds)
+                GROUP BY m.course_id
+                `,
+                {
+                    replacements: { courseIds },
+                    type: db.Sequelize.QueryTypes.SELECT
+                }
+            );
+
+            lessonRows.forEach((row) => {
+                lessonCountByCourse.set(Number(row.course_id), Number(row.total_lessons) || 0);
+            });
+        }
 
         let quizzesPassed = 0;
-        progressStats.forEach(p => {
-            const pData = p.get({ plain: true });
-            if (Array.isArray(pData.completed_quizzes)) {
-                quizzesPassed += pData.completed_quizzes.length;
+        progressPlain.forEach((progress) => {
+            if (Array.isArray(progress.completed_quizzes)) {
+                quizzesPassed += progress.completed_quizzes.length;
             }
         });
 
-        const progressFormatted = progressStats.map(p => {
-            const data = p.get({ plain: true });
-            let totalLessons = 0;
-            if (data.course && data.course.modules) {
-                data.course.modules.forEach(m => {
-                    totalLessons += (m.lessons?.length || 0);
-                });
-            }
-            const completedCount = data.completed_lessons?.length || 0;
+        const progressFormatted = progressPlain.map((data) => {
+            const totalLessons = lessonCountByCourse.get(Number(data.course_id)) || 0;
+            const completedCount = Array.isArray(data.completed_lessons) ? data.completed_lessons.length : 0;
             const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
             const isFinished = data.status === 'completed' || percent === 100;
 
@@ -138,17 +178,17 @@ class LeaderboardService {
             };
         });
 
-        const completedCourses = progressStats.filter(p => p.status === 'completed').length;
-        const inProgressCourses = progressStats.filter(p => p.status === 'in_progress').length;
+        const completedCourses = progressPlain.filter((progress) => progress.status === 'completed').length;
+        const inProgressCourses = progressPlain.filter((progress) => progress.status === 'in_progress').length;
         const userLevel = user.levelData || { level: 0, experience: 0, badges: [] };
         const allBadges = userLevel.badges || [];
 
-        const badges = allBadges.map(badgeId => {
-            return this.getBadgeDetails(badgeId);
-        }).filter(Boolean);
+        const badges = allBadges
+            .map((badgeId) => this.getBadgeDetails(badgeId))
+            .filter(Boolean);
 
         const shopService = require('./shopService');
-        const publicInventory = await shopService.getUserPurchases(user.id);
+        const publicInventory = await shopService.getUserPurchasesPublic(user.id);
 
         const LEVEL_THRESHOLDS = [
             0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200,
@@ -176,7 +216,7 @@ class LeaderboardService {
             progressPercent = 100;
         }
 
-        return {
+        const profileData = {
             username: user.username,
             fullName: `${user.Customer.first_name} ${user.Customer.last_name}`,
             avatar: user.Customer.avatar_data,
@@ -193,13 +233,20 @@ class LeaderboardService {
             quizzesPassed,
             publicInventory,
             stats: {
-                totalCourses: progressStats.length,
+                totalCourses: progressPlain.length,
                 completedCourses,
                 inProgressCourses
             },
             progress: progressFormatted,
             hideCourses: user.Customer.hide_courses || false
         };
+
+        this.publicProfileCache.set(normalizedUsername, {
+            cachedAt: Date.now(),
+            data: profileData
+        });
+
+        return profileData;
     }
 
     getBadgeDetails(badgeId) {

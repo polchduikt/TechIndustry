@@ -1,55 +1,29 @@
 const userService = require('../services/userService');
 const progressService = require('../services/progressService');
 const gamificationService = require('../services/gamificationService');
-const db = require('../models');
 const shopService = require('../services/shopService');
+
+function invalidateUserContextCache(req) {
+    if (req.session) {
+        delete req.session.userContextCache;
+    }
+}
+
 
 exports.renderProfile = async (req, res) => {
     try {
-        const [progressRaw, gamificationStats, user, userCoins, inventory] = await Promise.all([
-            progressService.getUserProgress(req.userId),
+        const [progressFormatted, gamificationStats, user, userCoins, inventory] = await Promise.all([
+            progressService.getUserProgressForOverview(req.userId),
             gamificationService.getUserStats(req.userId),
             userService.getProfile(req.userId),
             shopService.getUserCoins(req.userId),
             shopService.getUserPurchases(req.userId)
         ]);
 
-        const progressFormatted = await Promise.all(progressRaw.map(async (p) => {
-            const data = p.get({ plain: true });
-            let totalLessons = 0;
-            if (data.course && data.course.modules) {
-                data.course.modules.forEach(m => {
-                    totalLessons += (m.lessons?.length || 0);
-                });
-            }
-            const completedCount = data.completed_lessons?.length || 0;
-            const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
-            if (percent === 100 && data.status !== 'completed') {
-                await db.UserProgress.update(
-                    { status: 'completed' },
-                    { where: { id: data.id } }
-                );
-                data.status = 'completed';
-            }
-
-            const isFinished = data.status === 'completed' || percent === 100;
-            return {
-                ...data,
-                totalLessons,
-                completedCount,
-                percent,
-                totalHours: totalLessons * 2,
-                completedHours: completedCount * 2,
-                isFinished
-            };
-        }));
-
         let totalQuizzesPassed = 0;
-        for (const progress of progressRaw) {
-            const data = progress.get({ plain: true });
-            if (Array.isArray(data.completed_quizzes)) {
-                totalQuizzesPassed += data.completed_quizzes.length;
+        for (const progress of progressFormatted) {
+            if (Array.isArray(progress.completed_quizzes)) {
+                totalQuizzesPassed += progress.completed_quizzes.length;
             }
         }
 
@@ -132,6 +106,7 @@ exports.updateProfile = async (req, res) => {
         };
 
         const result = await userService.updateProfile(req.userId, allowedUpdates);
+        invalidateUserContextCache(req);
 
         if (result.requiresReauth) {
             res.clearCookie('token');
@@ -151,6 +126,7 @@ exports.updateProfile = async (req, res) => {
 exports.changePassword = async (req, res) => {
     try {
         await userService.changePassword(req.userId, req.body.oldPassword, req.body.newPassword);
+        invalidateUserContextCache(req);
         res.clearCookie('token');
         res.redirect('/login');
     } catch (e) {
@@ -163,6 +139,7 @@ exports.changePassword = async (req, res) => {
 exports.uploadAvatar = async (req, res) => {
     try {
         await userService.saveAvatar(req.userId, req.file);
+        invalidateUserContextCache(req);
         req.session.flashMessage = { type: 'success', text: 'Аватар завантажено!' };
         req.session.flashUserId = req.userId;
         res.redirect('/settings');
@@ -176,6 +153,7 @@ exports.uploadAvatar = async (req, res) => {
 exports.deleteAvatar = async (req, res) => {
     try {
         await userService.deleteAvatar(req.userId);
+        invalidateUserContextCache(req);
         req.session.flashMessage = { type: 'success', text: 'Аватар видалено!' };
         req.session.flashUserId = req.userId;
         res.redirect('/settings');
@@ -191,8 +169,10 @@ exports.updatePreferences = async (req, res) => {
         await userService.updatePreferences(req.userId, {
             hide_courses: req.body.hide_courses || false
         });
+        invalidateUserContextCache(req);
         res.json({ success: true, message: 'Налаштування оновлено!' });
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });
     }
 };
+

@@ -164,6 +164,57 @@ label {
     padding: 16px;
 }
 
+.oauth-divider {
+    margin: 18px 0 14px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    position: relative;
+}
+
+.oauth-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1px solid var(--glass-border);
+}
+
+.oauth-divider span {
+    position: relative;
+    z-index: 1;
+    background: var(--dark-light);
+    padding: 0 12px;
+}
+
+.google-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 16px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.google-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
+}
+
+.google-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
 .message {
     margin-top: 20px;
     padding: 15px;

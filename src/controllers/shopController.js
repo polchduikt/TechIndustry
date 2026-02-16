@@ -4,18 +4,11 @@ class ShopController {
     async renderShop(req, res) {
         try {
             const userId = req.userId;
-            const categories = await shopService.getShopCategories();
-            const items = await shopService.getShopItems(userId);
-            const userCoins = await shopService.getUserCoins(userId);
-            const purchases = await shopService.getUserPurchases(userId);
-            const itemsByCategory = {};
-            items.forEach(item => {
-                const catId = item.category_id;
-                if (!itemsByCategory[catId]) {
-                    itemsByCategory[catId] = [];
-                }
-                itemsByCategory[catId].push(item);
-            });
+            const [categories, items, userCoins] = await Promise.all([
+                shopService.getShopCategories(),
+                shopService.getShopItems(userId),
+                shopService.getUserCoins(userId)
+            ]);
             res.render('shop', {
                 title: 'Магазин | TechIndustry',
                 metaDescription: 'Магазин TechIndustry: купуйте рамки для аватарів, значки, теми профілю та інші предмети за зароблені монети.',
@@ -25,9 +18,7 @@ class ShopController {
                 noindex: true,
                 categories,
                 items,
-                itemsByCategory,
                 userCoins,
-                purchases,
                 user: res.locals.user,
                 csrfToken: req.csrfToken ? req.csrfToken() : ''
             });
@@ -114,9 +105,11 @@ class ShopController {
     async getShopData(req, res) {
         try {
             const userId = req.userId;
-            const items = await shopService.getShopItems(userId);
-            const userCoins = await shopService.getUserCoins(userId);
-            const purchases = await shopService.getUserPurchases(userId);
+            const [items, userCoins, purchases] = await Promise.all([
+                shopService.getShopItems(userId),
+                shopService.getUserCoins(userId),
+                shopService.getUserPurchases(userId)
+            ]);
             res.json({
                 success: true,
                 items,
@@ -135,9 +128,11 @@ class ShopController {
     async renderInventory(req, res) {
         try {
             const userId = req.userId;
-            const purchases = await shopService.getUserPurchases(userId);
-            const userCoins = await shopService.getUserCoins(userId);
-            const transactions = await shopService.getTransactionHistory(userId, 100);
+            const [purchases, userCoins, transactions] = await Promise.all([
+                shopService.getUserPurchases(userId),
+                shopService.getUserCoins(userId),
+                shopService.getTransactionHistory(userId, 100)
+            ]);
             const inventory = {
                 avatar_frames: [],
                 title_badges: [],
@@ -150,23 +145,23 @@ class ShopController {
                 const type = item.item_type;
                 if (type === 'avatar_frame') {
                     inventory.avatar_frames.push({
-                        ...purchase.get({ plain: true }),
-                        item: item.get({ plain: true })
+                        ...purchase,
+                        item
                     });
                 } else if (type === 'title_badge') {
                     inventory.title_badges.push({
-                        ...purchase.get({ plain: true }),
-                        item: item.get({ plain: true })
+                        ...purchase,
+                        item
                     });
                 } else if (type === 'profile_theme') {
                     inventory.profile_themes.push({
-                        ...purchase.get({ plain: true }),
-                        item: item.get({ plain: true })
+                        ...purchase,
+                        item
                     });
                 } else if (type === 'course_unlock') {
                     inventory.course_unlocks.push({
-                        ...purchase.get({ plain: true }),
-                        item: item.get({ plain: true })
+                        ...purchase,
+                        item
                     });
                 }
             });

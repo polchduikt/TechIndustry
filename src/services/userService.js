@@ -56,6 +56,9 @@ class UserService {
         }
         const user = await User.findByPk(userId);
         if (!user) throw new Error('Користувача не знайдено');
+        if (user.auth_provider === 'google') {
+            throw new Error('Для цього акаунта доступний лише вхід через Google');
+        }
         const isMatch = await user.comparePassword(oldPassword);
         if (!isMatch) throw new Error('Невірний старий пароль');
         user.password = newPassword;

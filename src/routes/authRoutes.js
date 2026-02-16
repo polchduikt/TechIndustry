@@ -62,6 +62,8 @@ router.post('/verify-email-code', emailVerifyLimiter, authController.verifyEmail
 router.post('/register', registerLimiter, upload.single('avatar'), registerValidation, authController.register);
 router.post('/login', loginLimiter, loginValidation, authController.login);
 router.post('/logout', authController.logout);
+router.get('/google', authController.googleLogin);
+router.get('/google/callback', authController.googleCallback);
 
 router.post('/update-profile', auth, updateProfileValidation, userController.updateProfile);
 router.post('/change-password', auth, userController.changePassword);

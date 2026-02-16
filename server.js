@@ -41,6 +41,7 @@ const shopRoutes = require('./src/routes/shopRoutes');
 const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
+const USER_CONTEXT_CACHE_MS = Number(process.env.USER_CONTEXT_CACHE_MS || 60000);
 
 app.use(compression({
     level: 6,
@@ -147,7 +148,9 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        // OAuth callback comes from a different site (accounts.google.com),
+        // so Strict blocks session cookie and breaks state verification.
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000
     },
     name: 'sessionId'
@@ -169,12 +172,35 @@ app.use(async (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const user = await userService.getProfile(decoded.userId || decoded.id);
-            res.locals.user = user;
-            req.userId = user.id;
+            const userId = decoded.userId || decoded.id;
+            req.userId = userId;
+
+            const cachedUser = req.session?.userContextCache;
+            const isCacheValid = cachedUser &&
+                cachedUser.userId === userId &&
+                (Date.now() - cachedUser.cachedAt) < USER_CONTEXT_CACHE_MS;
+
+            if (isCacheValid) {
+                res.locals.user = cachedUser.user;
+            } else {
+                const user = await userService.getProfile(userId);
+                const plainUser = user.get ? user.get({ plain: true }) : user;
+                res.locals.user = plainUser;
+                if (req.session) {
+                    req.session.userContextCache = {
+                        userId,
+                        cachedAt: Date.now(),
+                        user: plainUser
+                    };
+                }
+            }
+
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
         } catch (e) {
             res.clearCookie('token');
+            if (req.session) {
+                delete req.session.userContextCache;
+            }
         }
     }
     next();
@@ -248,6 +274,14 @@ const startServer = async () => {
     try {
         await db.sequelize.authenticate();
         await db.sequelize.sync({ alter: true });
+        await db.sequelize.query(`
+            UPDATE users u
+            SET auth_provider = 'google'
+            FROM customers c
+            WHERE u.customer_id = c.id
+              AND u.auth_provider = 'local'
+              AND c.phone LIKE '+99%'
+        `);
         app.listen(PORT, () => {
             console.log(`Server running on http://localhost:${PORT}`);
         });

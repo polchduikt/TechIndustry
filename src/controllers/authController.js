@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const crypto = require('crypto');
 const authService = require('../services/authService');
 const userService = require('../services/userService');
 const { AUTH } = require('../config/constants');
@@ -174,5 +175,43 @@ exports.checkAvailability = async (req, res) => {
         res.json({ available: true });
     } catch (error) {
         res.status(500).json({ message: 'Помилка перевірки' });
+    }
+};
+
+exports.googleLogin = (req, res) => {
+    try {
+        const state = crypto.randomBytes(24).toString('hex');
+        req.session.googleOAuthState = state;
+        const googleUrl = authService.getGoogleAuthUrl(state);
+        res.redirect(googleUrl);
+    } catch (error) {
+        console.error('googleLogin error:', error);
+        res.redirect('/login?error=google_oauth_not_configured');
+    }
+};
+
+exports.googleCallback = async (req, res) => {
+    try {
+        const { code, state } = req.query;
+        const savedState = req.session.googleOAuthState;
+        delete req.session.googleOAuthState;
+
+        if (!state || !savedState || state !== savedState) {
+            return res.redirect('/login?error=google_invalid_state');
+        }
+
+        const googleProfile = await authService.exchangeGoogleCode(code);
+        const { user } = await authService.ensureGoogleUser(googleProfile);
+        const token = authService.generateToken(user.id, user.username);
+        res.cookie('token', token, {
+            ...AUTH.COOKIE_OPTIONS,
+            sameSite: 'lax'
+        });
+
+        const redirectTo = process.env.GOOGLE_SUCCESS_REDIRECT || process.env.APP_URL || '/';
+        res.redirect(redirectTo);
+    } catch (error) {
+        console.error('googleCallback error:', error);
+        res.redirect('/login?error=google_auth_failed');
     }
 };

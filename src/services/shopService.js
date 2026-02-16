@@ -2,33 +2,60 @@ const db = require('../models');
 const { Sequelize } = require('sequelize');
 
 class ShopService {
+    constructor() {
+        this.categoryCache = null;
+        this.categoryCacheMs = Number(process.env.SHOP_CATEGORY_CACHE_MS || 300000);
+    }
+
     async getShopCategories() {
+        if (this.categoryCache && (Date.now() - this.categoryCache.cachedAt) < this.categoryCacheMs) {
+            return this.categoryCache.data;
+        }
+
         const categories = await db.ShopCategory.findAll({
             where: { is_active: true },
-            include: [{
-                model: db.ShopItem,
-                as: 'items',
-                where: { is_available: true },
-                required: false
-            }],
-            order: [
-                ['display_order', 'ASC'],
-                [{ model: db.ShopItem, as: 'items' }, 'display_order', 'ASC']
-            ]
+            attributes: ['id', 'name', 'slug', 'icon', 'display_order'],
+            order: [['display_order', 'ASC']]
         });
-        return categories;
+
+        const plain = categories.map((category) => category.get({ plain: true }));
+        this.categoryCache = {
+            cachedAt: Date.now(),
+            data: plain
+        };
+
+        return plain;
     }
 
     async getShopItems(userId) {
-        const [userLevel, items, purchases] = await Promise.all([
-            db.UserLevel.findOne({
-                where: { user_id: userId },
-                attributes: ['level']
-            }),
+        const userLevel = await db.UserLevel.findOne({
+            where: { user_id: userId },
+            attributes: ['level']
+        });
+        const currentLevel = userLevel ? userLevel.level : 0;
+
+        const [items, purchases] = await Promise.all([
             db.ShopItem.findAll({
+                where: {
+                    is_available: true,
+                    level_required: { [Sequelize.Op.lte]: currentLevel }
+                },
+                attributes: [
+                    'id',
+                    'category_id',
+                    'name',
+                    'description',
+                    'item_type',
+                    'item_value',
+                    'price',
+                    'rarity',
+                    'level_required',
+                    'display_order'
+                ],
                 include: [{
                     model: db.ShopCategory,
-                    as: 'category'
+                    as: 'category',
+                    attributes: ['slug']
                 }],
                 order: [['category_id', 'ASC'], ['display_order', 'ASC']]
             }),
@@ -38,11 +65,6 @@ class ShopService {
             })
         ]);
 
-        const currentLevel = userLevel ? userLevel.level : 0;
-        const availableItems = items.filter(item =>
-            item.is_available && item.level_required <= currentLevel
-        );
-
         const purchasedMap = {};
         purchases.forEach(p => {
             purchasedMap[p.item_id] = {
@@ -51,12 +73,13 @@ class ShopService {
             };
         });
 
-        return availableItems.map(item => {
+        return items.map(item => {
             const plain = item.get({ plain: true });
             return {
                 ...plain,
                 isPurchased: !!purchasedMap[item.id],
-                isEquipped: purchasedMap[item.id]?.equipped || false
+                isEquipped: purchasedMap[item.id]?.equipped || false,
+                isLocked: plain.level_required > currentLevel
             };
         });
     }
@@ -315,6 +338,20 @@ class ShopService {
             order: [['purchased_at', 'DESC']]
         });
         return purchases.map(p => p.get({ plain: true }));
+    }
+
+    async getUserPurchasesPublic(userId) {
+        const purchases = await db.UserPurchase.findAll({
+            where: { user_id: userId },
+            attributes: ['item_id', 'is_equipped'],
+            include: [{
+                model: db.ShopItem,
+                as: 'item',
+                attributes: ['name', 'description', 'rarity', 'item_type', 'item_value']
+            }],
+            order: [['purchased_at', 'DESC']]
+        });
+        return purchases.map((purchase) => purchase.get({ plain: true }));
     }
 
     async getTransactionHistory(userId, limit = 50) {

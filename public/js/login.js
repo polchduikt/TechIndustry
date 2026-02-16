@@ -558,4 +558,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('registerForm')) {
         renderRegistrationForm();
     }
+
+    const loginForm = document.getElementById('loginForm');
+    const loginMessage = document.getElementById('loginMessage');
+    if (loginForm && loginMessage) {
+        const divider = document.createElement('div');
+        divider.className = 'oauth-divider';
+        divider.innerHTML = '<span>or</span>';
+
+        const googleBtn = document.createElement('a');
+        googleBtn.href = '/api/auth/google';
+        googleBtn.className = 'google-btn';
+        googleBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.2-1.4 3.5-5.5 3.5-3.3 0-6-2.8-6-6.1s2.7-6.1 6-6.1c1.9 0 3.1.8 3.8 1.4l2.6-2.5C16.8 2.8 14.6 2 12 2 6.9 2 2.8 6.2 2.8 11.5S6.9 21 12 21c6.9 0 9.2-4.8 9.2-7.3 0-.5 0-.9-.1-1.3H12z"/>
+            </svg>
+            <span>Google</span>
+        `;
+
+        loginForm.insertBefore(divider, loginMessage);
+        loginForm.insertBefore(googleBtn, loginMessage);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const oauthError = params.get('error');
+    if (oauthError) {
+        const msg = document.getElementById('loginMessage');
+        if (msg) {
+            const oauthMessages = {
+                google_invalid_state: 'Google login failed. Please try again.',
+                google_auth_failed: 'Google login failed. Please try again.',
+                google_oauth_not_configured: 'Google login is temporarily unavailable.'
+            };
+            msg.textContent = oauthMessages[oauthError] || 'Google login failed. Please try again.';
+            msg.className = 'message error';
+        }
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+    }
 });

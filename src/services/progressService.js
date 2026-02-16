@@ -35,6 +35,62 @@ class ProgressService {
         });
     }
 
+    async getUserProgressForOverview(userId) {
+        const progressRows = await db.UserProgress.findAll({
+            where: { user_id: userId },
+            attributes: ['id', 'user_id', 'course_id', 'status', 'completed_lessons', 'completed_quizzes', 'last_accessed'],
+            include: [{
+                model: db.Course,
+                as: 'course',
+                attributes: ['id', 'title', 'slug', 'thumbnail', 'category']
+            }],
+            order: [['last_accessed', 'DESC']]
+        });
+
+        const plainRows = progressRows.map((row) => row.get({ plain: true }));
+        const courseIds = [...new Set(plainRows.map((row) => row.course_id).filter(Boolean))];
+
+        const lessonCountByCourse = new Map();
+        if (courseIds.length > 0) {
+            const lessonRows = await db.sequelize.query(
+                `
+                SELECT
+                    m.course_id,
+                    COUNT(l.id)::int AS total_lessons
+                FROM modules m
+                LEFT JOIN lessons l ON l.module_id = m.id
+                WHERE m.course_id IN (:courseIds)
+                GROUP BY m.course_id
+                `,
+                {
+                    replacements: { courseIds },
+                    type: db.Sequelize.QueryTypes.SELECT
+                }
+            );
+
+            lessonRows.forEach((row) => {
+                lessonCountByCourse.set(Number(row.course_id), Number(row.total_lessons) || 0);
+            });
+        }
+
+        return plainRows.map((row) => {
+            const totalLessons = lessonCountByCourse.get(Number(row.course_id)) || 0;
+            const completedCount = Array.isArray(row.completed_lessons) ? row.completed_lessons.length : 0;
+            const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+            const isFinished = row.status === 'completed' || percent === 100;
+
+            return {
+                ...row,
+                totalLessons,
+                completedCount,
+                percent,
+                totalHours: totalLessons * 2,
+                completedHours: completedCount * 2,
+                isFinished
+            };
+        });
+    }
+
     async startCourse(userId, courseSlug) {
         const course = await db.Course.findOne({
             where: { slug: courseSlug },
