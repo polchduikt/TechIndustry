@@ -1,0 +1,132 @@
+[
+  {
+    "moduleId": "01-what-is-devops",
+    "title": "Що таке DevOps",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "DevOps — це передусім:", "options": ["Культура + процеси + автоматизація", "Лише Docker", "Лише Linux", "Лише моніторинг"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Головна мета DevOps:", "options": ["Швидка і надійна доставка змін", "Більше ручної роботи", "Відмова від тестів", "Лише зменшення витрат"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Складові DevOps підходу:", "options": ["Automation", "Measurement", "Collaboration", "Ігнорування інцидентів"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "02-linux-and-shell-basics",
+    "title": "Linux і shell",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Яка команда показує запущені процеси?", "options": ["ps", "mkdir", "curl", "chmod +x only"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Для перегляду логів сервісу в systemd часто використовують:", "options": ["journalctl", "ping", "lsblk", "grep -R /dev/null"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Базові навички shell для DevOps:", "options": ["Робота з процесами", "Робота з файлами", "Пошук у логах", "Малювання макетів"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "03-git-and-branching",
+    "title": "Git і branching",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Навіщо потрібен pull request?", "options": ["Review і контроль змін", "Для видалення історії", "Для запуску ОС", "Для деплою без перевірок"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Feature branch зазвичай створюють від:", "options": ["main/master", "random tag", "README", "prod DB"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Які практики знижують ризики в Git workflow?", "options": ["Code review", "CI checks", "Невеликі коміти", "Force push у main без правил"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "04-ci-pipelines",
+    "title": "CI пайплайни",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "CI має запускатись:", "options": ["На кожний релевантний коміт/PR", "Раз на рік", "Лише вручну", "Лише на проді"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Типовий етап CI:", "options": ["Lint/Test/Build", "Design review only", "Delete logs", "Manual SSH"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Чому CI важливий?", "options": ["Швидкий фідбек", "Менше дефектів до релізу", "Відтворювані збірки", "Повна відмова від тестів"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "05-cd-and-release-strategies",
+    "title": "CD і релізні стратегії",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Canary release означає:", "options": ["Поступовий rollout на частину трафіку", "Миттєвий реліз на 100%", "Вимкнення моніторингу", "Тільки локальний запуск"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Blue/Green допомагає:", "options": ["Швидко перемикати версії і відкатуватись", "Видаляти базу", "Писати тести", "Компілювати Java"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що важливо для безпечного CD?", "options": ["Release gates", "Моніторинг після деплою", "Rollback план", "Деплой без перевірок"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "06-docker-basics",
+    "title": "Docker основи",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Docker image це:", "options": ["Шаблон для запуску контейнера", "Запущений контейнер", "CI лог", "Файл БД"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Multi-stage build потрібен для:", "options": ["Зменшення розміру фінального образу", "Прискорення інтернету", "Вимкнення кешу", "Заміни Kubernetes"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Good practices Dockerfile:", "options": ["Мінімальні базові образи", "Непотрібні secrets не додавати", "Кешування шарів", "Запуск everything як root без причин"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "07-kubernetes-basics",
+    "title": "Kubernetes основи",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Deployment у Kubernetes відповідає за:", "options": ["Керування репліками і оновленнями", "DNS сервіс в офісі", "Шифрування диска", "Git history"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Service у Kubernetes потрібен для:", "options": ["Мережевого доступу до Pod", "Компіляції коду", "Локальної БД", "CI pipeline"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Базові об'єкти K8s:", "options": ["Pod", "Deployment", "Service", "Storyboard"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "08-infrastructure-as-code",
+    "title": "Infrastructure as Code",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "IaC дає можливість:", "options": ["Версіонувати і відтворювати інфраструктуру", "Лише писати UI", "Замінити моніторинг", "Прибрати рев'ю"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Популярний інструмент IaC:", "options": ["Terraform", "Photoshop", "Jira", "Notepad"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Переваги IaC:", "options": ["Менше ручних помилок", "Reproducibility", "Code review для інфраструктури", "Неможливість audit"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "09-observability-and-monitoring",
+    "title": "Observability і моніторинг",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Три стовпи observability:", "options": ["Metrics, Logs, Traces", "CPU, RAM, Disk", "Build, Deploy, Rollback", "HTML, CSS, JS"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Golden signals включають:", "options": ["Latency, traffic, errors, saturation", "Only uptime", "Only errors", "Only CPU"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Навіщо моніторинг після релізу?", "options": ["Рано виявити деградацію", "Оцінити вплив змін", "Швидше реагувати", "Ігнорувати інциденти"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "10-security-in-devops",
+    "title": "Security у DevOps",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "DevSecOps означає:", "options": ["Вбудована безпека у pipeline", "Безпека тільки після релізу", "Лише firewall", "Лише pentest раз на рік"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Що варто перевіряти у CI з боку security?", "options": ["SAST/Dependency scans/Secrets", "Тільки UI", "Тільки readme", "Нічого"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Практики DevSecOps:", "options": ["Secrets scanning", "Dependency scanning", "Policy checks", "Доступ admin для всіх"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "11-reliability-and-sre-basics",
+    "title": "Надійність і SRE",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "SLO це:", "options": ["Цільовий рівень сервісу", "Лог формат", "Тип контейнера", "Вид тесту"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Error budget використовується для:", "options": ["Баланс між швидкістю змін і надійністю", "Підрахунок зарплат", "Оцінка UI", "Вибір IDE"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "SRE практики включають:", "options": ["SLI/SLO", "Incident learning", "Automation", "Manual-only operations"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "12-incident-management",
+    "title": "Incident Management",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Перший крок при інциденті:", "options": ["Triage і оцінка впливу", "Писати звіт 2 дні", "Видалити логи", "Зупинити всі сервіси без аналізу"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Blameless postmortem потрібен для:", "options": ["Пошуку системних покращень", "Покарання людей", "Маркетингу", "SEO"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що має бути у runbook?", "options": ["Кроки діагностики", "Контакти ескалації", "Процедури відновлення", "Меми"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "13-devops-roadmap-and-project",
+    "title": "Підсумок і DevOps проєкт",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Фінальний DevOps проєкт має демонструвати:", "options": ["CI/CD + deploy + observability", "Тільки гарний README", "Лише Docker image", "Лише один скрипт"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Що критично для production readiness?", "options": ["Rollback і моніторинг", "Лише локальний запуск", "Відсутність алертів", "Відмова від тестів"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що входить у зрілий delivery процес?", "options": ["Автоматизовані перевірки", "Безпечні релізи", "Операційна спостережуваність", "Ручний хаос без правил"], "correctAnswer": [0, 1, 2]}
+    ]
+  }
+]

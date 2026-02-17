@@ -1,0 +1,9 @@
+{
+  "title": "Cybersecurity Engineering",
+  "description": "Поглиблений курс з кібербезпеки: мережевий захист, криптографія, AppSec, моніторинг, реагування на інциденти та hardening.",
+  "category": "Cybersecurity",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "cybersecurity.png",
+  "slug": "cybersecurity-engineering"
+}

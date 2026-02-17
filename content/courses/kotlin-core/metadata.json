@@ -1,0 +1,9 @@
+{
+  "title": "Kotlin Core",
+  "description": "Курс з основ Kotlin: синтаксис, ООП, null safety, колекції та корутини.",
+  "category": "Mobile",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "kotlin-core.png",
+  "slug": "kotlin-core"
+}

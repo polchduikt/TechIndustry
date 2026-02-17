@@ -1,0 +1,9 @@
+{
+  "title": "TypeScript Core",
+  "description": "Курс з TypeScript: типи, інтерфейси, дженеріки, класи, асинхронність та робота з API.",
+  "category": "Frontend",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "typescript-core.png",
+  "slug": "typescript-core"
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "moduleId": "01-what-is-java-and-jvm",
+    "title": "Java і JVM",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Що таке JVM?", "options": ["Віртуальна машина Java", "База даних", "IDE", "ОС"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Головний принцип Java:", "options": ["Write once, run anywhere", "Code once, run Linux only", "Compile never", "No bytecode"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Де часто використовується Java?", "options": ["Backend", "Android", "Enterprise системи", "Лише CSS"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "02-installing-java-and-ide",
+    "title": "Встановлення Java та IDE",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Що потрібно для компіляції Java коду?", "options": ["JDK", "JRE", "Браузер", "Docker"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Яке середовище часто використовують для Java?", "options": ["IntelliJ IDEA", "Photoshop", "Figma", "Postman"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що входить у базовий setup?", "options": ["JDK", "IDE", "Налаштування PATH", "Обов'язково Kubernetes"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "03-variables-and-data-types",
+    "title": "Змінні та типи даних",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Який тип для цілого числа в Java?", "options": ["int", "string", "bool", "float64"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Яке ключове слово робить змінну незмінною?", "options": ["const", "final", "readonly", "let"], "correctAnswer": 1},
+      {"id": 3, "type": "multiple", "question": "Примітивні типи Java:", "options": ["int", "boolean", "double", "String"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "04-conditions-and-loops",
+    "title": "Умови та цикли",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Яка конструкція перевіряє кілька умов?", "options": ["if / else if", "class", "package", "import"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Який цикл застосовують коли кількість ітерацій відома?", "options": ["for", "while", "do-while", "switch"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Які цикли існують у Java?", "options": ["for", "while", "do-while", "repeat-until"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "05-methods-and-scope",
+    "title": "Методи і область видимості",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Метод у Java це:", "options": ["Функція всередині класу", "Окремий файл", "Таблиця БД", "Пакет"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Локальна змінна доступна:", "options": ["У всьому проєкті", "Лише в межах блоку", "Лише в package", "Лише в JVM"], "correctAnswer": 1},
+      {"id": 3, "type": "multiple", "question": "Що характеризує метод?", "options": ["Параметри", "Тип повернення", "Назва", "Колір теми IDE"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "06-classes-and-objects",
+    "title": "Класи та об'єкти",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Клас це:", "options": ["Шаблон для об'єктів", "Запущений процес", "Файл стилів", "SQL запит"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Об'єкт це:", "options": ["Екземпляр класу", "Метод", "Цикл", "Пакет"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що може містити клас?", "options": ["Поля", "Методи", "Конструктори", "HTTP маршрут"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "07-constructors-and-encapsulation",
+    "title": "Конструктори та інкапсуляція",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Конструктор викликається:", "options": ["При створенні об'єкта", "При імпорті", "При компіляції", "Раз на JVM"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Інкапсуляція означає:", "options": ["Приховування стану через модифікатори доступу", "Множинне наслідування", "Паралелізм", "Генерацію байткоду"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що часто використовують для інкапсуляції?", "options": ["private поля", "getters", "setters", "goto"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "08-inheritance-and-polymorphism",
+    "title": "Наслідування та поліморфізм",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Яке ключове слово для наслідування класу?", "options": ["implements", "extends", "inherits", "superclass"], "correctAnswer": 1},
+      {"id": 2, "type": "single", "question": "Поліморфізм дозволяє:", "options": ["Один інтерфейс — різні реалізації", "Лише один метод", "Тільки static доступ", "Заборонити override"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що належить до ООП?", "options": ["Наслідування", "Поліморфізм", "Інкапсуляція", "Docker build"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "09-interfaces-and-abstract-classes",
+    "title": "Інтерфейси та абстрактні класи",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Інтерфейс у Java задає:", "options": ["Контракт поведінки", "Фізичну пам'ять", "Схему БД", "Компілятор"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Абстрактний клас може:", "options": ["Мати абстрактні і звичайні методи", "Містити тільки static", "Бути final завжди", "Не мати полів"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Інтерфейси підтримують:", "options": ["default методи", "static методи", "множинну реалізацію", "конструктори"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "10-exception-handling",
+    "title": "Обробка винятків",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Для перехоплення помилки використовують:", "options": ["catch", "throwOnly", "except", "trap"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "finally блок виконується:", "options": ["Завжди (переважно)", "Тільки без помилок", "Тільки при RuntimeException", "Ніколи"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Ключові слова exception handling:", "options": ["try", "catch", "finally", "extends"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "11-collections-framework",
+    "title": "Collections Framework",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Яка колекція зберігає унікальні елементи?", "options": ["List", "Set", "Queue", "Array"], "correctAnswer": 1},
+      {"id": 2, "type": "single", "question": "Яка структура зберігає пари key-value?", "options": ["List", "Set", "Map", "Deque"], "correctAnswer": 2},
+      {"id": 3, "type": "multiple", "question": "Що входить у Java Collections?", "options": ["List", "Set", "Map", "Switch"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "12-generics",
+    "title": "Generics",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Навіщо generics у Java?", "options": ["Типобезпека і повторне використання", "Швидший інтернет", "Доступ до GPU", "Заміна JVM"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Приклад generic типу:", "options": ["List<String>", "List = int", "<String>List", "String<List>"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Переваги generics:", "options": ["Менше cast", "Раннє виявлення помилок", "Краща читабельність API", "Автоматична багатопоточність"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "13-file-io",
+    "title": "Файли та I/O",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Що використовується для читання файлу в modern Java?", "options": ["java.nio.file.Files", "DOM", "JVM args", "Servlet"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "I/O помилки в Java зазвичай:", "options": ["IOExceptions", "Runtime only", "Ignored", "SQLExceptions"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Під час роботи з файлами важливо:", "options": ["Обробляти винятки", "Закривати ресурси", "Перевіряти шляхи", "Вимикати JVM"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "14-multithreading-basics",
+    "title": "Багатопоточність",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Thread у Java це:", "options": ["Потік виконання", "Тип колекції", "Модуль", "Файл"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Що краще для пулу задач?", "options": ["ExecutorService", "new Thread кожного разу", "while(true)", "GC"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Ризики concurrency:", "options": ["Race condition", "Deadlock", "Visibility issues", "HTML injection"], "correctAnswer": [0, 1, 2]}
+    ]
+  },
+  {
+    "moduleId": "15-java-project-console-app",
+    "title": "Підсумковий проєкт Java",
+    "passingScore": 60,
+    "questions": [
+      {"id": 1, "type": "single", "question": "Що важливо у підсумковому консольному проєкті?", "options": ["Чиста структура коду", "Лише кольоровий output", "Тільки один клас", "Без обробки помилок"], "correctAnswer": 0},
+      {"id": 2, "type": "single", "question": "Мінімально коректний проєкт має містити:", "options": ["Логіку + обробку помилок", "Тільки README", "Тільки тести", "Тільки Docker"], "correctAnswer": 0},
+      {"id": 3, "type": "multiple", "question": "Що варто продемонструвати у фінальному проєкті?", "options": ["ООП", "Колекції", "Обробку винятків", "Випадкові скріншоти"], "correctAnswer": [0, 1, 2]}
+    ]
+  }
+]

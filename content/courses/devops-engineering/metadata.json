@@ -1,0 +1,9 @@
+{
+  "title": "DevOps Engineering",
+  "description": "Курс з DevOps: CI/CD, контейнеризація, оркестрація, інфраструктура як код, моніторинг, безпека та reliability-практики.",
+  "category": "DevOps",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "devops-engineering.png",
+  "slug": "devops-engineering"
+}

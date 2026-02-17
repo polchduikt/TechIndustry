@@ -1,0 +1,9 @@
+{
+  "title": "QA Engineering",
+  "description": "Курс з QA: тест-дизайн, види тестування, баг-репорти, API/UI перевірки, автоматизація та процес якості.",
+  "category": "QA",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "qa-engineering.png",
+  "slug": "qa-engineering"
+}

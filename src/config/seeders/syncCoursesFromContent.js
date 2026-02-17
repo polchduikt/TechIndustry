@@ -41,7 +41,8 @@ async function syncCourses() {
 
       let metadata;
       try {
-        metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
+        const rawMetadata = fs.readFileSync(metadataPath, 'utf-8').replace(/^\uFEFF/, '');
+        metadata = JSON.parse(rawMetadata);
       } catch {
         continue;
       }

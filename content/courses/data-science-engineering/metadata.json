@@ -1,0 +1,9 @@
+{
+  "title": "Data Science Engineering",
+  "description": "Поглиблений курс з Data Science: підготовка даних, статистика, ML моделі, оцінювання, time series, deployment та моніторинг.",
+  "category": "Data Science",
+  "level": "Beginner",
+  "price": 0,
+  "thumbnail": "data-science-engineering.png",
+  "slug": "data-science-engineering"
+}
