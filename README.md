@@ -15,11 +15,14 @@ TechIndustry provides a modern Learning Management System (LMS) that enables use
 The platform is built using a robust and maintainable technology stack:
 
 * **Backend:** Node.js, Express.js
-* **Database:** PostgreSQL
+* **Database:** PostgreSQL (Azure Database for PostgreSQL)
 * **ORM:** Sequelize
 * **Architecture:** Layered MVC (Routes, Controllers, Services, Models)
 * **Templating:** Handlebars (HBS)
-* **Authentication:** JWT-based authentication
+* **Authentication:** JWT-based authentication + Google OAuth 2.0
+* **Email Service:** Nodemailer-based SMTP integration for account verification and transactional emails
+* **SEO:** Dynamic meta tags, Open Graph support, canonical URLs, robots.txt, sitemap.xml
+* **Cloud & Deployment:** Microsoft Azure App Service, custom domain configuration  
 * **Security:** Helmet (CSP, HSTS), CSRF protection, Rate limiting, Input sanitization
 * **Performance:** Compression (gzip), static asset caching, SSR-friendly rendering
 * **UI/UX:** Custom CSS (Glassmorphism), responsive layout, modern typography
@@ -197,15 +200,15 @@ npm install express cookie-parser dotenv jsonwebtoken express-validator multer s
 Create a `.env` file in the project root and define:
 
 ```
-PORT=3000
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=your_db
+PORT=port
+DB_HOST=host
+DB_PORT=db_port
+DB_NAME=your_db_name
 DB_USER=your_user
-DB_PASSWORD=your_password
-JWT_SECRET=your_secret_key
+DB_PASSWORD=password
+JWT_SECRET=secret_key
 EMAIL_USER=your_email
-EMAIL_PASSWORD=your_password
+EMAIL_PASSWORD=password
 GROQ_API_KEY=key
 GOOGLE_CLIENT_ID=your_client_id
 GOOGLE_CLIENT_SECRET=you_client_secret
