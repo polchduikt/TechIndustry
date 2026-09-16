@@ -1,6 +1,5 @@
-# TechIndustry — Interactive IT Learning Platform & LMS
+# TechIndustry — Interactive IT Learning Platform LMS
 
-[![Deploy to Azure](https://github.com/polchduikt/TechIndustry/actions/workflows/main_techindustry.yml/badge.svg)](https://github.com/polchduikt/TechIndustry/actions/workflows/main_techindustry.yml)
 [![REST API](https://img.shields.io/badge/REST_API-Documentation-6BA539.svg?logo=openapiinitiative&logoColor=white)](docs/API_DOCUMENTATION.md)
 [![Architecture: Layered MVC](https://img.shields.io/badge/Architecture-Layered_MVC-blue.svg)](docs/ARCHITECTURE.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
